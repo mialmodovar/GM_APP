@@ -1,0 +1,1336 @@
+<!doctype html>
+<html lang="en" dir="ltr" style="--primary-rgb: 28,103,147;">
+
+<head>
+    {% load static %}
+    <!-- META DATA -->
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Sash – Bootstrap 5  Admin & Dashboard Template">
+    <meta name="author" content="Spruko Technologies Private Limited">
+    <meta name="keywords" content="admin,admin dashboard,admin panel,admin template,bootstrap,clean,dashboard,flat,jquery,modern,responsive,premium admin templates,responsive admin,ui,ui kit.">
+
+    <!-- FAVICON -->
+    <link rel="shortcut icon" type="image/x-icon" href=" {% static '/assets/images/brand/favicon.ico' %} ">
+
+    <!-- TITLE -->
+    <title>Global Monarch</title>
+
+    <!-- BOOTSTRAP CSS -->
+    <link id="style" href=" {% static '/assets/plugins/bootstrap/css/bootstrap.min.css' %} " rel="stylesheet">
+
+    <!-- STYLE CSS -->
+     <link href=" {% static '/assets/css/style.css' %} " rel="stylesheet">
+
+	<!-- Plugins CSS -->
+    <link href=" {% static '/assets/css/plugins.css' %} " rel="stylesheet">
+
+    <!--- FONT-ICONS CSS -->
+    <link href=" {% static '/assets/css/icons.css' %} " rel="stylesheet">
+
+    <!-- INTERNAL Switcher css -->
+    <link href=" {% static '/assets/switcher/css/switcher.css' %} " rel="stylesheet">
+    <link href=" {% static '/assets/switcher/demo.css' %} " rel="stylesheet">
+</head>
+
+<body class="app sidebar-mini ltr light-mode">
+
+    <!-- GLOBAL-LOADER -->
+    <div id="global-loader">
+        <img src=" {% static '/assets/images/loader.svg' %} " class="loader-img" alt="Loader">
+    </div>
+    <!-- /GLOBAL-LOADER -->
+
+    <!-- PAGE -->
+    <div class="page">
+        <div class="page-main">
+
+            <!-- app-Header -->
+            <div class="app-header header sticky">
+                <div class="container-fluid main-container">
+                    <div class="d-flex">
+                        <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" href=" {% static 'javascript:void(0)' %} "></a>
+                        <!-- sidebar-toggle-->
+                        <a class="logo-horizontal " href=" {% static 'index.html' %} ">
+                            <img src=" {% static '/assets/images/brand/logo-white.png' %} " class="header-brand-img desktop-logo" alt="logo">
+                            <img src=" {% static '/assets/images/brand/logo-dark.png' %} " class="header-brand-img light-logo1"
+                                alt="logo">
+                        </a>
+
+                       
+                        <div class="d-flex order-lg-2 ms-auto header-right-icons">
+                            <!-- SEARCH -->
+                            <button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-4"
+                                aria-controls="navbarSupportedContent-4" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon fe fe-more-vertical"></span>
+                            </button>
+                            <div class="navbar navbar-collapse responsive-navbar p-0">
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+                                    <div class="d-flex order-lg-2">
+                                            <a href="{% static 'javascript:void(0)' %}" class="nav-link icon"
+                                                data-bs-toggle="dropdown" data-target="">
+                                                <i class="fa fa-sort-down"></i>
+                                            </a>
+                                            <div class="dropdown  d-flex notifications">
+                                                <a class="nav-link icon" data-bs-toggle="dropdown" aria-expanded="false"><i class="fe fe-bell"></i><span class=" pulse"></span>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                    <div class="drop-heading border-bottom">
+                                                        <div class="d-flex">
+                                                            <h6 class="mt-1 mb-0 fs-16 fw-semibold text-dark">Notifications
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="notifications-menu ps">
+                                                        <a class="dropdown-item d-flex" href="notify-list.html">
+                                                            <div class="me-3 notifyimg  bg-primary brround box-shadow-primary">
+                                                                <i class="fe fe-mail"></i>
+                                                            </div>
+                                                            <div class="mt-1 wd-80p">
+                                                                <h5 class="notification-label mb-1">New change made to enquiry of FM96 to Kumas
+                                                                </h5>
+                                                                <span class="notification-subtext">1 hour ago</span>
+                                                            </div>
+                                                        </a>
+                                                        <a class="dropdown-item d-flex" href="notify-list.html">
+                                                            <div class="me-3 notifyimg  bg-secondary brround box-shadow-secondary">
+                                                                <i class="fe fe-mail"></i>
+                                                            </div>
+                                                            <div class="mt-1 wd-80p">
+                                                                <h5 class="notification-label mb-1">Enquiry deadline coming up</h5>
+                                                                <span class="notification-subtext">2 hours ago</span>
+                                                            </div>
+                                                        </a>
+                                                       
+                                                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+                                                    <div class="dropdown-divider m-0"></div>
+                                                    <a href="notify-list.html" class="dropdown-item text-center p-3 text-muted">View all
+                                                        Notification</a>
+                                                </div>
+                                            </div>
+                                        <!-- SIDE-MENU -->
+                                        <div class="dropdown d-flex profile-1">
+                                            <a href=" {% static 'javascript:void(0)' %} " data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
+                                                <img src=" {% static '/assets/images/users/21.jpg' %} " alt="profile-user"
+                                                    class="avatar  profile-user brround cover-image">
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                <div class="drop-heading">
+                                                    <div class="text-center">
+                                                        <h5 class="text-dark mb-0 fs-14 fw-semibold">{{request.user.username}}</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-divider m-0"></div>
+                                                <a class="dropdown-item" href="">
+                                                    <i class="dropdown-icon fe fe-user"></i> Profile
+                                                </a>
+                                                <a class="dropdown-item" href="">
+                                                    <i class="dropdown-icon fe fe-alert-circle"></i> Sign out
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /app-Header -->
+
+            <!--APP-SIDEBAR-->
+            <div class="sticky">
+                <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
+                <div class="app-sidebar">
+                    <div class="side-header">
+                        <a class="header-brand1" href="">
+                            <img src=" {% static '/assets/images/brand/logo-white.png' %} " class="header-brand-img desktop-logo" alt="logo">
+                            <img src=" {% static '/assets/images/brand/icon-white.png' %} " class="header-brand-img toggle-logo"
+                                alt="logo">
+                            <img src=" {% static '/assets/images/brand/icon-dark.png' %} " class="header-brand-img light-logo" alt="logo">
+                            <img src=" {% static '/assets/images/brand/logo-dark.png' %} " class="header-brand-img light-logo1"
+                                alt="logo">
+                        </a>
+                        <!-- LOGO -->
+                    </div>
+                    <div class="main-sidemenu">
+                        <div class="slide-left disabled" id="slide-left"><svg xmlns="http://www.w3.org/2000/svg"
+                                fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" />
+                            </svg></div>
+                        <ul class="side-menu">
+                           
+                            <li class="slide">
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                        class="side-menu__icon fe fe-home"></i><span
+                                        class="side-menu__label">Dashboard</span></a>
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                        class="side-menu__icon fe fe-send"></i><span
+                                        class="side-menu__label">Enquiries</span></a>
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                        class="side-menu__icon fe fe-pie-chart"></i><span
+                                        class="side-menu__label">Create new Enquiry</span></a>
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                        class="side-menu__icon fe fe-activity"></i><span
+                                        class="side-menu__label">Supplier Management</span></a>
+                            </li>
+
+                        </ul>
+                        <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"
+                                width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z" />
+                            </svg></div>
+                    </div>
+                </div>
+            </div>
+            <!--/APP-SIDEBAR-->
+
+            <!--app-content open-->
+            <div class="main-content app-content mt-0">
+                <div class="side-app">
+
+                    <!-- CONTAINER -->
+                    <div class="main-container container-fluid">
+
+                        <!-- PAGE-HEADER -->
+                        <div class="page-header">
+                            <h1 class="page-title">Enquiry Management</h1>
+                            <div>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href=" {% static 'javascript:void(0)' %} ">Pages</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Empty</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!-- PAGE-HEADER END -->
+
+                        <!-- ROW-1 OPEN -->
+                        <!-- Row -->
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            Register new Enquiry
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-5">
+                                        <div id="wizard3" role="application" class="wizard clearfix vertical"><div class="steps clearfix"><ul role="tablist"><li role="tab" class="first current" aria-disabled="false" aria-selected="true"><a id="wizard3-t-0" href="#wizard3-h-0" aria-controls="wizard3-p-0"><span class="current-info audible">current step: </span><span class="number">1</span> <span class="title">Personal Information</span></a></li><li role="tab" class="done" aria-disabled="false" aria-selected="false"><a id="wizard3-t-1" href="#wizard3-h-1" aria-controls="wizard3-p-1"><span class="number">2</span> <span class="title">Details of the request</span></a></li><li role="tab" class="last done" aria-disabled="false" aria-selected="false"><a id="wizard3-t-2" href="#wizard3-h-2" aria-controls="wizard3-p-2"><span class="number">3</span> <span class="title">Supplier Selection</span></a></li></ul></div><div class="content clearfix">
+                                            <h3 id="wizard3-h-0" tabindex="-1" class="title current">Enquiry Information</h3>
+                                            <section id="wizard3-p-0" role="tabpanel" aria-labelledby="wizard3-h-0" class="body current" aria-hidden="false" style="">
+                                                <div class="control-group form-group">
+                                                    <label class="form-label">Manager</label>
+                                                    <input type="text" class="form-control required" placeholder="Name">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="form-label"> Customer</label>
+                                                    <select class="form-control select2-show-search form-select select2-hidden-accessible" data-placeholder="Choose one" tabindex="-1" aria-hidden="true">
+                                                            <option label="Choose one"></option>
+                                                            <option value="Firefox">
+                                                                CSN
+                                                            </option>
+                                                            <option value="Chrome">
+                                                               4 S Refractories
+                                                            </option>
+                                                            <option value="Safari">
+                                                                Sanac
+                                                            </option>
+                                                            <option value="Opera">
+                                                                Trent
+                                                            </option>
+                                                            <option value="Internet Explorer">
+                                                                Morgan Advanced
+                                                            </option>
+                                                        </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="form-label">Customer Contact Person</label>
+                                                    <input type="text" class="form-control required" placeholder="Name">
+                                                </div>
+
+                                                
+                                                 <!-- Inquiry Received Date Button -->
+                                                <div class="form-group">
+                                                    <label class="form-label">Inquiry Received Date</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
+                                                        </div>
+                                                        <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" type="text" id="inquiryReceivedDate">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Inquiry Deadline Date Button -->
+                                                <div class="form-group">
+                                                    <label class="form-label">Inquiry Deadline Date</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
+                                                        </div>
+                                                        <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" type="text" id="inquiryDeadlineDate">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label class="form-label">Incoterm Wanted</label>
+                                                    <input type="text" class="form-control required" placeholder="CIF/CFR/FOB">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="form-label">Port of Discharge/Delivery</label>
+                                                    <input type="text" class="form-control required" placeholder="Port of discharge">
+                                                </div>
+
+                                        
+
+                                            </section>
+                                            <h3 id="wizard3-h-1" tabindex="-1" class="title">Details of the request</h3>
+                                            <section id="wizard3-p-1" role="tabpanel" aria-labelledby="wizard3-h-1" class="body" aria-hidden="true" style="display: none;">
+                                                <div class="form-group" id = "product_selector">
+                                                    <label class="form-label">Products</label>
+                                                    <select class="form-control select2 select2-hidden-accessible" data-placeholder="Choose Browser" multiple="" tabindex="-1" aria-hidden="true">
+                                                            <option value="Firefox">
+                                                                CSN
+                                                            </option>
+                                                            <option value="Chrome">
+                                                               4 S Refractories
+                                                            </option>
+                                                            <option value="Safari">
+                                                                Sanac
+                                                            </option>
+                                                            <option value="Opera">
+                                                                Trent
+                                                            </option>
+                                                            <option value="Internet Explorer">
+                                                                Morgan Advanced
+                                                            </option>
+                                                        </select>
+                                                </div> 
+                                                <div id="size-selectors-container"></div>
+                                                
+                                            </section>
+                                            <h3 id="wizard3-h-2" tabindex="-1" class="title">Payment Details</h3>
+                                            <section id="wizard3-p-2" role="tabpanel" aria-labelledby="wizard3-h-2" class="body" aria-hidden="true" style="display: none;">
+                                            
+                                            </section>
+                                        </div><div class="actions clearfix"><ul role="menu" aria-label="Pagination"><li class="disabled" aria-disabled="true"><a href="#previous" role="menuitem">Previous</a></li><li aria-hidden="false" aria-disabled="false" class="" style=""><a href="#next" role="menuitem">Next</a></li><li aria-hidden="true" style="display: none;"><a id= "submit-button-id" href="#finish" role="menuitem">Finish</a></li></ul></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- /Row -->
+                    </div>
+                    <!-- CONTAINER CLOSED -->
+                </div>
+            </div>
+            <!--app-content closed-->
+        </div>
+
+        <!-- Sidebar-right -->
+        <div class="sidebar sidebar-right sidebar-animate">
+            <div class="panel panel-primary card mb-0 shadow-none border-0">
+                <div class="tab-menu-heading border-0 d-flex p-3">
+                    <div class="card-title mb-0"><i class="fe fe-bell me-2"></i><span
+                            class=" pulse"></span>Notifications</div>
+                    <div class="card-options ms-auto">
+                        <a href=" {% static 'javascript:void(0);' %} " class="sidebar-icon text-end float-end me-3 mb-1"
+                            data-bs-toggle="sidebar-right" data-target=".sidebar-right"><i
+                                class="fe fe-x text-white"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body tabs-menu-body latest-tasks p-0 border-0">
+                    <div class="tabs-menu border-bottom">
+                        <!-- Tabs -->
+                        <ul class="nav panel-tabs">
+                            <li class=""><a href=" {% static '#sidebar-side1' %} " class="active" data-bs-toggle="tab"><i
+                                        class="fe fe-settings me-1"></i>Feeds</a></li>
+                            <li><a href=" {% static '#sidebar-side2' %} " data-bs-toggle="tab"><i class="fe fe-message-circle me-1"></i> Chat</a></li>
+                            <li><a href=" {% static '#sidebar-side3' %} " data-bs-toggle="tab"><i class="fe fe-anchor me-1"></i>Timeline</a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="sidebar-side1">
+                            <div class="p-3 fw-semibold ps-5">Feeds</div>
+                            <div class="card-body pt-2">
+                                <div class="browser-stats">
+                                    <div class="row mb-4">
+                                        <div class="col-sm-2 mb-sm-0 mb-3">
+                                            <span class="feeds avatar-circle brround bg-primary-transparent"><i
+                                                    class="fe fe-user text-primary"></i></span>
+                                        </div>
+                                        <div class="col-sm-10 ps-sm-0">
+                                            <div class="d-flex align-items-end justify-content-between ms-2">
+                                                <h6 class="">New user registered</h6>
+                                                <div>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-sm-2 mb-sm-0 mb-3">
+                                            <span
+                                                class="feeds avatar-circle avatar-circle-secondary brround bg-secondary-transparent"><i
+                                                    class="fe fe-shopping-cart text-secondary"></i></span>
+                                        </div>
+                                        <div class="col-sm-10 ps-sm-0">
+                                            <div class="d-flex align-items-end justify-content-between ms-2">
+                                                <h6 class="">New order delivered</h6>
+                                                <div>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-sm-2 mb-sm-0 mb-3">
+                                            <span
+                                                class="feeds avatar-circle avatar-circle-danger brround bg-danger-transparent"><i
+                                                    class="fe fe-bell text-danger"></i></span>
+                                        </div>
+                                        <div class="col-sm-10 ps-sm-0">
+                                            <div class="d-flex align-items-end justify-content-between ms-2">
+                                                <h6 class="">You have pending tasks</h6>
+                                                <div>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-sm-2 mb-sm-0 mb-3">
+                                            <span
+                                                class="feeds avatar-circle avatar-circle-warning brround bg-warning-transparent"><i
+                                                    class="fe fe-gitlab text-warning"></i></span>
+                                        </div>
+                                        <div class="col-sm-10 ps-sm-0">
+                                            <div class="d-flex align-items-end justify-content-between ms-2">
+                                                <h6 class="">New version arrived</h6>
+                                                <div>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-sm-2 mb-sm-0 mb-3">
+                                            <span
+                                                class="feeds avatar-circle avatar-circle-pink brround bg-pink-transparent"><i
+                                                    class="fe fe-database text-pink"></i></span>
+                                        </div>
+                                        <div class="col-sm-10 ps-sm-0">
+                                            <div class="d-flex align-items-end justify-content-between ms-2">
+                                                <h6 class="">Server #1 overloaded</h6>
+                                                <div>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2 mb-sm-0 mb-3">
+                                            <span
+                                                class="feeds avatar-circle avatar-circle-info brround bg-info-transparent"><i
+                                                    class="fe fe-check-circle text-info"></i></span>
+                                        </div>
+                                        <div class="col-sm-10 ps-sm-0">
+                                            <div class="d-flex align-items-end justify-content-between ms-2">
+                                                <h6 class="">New project launched</h6>
+                                                <div>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3 fw-semibold ps-5">Settings</div>
+                            <div class="card-body pt-2">
+                                <div class="browser-stats">
+                                    <div class="row mb-4">
+                                        <div class="col-sm-2 mb-sm-0 mb-3">
+                                            <span class="feeds avatar-circle brround bg-primary-transparent"><i
+                                                    class="fe fe-settings text-primary"></i></span>
+                                        </div>
+                                        <div class="col-sm-10 ps-sm-0">
+                                            <div class="d-flex align-items-end justify-content-between ms-2">
+                                                <h6 class="">General Settings</h6>
+                                                <div>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-sm-2 mb-sm-0 mb-3">
+                                            <span
+                                                class="feeds avatar-circle avatar-circle-secondary brround bg-secondary-transparent"><i
+                                                    class="fe fe-map-pin text-secondary"></i></span>
+                                        </div>
+                                        <div class="col-sm-10 ps-sm-0">
+                                            <div class="d-flex align-items-end justify-content-between ms-2">
+                                                <h6 class="">Map Settings</h6>
+                                                <div>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-sm-2 mb-sm-0 mb-3">
+                                            <span
+                                                class="feeds avatar-circle avatar-circle-danger brround bg-danger-transparent"><i
+                                                    class="fe fe-headphones text-danger"></i></span>
+                                        </div>
+                                        <div class="col-sm-10 ps-sm-0">
+                                            <div class="d-flex align-items-end justify-content-between ms-2">
+                                                <h6 class="">Support Settings</h6>
+                                                <div>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-sm-2 mb-sm-0 mb-3">
+                                            <span
+                                                class="feeds avatar-circle avatar-circle-warning brround bg-warning-transparent"><i
+                                                    class="fe fe-credit-card text-warning"></i></span>
+                                        </div>
+                                        <div class="col-sm-10 ps-sm-0">
+                                            <div class="d-flex align-items-end justify-content-between ms-2">
+                                                <h6 class="">Payment Settings</h6>
+                                                <div>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-sm-2 mb-sm-0 mb-3">
+                                            <span
+                                                class="feeds avatar-circle avatar-circle-pink brround bg-pink-transparent"><i
+                                                    class="fe fe-bell text-pink"></i></span>
+                                        </div>
+                                        <div class="col-sm-10 ps-sm-0">
+                                            <div class="d-flex align-items-end justify-content-between ms-2">
+                                                <h6 class="">Notification Settings</h6>
+                                                <div>
+                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="sidebar-side2">
+                            <div class="list-group list-group-flush">
+                                <div class="pt-3 fw-semibold ps-5">Today</div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/2.jpg' %} "></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Addie Minstra</div>
+                                            <p class="mb-0 fs-12 text-muted"> Hey! there I' am available </p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/11.jpg' %} "><span
+                                                class="avatar-status bg-success"></span></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Rose Bush</div>
+                                            <p class="mb-0 fs-12 text-muted"> Okay.I will be waiting for you </p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/10.jpg' %} "></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Claude Strophobia</div>
+                                            <p class="mb-0 fs-12 text-muted"> Hi we can explain our new project
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/13.jpg' %} "></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Eileen Dover</div>
+                                            <p class="mb-0 fs-12 text-muted"> New product Launching. </p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/12.jpg' %} "><span
+                                                class="avatar-status bg-success"></span></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Willie Findit</div>
+                                            <p class="mb-0 fs-12 text-muted"> Okay.I will be waiting for you </p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/15.jpg' %} "></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Manny Jah</div>
+                                            <p class="mb-0 fs-12 text-muted"> Hi we can explain our new project
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/4.jpg' %} "></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Cherry Blossom</div>
+                                            <p class="mb-0 fs-12 text-muted"> Hey! there I' am available</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="pt-3 fw-semibold ps-5">Yesterday</div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/7.jpg' %} "><span
+                                                class="avatar-status bg-success"></span></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Simon Sais</div>
+                                            <p class="mb-0 fs-12 text-muted">Schedule Realease </p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/9.jpg' %} "></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Laura Biding</div>
+                                            <p class="mb-0 fs-12 text-muted"> Hi we can explain our new project
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/2.jpg' %} "><span
+                                                class="avatar-status bg-success"></span></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Addie Minstra</div>
+                                            <p class="mb-0 fs-12 text-muted">Contact me for details</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/9.jpg' %} "></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Ivan Notheridiya</div>
+                                            <p class="mb-0 fs-12 text-muted"> Hi we can explain our new project
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/14.jpg' %} "></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Dulcie Veeta</div>
+                                            <p class="mb-0 fs-12 text-muted"> Okay.I will be waiting for you </p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/11.jpg' %} "></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Florinda Carasco</div>
+                                            <p class="mb-0 fs-12 text-muted">New product Launching.</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="avatar avatar-md brround cover-image"
+                                            data-bs-image-src=" {% static '/assets/images/users/4.jpg' %} "><span
+                                                class="avatar-status bg-success"></span></span>
+                                    </div>
+                                    <div class="">
+                                        <a href=" {% static 'chat.html' %} ">
+                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                                data-target="#chatmodel">Cherry Blossom</div>
+                                            <p class="mb-0 fs-12 text-muted">cherryblossom@gmail.com</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="sidebar-side3">
+                            <ul class="task-list timeline-task">
+                                <li class="d-sm-flex mt-4">
+                                    <div>
+                                        <i class="task-icon1"></i>
+                                        <h6 class="fw-semibold">Task Finished<span
+                                                class="text-muted fs-11 mx-2 fw-normal">09 July 2021</span></h6>
+                                        <p class="text-muted fs-12">Adam Berry finished task on<a href=" {% static 'javascript:void(0)' %} "
+                                                class="fw-semibold"> Project Management</a></p>
+                                    </div>
+                                    <div class="ms-auto d-md-flex me-3">
+                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
+                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
+                                    </div>
+                                </li>
+                                <li class="d-sm-flex">
+                                    <div>
+                                        <i class="task-icon1"></i>
+                                        <h6 class="fw-semibold">New Comment<span
+                                                class="text-muted fs-11 mx-2 fw-normal">05 July 2021</span></h6>
+                                        <p class="text-muted fs-12">Victoria commented on Project <a href=" {% static 'javascript:void(0)' %} "
+                                                class="fw-semibold"> AngularJS Template</a></p>
+                                    </div>
+                                    <div class="ms-auto d-md-flex me-3">
+                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
+                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
+                                    </div>
+                                </li>
+                                <li class="d-sm-flex">
+                                    <div>
+                                        <i class="task-icon1"></i>
+                                        <h6 class="fw-semibold">New Comment<span
+                                                class="text-muted fs-11 mx-2 fw-normal">25 June 2021</span></h6>
+                                        <p class="text-muted fs-12">Victoria commented on Project <a href=" {% static 'javascript:void(0)' %} "
+                                                class="fw-semibold"> AngularJS Template</a></p>
+                                    </div>
+                                    <div class="ms-auto d-md-flex me-3">
+                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
+                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
+                                    </div>
+                                </li>
+                                <li class="d-sm-flex">
+                                    <div>
+                                        <i class="task-icon1"></i>
+                                        <h6 class="fw-semibold">Task Overdue<span
+                                                class="text-muted fs-11 mx-2 fw-normal">14 June 2021</span></h6>
+                                        <p class="text-muted mb-0 fs-12">Petey Cruiser finished task <a href=" {% static 'javascript:void(0)' %} "
+                                                class="fw-semibold"> Integrated management</a></p>
+                                    </div>
+                                    <div class="ms-auto d-md-flex me-3">
+                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
+                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
+                                    </div>
+                                </li>
+                                <li class="d-sm-flex">
+                                    <div>
+                                        <i class="task-icon1"></i>
+                                        <h6 class="fw-semibold">Task Overdue<span
+                                                class="text-muted fs-11 mx-2 fw-normal">29 June 2021</span></h6>
+                                        <p class="text-muted mb-0 fs-12">Petey Cruiser finished task <a href=" {% static 'javascript:void(0)' %} "
+                                                class="fw-semibold"> Integrated management</a></p>
+                                    </div>
+                                    <div class="ms-auto d-md-flex me-3">
+                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
+                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
+                                    </div>
+                                </li>
+                                <li class="d-sm-flex">
+                                    <div>
+                                        <i class="task-icon1"></i>
+                                        <h6 class="fw-semibold">Task Finished<span
+                                                class="text-muted fs-11 mx-2 fw-normal">09 July 2021</span></h6>
+                                        <p class="text-muted fs-12">Adam Berry finished task on<a href=" {% static 'javascript:void(0)' %} "
+                                                class="fw-semibold"> Project Management</a></p>
+                                    </div>
+                                    <div class="ms-auto d-md-flex me-3">
+                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
+                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/Sidebar-right-->
+
+        <!-- Country-selector modal-->
+        <div class="modal fade" id="country-selector">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content country-select-modal">
+                    <div class="modal-header">
+                        <h6 class="modal-title">Choose Country</h6><button aria-label="Close" class="btn-close"
+                            data-bs-dismiss="modal" type="button"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="row p-3">
+                            <li class="col-lg-6 mb-2">
+                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block active">
+                                    <span class="country-selector"><img alt="" src=" {% static '/assets/images/flags-img/us_flag.jpg' %} "
+                                            class="me-3 language"></span>USA
+                                </a>
+                            </li>
+                            <li class="col-lg-6 mb-2">
+                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                                    <span class="country-selector"><img alt=""
+                                        src=" {% static '/assets/images/flags-img/italy_flag.jpg' %} "
+                                        class="me-3 language"></span>Italy
+                                </a>
+                            </li>
+                            <li class="col-lg-6 mb-2">
+                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                                    <span class="country-selector"><img alt=""
+                                        src=" {% static '/assets/images/flags-img/spain_flag.jpg' %} "
+                                        class="me-3 language"></span>Spain
+                                </a>
+                            </li>
+                            <li class="col-lg-6 mb-2">
+                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                                    <span class="country-selector"><img alt=""
+                                        src=" {% static '/assets/images/flags-img/india_flag.jpg' %} "
+                                        class="me-3 language"></span>India
+                                </a>
+                            </li>
+                            <li class="col-lg-6 mb-2">
+                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                                    <span class="country-selector"><img alt=""
+                                        src=" {% static '/assets/images/flags-img/french_flag.jpg' %} "
+                                        class="me-3 language"></span>French
+                                </a>
+                            </li>
+                            <li class="col-lg-6 mb-2">
+                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                                    <span class="country-selector"><img alt=""
+                                        src=" {% static '/assets/images/flags-img/russia_flag.jpg' %} "
+                                        class="me-3 language"></span>Russia
+                                </a>
+                            </li>
+                            <li class="col-lg-6 mb-2">
+                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                                    <span class="country-selector"><img alt=""
+                                        src=" {% static '/assets/images/flags-img/germany_flag.jpg' %} "
+                                        class="me-3 language"></span>Germany
+                                </a>
+                            </li>
+                            <li class="col-lg-6 mb-2">
+                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                                    <span class="country-selector"><img alt=""
+                                        src=" {% static '/assets/images/flags-img/argentina.jpg' %} "
+                                        class="me-3 language"></span>Argentina
+                                </a>
+                            </li>
+                            <li class="col-lg-6 mb-2">
+                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                                    <span class="country-selector"><img alt="" src=" {% static '/assets/images/flags-img/malaysia.jpg' %} "
+                                        class="me-3 language"></span>Malaysia
+                                </a>
+                            </li>
+                            <li class="col-lg-6 mb-2">
+                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                                    <span class="country-selector"><img alt="" src=" {% static '/assets/images/flags-img/turkey.jpg' %} "
+                                        class="me-3 language"></span>Turkey
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Country-selector modal-->
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse">
+                    <div class="col-md-12 col-sm-12 text-center">
+                        Copyright © <span id="year"></span> <a href=" {% static 'javascript:void(0)' %} ">Sash</a>. Designed with <span class="fa fa-heart text-danger"></span> by <a href="javascript:void(0)"> Spruko </a> All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- FOOTER CLOSED -->
+    </div>
+
+    <!-- BACK-TO-TOP -->
+    <a href=" {% static '#top' %} " id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+    <!-- BACK-TO-TOP -->
+    <a href=" {% static '#top' %} " id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+    <!-- JQUERY JS -->
+    <script src=" {% static '/assets/js/jquery.min.js' %} "></script>
+
+    <!-- BOOTSTRAP JS -->
+    <script src=" {% static '/assets/plugins/bootstrap/js/popper.min.js' %} "></script>
+    <script src=" {% static '/assets/plugins/bootstrap/js/bootstrap.min.js' %} "></script>
+
+    <!-- INPUT MASK JS-->
+    <script src=" {% static '/assets/plugins/input-mask/jquery.mask.min.js' %} "></script>
+
+	<!-- TypeHead js -->
+	<script src=" {% static '/assets/plugins/bootstrap5-typehead/autocomplete.js' %} "></script>
+    <script src=" {% static '/assets/js/typehead.js' %} "></script>
+
+    <!-- FILE UPLOADES JS -->
+    <script src=" {% static '/assets/plugins/fileuploads/js/fileupload.js' %} "></script>
+    <script src=" {% static '/assets/plugins/fileuploads/js/file-upload.js' %} "></script>
+
+    <!-- INTERNAL File-Uploads Js-->
+    <script src=" {% static '/assets/plugins/fancyuploder/jquery.ui.widget.js' %} "></script>
+    <script src=" {% static '/assets/plugins/fancyuploder/jquery.fileupload.js' %} "></script>
+    <script src=" {% static '/assets/plugins/fancyuploder/jquery.iframe-transport.js' %} "></script>
+    <script src=" {% static '/assets/plugins/fancyuploder/jquery.fancy-fileupload.js' %} "></script>
+    <script src=" {% static '/assets/plugins/fancyuploder/fancy-uploader.js' %} "></script>
+
+    <!-- SELECT2 JS -->
+    <script src=" {% static '/assets/plugins/select2/select2.full.min.js' %} "></script>
+    <script src=" {% static '/assets/js/select2.js' %} "></script>
+
+    <!-- INTERNAL Bootstrap-Datepicker js-->
+    <script src=" {% static '/assets/plugins/bootstrap-daterangepicker/daterangepicker.js' %} "></script>
+
+    <!-- BOOTSTRAP-DATERANGEPICKER JS -->
+    <script src=" {% static '/assets/plugins/bootstrap-daterangepicker/moment.min.js' %} "></script>
+
+    <!-- INTERNAL Bootstrap-Datepicker js-->
+    <script src=" {% static '/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js' %} "></script>
+
+    <!-- INTERNAL Sumoselect js-->
+    <script src=" {% static '/assets/plugins/sumoselect/jquery.sumoselect.js' %} "></script>
+
+    <!-- TIMEPICKER JS -->
+    <script src=" {% static '/assets/plugins/time-picker/jquery.timepicker.js' %} "></script>
+    <script src=" {% static '/assets/plugins/time-picker/toggles.min.js' %} "></script>
+
+    <!-- INTERNAL intlTelInput js-->
+    <script src=" {% static '/assets/plugins/intl-tel-input-master/intlTelInput.js' %} "></script>
+    <script src=" {% static '/assets/plugins/intl-tel-input-master/country-select.js' %} "></script>
+    <script src=" {% static '/assets/plugins/intl-tel-input-master/utils.js' %} "></script>
+
+    <!-- INTERNAL jquery transfer js-->
+    <script src=" {% static '/assets/plugins/jQuerytransfer/jquery.transfer.js' %} "></script>
+
+    <!-- INTERNAL multi js-->
+    <script src=" {% static '/assets/plugins/multi/multi.min.js' %} "></script>
+
+    <!-- DATEPICKER JS -->
+    <script src=" {% static '/assets/plugins/date-picker/date-picker.js' %} "></script>
+    <script src=" {% static '/assets/plugins/date-picker/jquery-ui.js' %} "></script>
+    <script src=" {% static '/assets/plugins/input-mask/jquery.maskedinput.js' %} "></script>
+
+    <!-- COLOR PICKER JS -->
+    <script src=" {% static '/assets/plugins/pickr-master/pickr.es5.min.js' %} "></script>
+    <script src=" {% static '/assets/js/picker.js' %} "></script>
+
+    <!-- MULTI SELECT JS-->
+    <script src=" {% static '/assets/plugins/multipleselect/multiple-select.js' %} "></script>
+    <script src=" {% static '/assets/plugins/multipleselect/multi-select.js' %} "></script>
+
+    <!-- Perfect SCROLLBAR JS-->
+    <script src=" {% static '/assets/plugins/p-scroll/perfect-scrollbar.js' %} "></script>
+    <script src=" {% static '/assets/plugins/p-scroll/pscroll.js' %} "></script>
+    <script src=" {% static '/assets/plugins/p-scroll/pscroll-1.js' %} "></script>
+
+    <!-- SIDE-MENU JS -->
+    <script src=" {% static '/assets/plugins/sidemenu/sidemenu.js' %} "></script>
+
+    <!-- SIDEBAR JS -->
+    <script src=" {% static '/assets/plugins/sidebar/sidebar.js' %} "></script>
+
+    <!-- FORMELEMENTS JS -->
+    <script src=" {% static '/assets/js/formelementadvnced.js' %} "></script>
+    <script src=" {% static '/assets/js/form-elements.js' %} "></script>
+
+    <!-- Color Theme js -->
+    <script src=" {% static '/assets/js/themeColors.js' %} "></script>
+
+    <!-- Sticky js -->
+    <script src=" {% static '/assets/js/sticky.js' %} "></script>
+
+    <!-- CUSTOM JS -->
+    <script src=" {% static '/assets/js/custom.js' %} "></script>
+
+    <!-- Custom-switcher -->
+    <script src=" {% static '/assets/js/custom-swicher.js' %} "></script>
+
+    <!-- Switcher js -->
+    <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
+
+
+    <!-- Script to Enable Wizard FUnctionality (lazy fix but it works) -->>
+    <script>
+        $(document).ready(function() {
+    // Function to show the step based on index
+    function showStep(index) {
+        // Hide all sections and remove 'current' class from all h3 titles and 'current' from steps
+        $('.wizard .content section').hide().attr('aria-hidden', 'true');
+        $('.wizard .content .title').removeClass('current');
+        $('.wizard .steps ul li').removeClass('current').attr('aria-selected', 'false');
+
+        // Show the current section, add 'current' class to its title and step
+        $('.wizard .content section').eq(index).show().attr('aria-hidden', 'false');
+        $('#wizard3-h-' + index).addClass('current');
+        $('.wizard .steps ul li').eq(index).addClass('current').attr('aria-selected', 'true');
+
+        // Update steps status
+        $('.wizard .steps ul li').removeClass('done');
+        $('.wizard .steps ul li:lt(' + index + ')').addClass('done');
+
+        // Update button visibility
+        updateButtons(index);
+    }
+
+    // Function to update button visibility based on the current step
+    function updateButtons(currentIndex) {
+        $('.actions ul li').removeClass('disabled').show();
+        if (currentIndex === 0) {
+            $('.actions ul li').eq(0).addClass('disabled');
+        }
+        if (currentIndex === $('.wizard .content section').length - 1) {
+            $('.actions ul li').eq(1).hide();
+            $('.actions ul li').eq(2).show(); // Assuming there's a 'Finish' button
+        } else {
+            $('.actions ul li').eq(1).show();
+            $('.actions ul li').eq(2).hide(); // Assuming there's a 'Finish' button
+        }
+    }
+
+    // Initialize the wizard by showing the first step
+    showStep(0);
+
+    // Next and Previous button click handlers
+    $('.actions ul li a[href="#next"]').on('click', function(e) {
+        e.preventDefault();
+        var currentStep = $('.wizard .steps ul li.current').index();
+        if (currentStep < $('.wizard .content section').length - 1) {
+            showStep(currentStep + 1);
+        }
+    });
+
+    $('.actions ul li a[href="#previous"]').on('click', function(e) {
+        e.preventDefault();
+        var currentStep = $('.wizard .steps ul li.current').index();
+        if (currentStep > 0) {
+            showStep(currentStep - 1);
+        }
+    });
+
+    // Step title click handler to navigate directly to steps
+    $('.wizard .steps ul li a').on('click', function(e) {
+        e.preventDefault();
+        var selectedStepIndex = $(this).parent().index();
+        showStep(selectedStepIndex);
+    });
+});
+</script>
+
+<!-- Script to adjust selection boxes in the form-->>
+<script>
+    $(document).ready(function() {
+        // Function to initialize Select2 with specified settings
+        function initializeSelect2($elements) {
+            $elements.select2({
+                width: '100%',
+                tags: true, // Allows new options to be added
+                minimumInputLength: 1, // Only start searching when at least one character is typed
+                createTag: function(params) {
+                    // Ensure the term is not empty and normalize it for comparison
+                    var term = $.trim(params.term);
+                    if (term === '') {
+                        return null;
+                    }
+
+                    // Normalize input for comparison by making it lowercase and removing extra spaces
+                    var normalizedTerm = term.replace(/\s+/g, ' ').toLowerCase();
+
+                    // Check if the normalized term already exists in the options
+                    var exists = $('.select2-show-search option').filter(function() {
+                        return $.trim($(this).text()).toLowerCase() === normalizedTerm;
+                    }).length > 0;
+
+                    // Prevent creating a duplicate tag if the term exists
+                    if (exists) {
+                        return null;
+                    }
+
+                    // Allow creating a new tag if the term doesn't exist
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true // Custom property indicating this is a new tag
+                    };
+                }
+            }).on('select2:select', function(e) {
+                var data = e.params.data;
+                if (data.newTag) {
+                    console.log("New option added:", data.text);
+                    // Implement additional logic here for new tags
+                }
+            });
+        }
+
+        // Initialize Select2 for elements already present
+        initializeSelect2($('.select2-show-search'));
+
+        // Example function to dynamically add new Select2 elements and initialize them
+        function addAndInitializeNewSelect2Element() {
+            var $newSelect = $('<select class="form-control select2-show-search" multiple=""></select>');
+            // Append your new select element to the DOM as needed
+            // For demonstration, let's say it's appended to a specific div
+            $('#yourTargetDiv').append($newSelect);
+
+            // Initialize Select2 on the new element
+            initializeSelect2($newSelect);
+        }
+
+        // You can call addAndInitializeNewSelect2Element() whenever you need to dynamically add a new Select2 element
+    });
+</script>
+    
+    <!-- Script to add the fields as the user adds products in step 2 of the wizard-->>
+
+    <script>
+       $(document).ready(function() {
+    $('#product_selector .select2').select2({
+        width: '100%',
+        tags: true,
+        minimumInputLength: 1,
+        placeholder: "Choose Product",
+    }).on('select2:select select2:unselect', function(e) {
+        var selectedProducts = $(this).val() || []; // Get selected values, ensure array
+
+        // Container where additional form groups will be dynamically added or removed
+        var $sizeSelectorsContainer = $('#size-selectors-container');
+        $sizeSelectorsContainer.empty(); // Clear previous entries
+
+        selectedProducts.forEach(function(product) {
+            var productName = $('#product_selector .select2 option[value="' + product + '"]').text();
+            var elementHtml = '<hr><div class="form-group product-detail" data-product-name="' + productName + '">' + // Include the data-product-name attribute
+                              '<input type="hidden" class="product-name" value="' + productName + '">' + // Hidden input to store the product name
+                              '<label class="form-label">' + productName + ' Size Selection</label>' +
+                              '<select class="form-control select2-size" multiple="multiple" tabindex="-1" aria-hidden="true">' +
+                              '<option value="10mm">10mm</option>' +
+                              '<option value="20mm">20mm</option>' +
+                              '<option value="30mm">30mm</option>' +
+                              '</select></div>' +
+                              '<div class="form-group">' +
+                              '<label class="form-label">' + productName + ' Specs</label>' +
+                              '<textarea class="form-control product-specs" placeholder="Enter specs for ' + productName + '" rows="4" style="height: 100px;"></textarea>' +
+                              '</div>' +
+                              '<div class="form-group">' +
+                              '<label class="form-label">' + productName + ' Quantity</label>' +
+                              '<input type="text" class="form-control required" placeholder="Quantity (specify if MTS or KGS)" />' +
+                              '</div>' +
+                              '<div class="form-group">' +
+                              '<label class="form-label">' + productName + ' Packaging per inquiry</label>' +
+                              '<input type="text" class="form-control required" placeholder="Packaging details" />' +
+                              '</div>';
+
+            $sizeSelectorsContainer.append(elementHtml);
+        });
+
+        // Initialize Select2 on dynamically added size selectors
+        $('.select2-size').select2({
+            width: '100%',
+            placeholder: "Choose Size",
+        });
+    });
+});
+
+    </script>
+    
+        <!-- Script to add the fields as the user adds products in step 3 of the wizard-->>
+
+        <script>
+         $(document).ready(function() {
+                function initializeSelect2WithTags($elements) {
+                    $elements.select2({
+                        width: '100%',
+                        tags: true, // Allows new options to be added
+                        minimumInputLength: 1, // Only start searching when at least one character is typed
+                        placeholder: "Select suppliers", // Placeholder text
+                        createTag: function(params) {
+                            var term = $.trim(params.term);
+                            if (term === '') {
+                                return null;
+                            }
+                            var normalizedTerm = term.replace(/\s+/g, ' ').toLowerCase();
+                            var exists = $elements.find('option').filter(function() {
+                                return $(this).text().toLowerCase() === normalizedTerm;
+                            }).length > 0;
+                            if (exists) {
+                                return null;
+                            }
+                            return {
+                                id: term,
+                                text: term,
+                                newTag: true
+                            };
+                        }
+                    }).on('select2:select', function(e) {
+                        if (e.params.data.newTag) {
+                            console.log("New option added:", e.params.data.text);
+                        }
+                    });
+                }
+        
+                // Initialize for initial .select2-show-search elements
+                initializeSelect2WithTags($('.select2-show-search'));
+        
+                // Function to handle new selections and unselections
+                $('#product_selector .select2').on('select2:select select2:unselect', function(e) {
+                    var selectedProducts = $(this).val() || [];
+                    var $stepThreeSection = $('#wizard3-p-2');
+                    $stepThreeSection.empty();
+                    selectedProducts.forEach(function(product) {
+                        var productName = $('#product_selector .select2 option[value="' + product + '"]').text();
+                        var suppliersSelectHtml = '<div class="form-group" data-product-name="' + productName + '">' +
+                                                  '<label class="form-label">' + productName + ' Suppliers to be contacted</label>' +
+                                                  '<select class="form-control select2-suppliers" multiple="" tabindex="-1" aria-hidden="true"></select></div>';
+                        $stepThreeSection.append(suppliersSelectHtml);
+                    });
+        
+                    // Re-initialize Select2 for dynamically added .select2-suppliers selects
+                    initializeSelect2WithTags($('.select2-suppliers'));
+                });
+            });
+
+        </script>
+
+        <!-- Script to  send the ajax request !-->
+
+    <script>
+     $(document).ready(function() {
+    $('#submit-button-id').click(function(e) {  // Ensure this ID matches your submit button
+        e.preventDefault();
+
+        var data = {
+            'client': $('.select2-show-search option:selected').val(),
+            'inquiry_received_date': $('#inquiryReceivedDate').val(),
+            'inquiry_deadline_date': $('#inquiryDeadlineDate').val(),
+            'products_details': []
+        };
+
+        // Iterate over each product details section to collect product info and associated suppliers
+        $('#size-selectors-container').children('.product-detail').each(function() {
+            var $this = $(this);
+            var productName = $this.find('.product-name').val(); // Assuming productName is captured as before
+
+            var productDetails = {
+                'product_name': productName,
+                'size': $this.find('.select2-size').val() || [], // Collecting size details
+                'specs': $this.next().find('.product-specs').val(), // Assuming .next() correctly targets the specs textarea
+                'quantity': $this.next().next().find('input[type="text"]').val(), // Assuming .next().next() targets the quantity input
+                'packaging': $this.next().next().next().find('input[type="text"]').val(), // Assuming .next().next().next() targets the packaging input
+                'suppliers': [] // Preparing to collect associated suppliers
+            };
+
+            // Find the suppliers section that corresponds to this product
+            var suppliersSelection = $('#wizard3-p-2').find(`.form-group[data-product-name="${productName}"]`).find('.select2-suppliers').val();
+            if (suppliersSelection) {
+                productDetails.suppliers = suppliersSelection; // Add selected suppliers to this product's details
+            }
+
+            data.products_details.push(productDetails);
+        });
+
+        // Send AJAX request with product details and their corresponding suppliers
+        $.ajax({
+            type: "POST",
+            url: "/create_enquiry_ajax",  // Adjust URL as needed
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(response) {
+                console.log(response);
+                // Handle success
+            },
+            error: function(response) {
+                console.log(response);
+                // Handle error
+            }
+        });
+    });
+});
+
+    </script> 
+        
+        
+    
+</body>
+
+</html>
