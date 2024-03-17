@@ -147,3 +147,41 @@ def requests_offers_for_enquiry(request, enquiry_id):
         data.append(req_dict)
 
     return JsonResponse(data, safe=False)
+
+
+@csrf_exempt
+def update_offers(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            offers = data.get('offers', [])
+            for offer_data in offers:
+                offer_id = offer_data.get('id')
+                offer = Offer.objects.get(id=offer_id)
+
+                # Handle date conversion for validity
+                validity_str = offer_data.get('validity')
+                try:
+                    # Try parsing the date if it's not None or empty
+                    if validity_str:
+                        validity_date = datetime.strptime(validity_str, "%Y-%m-%d").date()
+                    else:
+                        validity_date = None  # Or keep the current value if desired
+                except ValueError:
+                    validity_date = None  # Invalid date format, set to None or keep current value
+                
+                # Update fields
+                offer.supplier_price = offer_data.get('supplier_price', offer.supplier_price)
+                offer.payment_terms = offer_data.get('payment_terms', offer.payment_terms)
+                offer.incoterms = offer_data.get('incoterms', offer.incoterms)
+                offer.specs = offer_data.get('specs', offer.specs)
+                offer.size = offer_data.get('size', offer.size)
+                offer.packaging = offer_data.get('packaging', offer.packaging)
+                offer.validity = validity_date  # Set the validity field with the parsed date or None
+                offer.notes = offer_data.get('notes', offer.notes)
+                offer.save()
+
+            return JsonResponse({'status': 'success', 'message': 'Offers updated successfully.'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
