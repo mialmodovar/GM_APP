@@ -216,6 +216,9 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">Enquiry Information</div>
+                        
+                            <span class="fe fe-edit"> </span>
+                        </button>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -292,40 +295,49 @@
                     <h3 class="card-title">FM 95 Offers</h3>
                 </div>
                 <div class="card-body">
+                    
+                    <div id="tables-container">
+                        <button id="bEdit" type="button" class="btn btn-sm btn-primary" style=""></button>
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Basic Edit Table</h3>
+                </div>
+                <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered border text-nowrap mb-0" id="basic-edit">
                             <thead>
                                 <tr>
-                                    <th>Supplier</th>
-                                    <th>Price</th>
-                                    <th>Payment Terms</th>
-                                    <th>Incoterm</th>
-                                    <th>Specs</th>
-                                    <th>Size</th>
-                                    <th>Packaging</th>
-                                    <th>Validity</th>
+                                    <th>First name</th>
+                                    <th>Last name</th>
+                                    <th>Position</th>
+                                    <th>Start date</th>
+                                    <th>Salary</th>
+                                    <th>E-mail</th>
                                 <th name="bstable-actions">Actions</th></tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr data-status="">
                                     <td>Bella</td>
                                     <td>Chloe</td>
                                     <td>System Developer</td>
                                     <td>2018/03/12</td>
                                     <td>$654,765</td>
-                                    <td>b.Chloe@datatables.net</td>
+                                    <td>b.Chloe@datatjnables.net</td>
                                 <td name="bstable-actions"><div class="btn-list">
-<button id="bEdit" type="button" class="btn btn-sm btn-primary">
+<button id="bEdit" type="button" class="btn btn-sm btn-primary" style="">
 <span class="fe fe-edit"> </span>
 </button>
-<button id="bDel" type="button" class="btn  btn-sm btn-danger">
+<button id="bDel" type="button" class="btn  btn-sm btn-danger" style="">
 <span class="fe fe-trash-2"> </span>
-</button>
-<button id="bAcep" type="button" class="btn  btn-sm btn-primary" style="display:none;">
-<span class="fe fe-check-circle"> </span>
-</button>
-<button id="bCanc" type="button" class="btn  btn-sm btn-danger" style="display:none;">
-<span class="fe fe-x-circle"> </span>
 </button>
 </div></td></tr>
                                 <tr>
@@ -433,56 +445,6 @@
 <span class="fe fe-x-circle"> </span>
 </button>
 </div></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">FM 95 Offer to customer</h3>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered border text-nowrap mb-0" id="basic-edit">
-                            <thead>
-                                <tr>
-                                    <th>First name</th>
-                                    <th>Last name</th>
-                                    <th>Position</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                    <th>E-mail</th>
-                                <th name="bstable-actions">Actions</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Bella</td>
-                                    <td>Chloe</td>
-                                    <td>System Developer</td>
-                                    <td>2018/03/12</td>
-                                    <td>$654,765</td>
-                                    <td>b.Chloe@datatables.net</td>
-                                <td name="bstable-actions"><div class="btn-list">
-<button id="bEdit" type="button" class="btn btn-sm btn-primary">
-<span class="fe fe-edit"> </span>
-</button>
-<button id="bDel" type="button" class="btn  btn-sm btn-danger">
-<span class="fe fe-trash-2"> </span>
-</button>
-<button id="bAcep" type="button" class="btn  btn-sm btn-primary" style="display:none;">
-<span class="fe fe-check-circle"> </span>
-</button>
-<button id="bCanc" type="button" class="btn  btn-sm btn-danger" style="display:none;">
-<span class="fe fe-x-circle"> </span>
-</button>
-</div></td></tr>
-                               
                             </tbody>
                         </table>
                     </div>
@@ -1081,8 +1043,11 @@
 <!-- FOOTER CLOSED -->
 </div>
 
+     
+
 <!-- BACK-TO-TOP -->
 <a href=" {% static '#top' %} " id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
    <!-- JQUERY JS -->
    <script src=" {% static '/assets/js/jquery.min.js' %} "></script>
 
@@ -1090,67 +1055,19 @@
    <script src=" {% static '/assets/plugins/bootstrap/js/popper.min.js' %} "></script>
    <script src=" {% static '/assets/plugins/bootstrap/js/bootstrap.min.js' %} "></script>
 
-   <!-- INPUT MASK JS-->
-   <script src=" {% static '/assets/plugins/input-mask/jquery.mask.min.js' %} "></script>
+   <!-- SPARKLINE JS-->
+   <script src=" {% static '/assets/js/jquery.sparkline.min.js' %} "></script>
+
+   <!-- Select2 js-->
+   <script src=" {% static '/assets/plugins/select2/select2.full.min.js' %} "></script>
 
    <!-- TypeHead js -->
    <script src=" {% static '/assets/plugins/bootstrap5-typehead/autocomplete.js' %} "></script>
    <script src=" {% static '/assets/js/typehead.js' %} "></script>
 
-   <!-- FILE UPLOADES JS -->
-   <script src=" {% static '/assets/plugins/fileuploads/js/fileupload.js' %} "></script>
-   <script src=" {% static '/assets/plugins/fileuploads/js/file-upload.js' %} "></script>
-
-   <!-- INTERNAL File-Uploads Js-->
-   <script src=" {% static '/assets/plugins/fancyuploder/jquery.ui.widget.js' %} "></script>
-   <script src=" {% static '/assets/plugins/fancyuploder/jquery.fileupload.js' %} "></script>
-   <script src=" {% static '/assets/plugins/fancyuploder/jquery.iframe-transport.js' %} "></script>
-   <script src=" {% static '/assets/plugins/fancyuploder/jquery.fancy-fileupload.js' %} "></script>
-   <script src=" {% static '/assets/plugins/fancyuploder/fancy-uploader.js' %} "></script>
-
-   <!-- SELECT2 JS -->
-   <script src=" {% static '/assets/plugins/select2/select2.full.min.js' %} "></script>
-   <script src=" {% static '/assets/js/select2.js' %} "></script>
-
-   <!-- INTERNAL Bootstrap-Datepicker js-->
-   <script src=" {% static '/assets/plugins/bootstrap-daterangepicker/daterangepicker.js' %} "></script>
-
-   <!-- BOOTSTRAP-DATERANGEPICKER JS -->
-   <script src=" {% static '/assets/plugins/bootstrap-daterangepicker/moment.min.js' %} "></script>
-
-   <!-- INTERNAL Bootstrap-Datepicker js-->
-   <script src=" {% static '/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js' %} "></script>
-
-   <!-- INTERNAL Sumoselect js-->
-   <script src=" {% static '/assets/plugins/sumoselect/jquery.sumoselect.js' %} "></script>
-
-   <!-- TIMEPICKER JS -->
-   <script src=" {% static '/assets/plugins/time-picker/jquery.timepicker.js' %} "></script>
-   <script src=" {% static '/assets/plugins/time-picker/toggles.min.js' %} "></script>
-
-   <!-- INTERNAL intlTelInput js-->
-   <script src=" {% static '/assets/plugins/intl-tel-input-master/intlTelInput.js' %} "></script>
-   <script src=" {% static '/assets/plugins/intl-tel-input-master/country-select.js' %} "></script>
-   <script src=" {% static '/assets/plugins/intl-tel-input-master/utils.js' %} "></script>
-
-   <!-- INTERNAL jquery transfer js-->
-   <script src=" {% static '/assets/plugins/jQuerytransfer/jquery.transfer.js' %} "></script>
-
-   <!-- INTERNAL multi js-->
-   <script src=" {% static '/assets/plugins/multi/multi.min.js' %} "></script>
-
-   <!-- DATEPICKER JS -->
-   <script src=" {% static '/assets/plugins/date-picker/date-picker.js' %} "></script>
-   <script src=" {% static '/assets/plugins/date-picker/jquery-ui.js' %} "></script>
-   <script src=" {% static '/assets/plugins/input-mask/jquery.maskedinput.js' %} "></script>
-
-   <!-- COLOR PICKER JS -->
-   <script src=" {% static '/assets/plugins/pickr-master/pickr.es5.min.js' %} "></script>
-   <script src=" {% static '/assets/js/picker.js' %} "></script>
-
-   <!-- MULTI SELECT JS-->
-   <script src=" {% static '/assets/plugins/multipleselect/multiple-select.js' %} "></script>
-   <script src=" {% static '/assets/plugins/multipleselect/multi-select.js' %} "></script>
+   <!-- INTERNAL Edit-Table JS -->
+   <script src=" {% static '/assets/plugins/edit-table/bst-edittable.js' %} "></script>
+   <script src=" {% static '/assets/plugins/edit-table/edit-table.js' %} "></script>
 
    <!-- Perfect SCROLLBAR JS-->
    <script src=" {% static '/assets/plugins/p-scroll/perfect-scrollbar.js' %} "></script>
@@ -1162,10 +1079,6 @@
 
    <!-- SIDEBAR JS -->
    <script src=" {% static '/assets/plugins/sidebar/sidebar.js' %} "></script>
-
-   <!-- FORMELEMENTS JS -->
-   <script src=" {% static '/assets/js/formelementadvnced.js' %} "></script>
-   <script src=" {% static '/assets/js/form-elements.js' %} "></script>
 
    <!-- Color Theme js -->
    <script src=" {% static '/assets/js/themeColors.js' %} "></script>
@@ -1182,6 +1095,184 @@
    <!-- Switcher js -->
    <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
 
+   <script>
+   $(document).ready(function() {
+    var enquiryId = '{{ enquiry.id }}'; // Dynamically set from Django template
+
+    $.ajax({
+        url: `/enquiry/${enquiryId}/requests_offers`, // Ensure this matches your actual URL pattern
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            console.log(data); // Confirmed to show correct data
+            data.forEach(function(request) {
+                // Assuming request has a product field or similar for the title
+                var cardTitle = request.product || "Request Offers"; // Adjust based on your data structure
+
+                var cardHtml = `<div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">${cardTitle}</h3>
+                                        <div class="card-options">
+                                            <button type="button" class="btn btn-sm btn-primary btn-edit-all">
+                            <span class="fe fe-edit"></span> Edit All
+                        </button>
+                        <button type="button" class="btn btn-sm btn-success btn-save-all" style="display:none;">
+                            <span class="fe fe-save"></span> Save All
+                        </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered border text-nowrap mb-0">
+                            <thead>
+                                <tr>
+                                                        <th>Supplier</th>
+                                                        <th>Price</th>
+                                                        <th>Payment Terms</th>
+                                                        <th>Incoterm</th>
+                                                        <th>Specs</th>
+                                                        <th>Size</th>
+                                                        <th>Packaging</th>
+                                                        <th>Validity</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>`;
+
+                request.offers.forEach(function(offer) {
+                    cardHtml += `<tr data-offer-id="${offer.id}">
+                                    <td>${offer.supplier || '-'}</td>
+                                    <td>${offer.supplier_price || '-'}</td>
+                                    <td>${offer.payment_terms || '-'}</td>
+                                    <td>${offer.incoterms || '-'}</td>
+                                    <td>${offer.specs || '-'}</td>
+                                    <td>${offer.size || '-'}</td>
+                                    <td>${offer.packaging || '-'}</td>
+                                    <td>${offer.validity || '-'}</td>
+                                    <td name="bstable-actions"><div class="btn-list">
+<button id="bEdit" type="button" class="btn btn-sm btn-primary" style="">
+<span class="fe fe-edit"> </span>
+</button>
+<button id="bDel" type="button" class="btn  btn-sm btn-danger" style="">
+<span class="fe fe-trash-2"> </span>
+</button>
+</div></td>
+                                  </tr>`;
+                });
+
+                cardHtml += `</tbody></table></div></div></div>`;
+
+                // Append the card to a container
+                $('#tables-container').append(cardHtml);
+            });
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('Error fetching data: ', textStatus, errorThrown);
+        }
+    });
+});
+
+
+    </script>
+<script>
+$(document).ready(function() {
+    // Make all fields editable
+    $(document).on('click', '.btn-edit-all', function() {
+        var $card = $(this).closest('.card');
+        $card.find('td').not(':last').attr('contenteditable', 'true'); // Make cells editable
+        $card.find('.btn-save-all').show(); // Show the save button
+        $(this).hide(); // Hide the edit button
+    });
+
+    // Handle the save action
+    $(document).on('click', '.btn-save-all', function() {
+        var $card = $(this).closest('.card');
+        var offersToUpdate = []; // Array to hold data for all offers in this card
+
+        $card.find('tbody tr').each(function() {
+            var $row = $(this);
+            var offerId = $row.data('offer-id');
+            // Collect data for this offer
+            var offerData = {
+                id: offerId,
+                supplier: $row.find('td:eq(0)').text(),
+                supplier_price: $row.find('td:eq(1)').text(),
+                payment_terms: $row.find('td:eq(2)').text(),
+                incoterms: $row.find('td:eq(3)').text(),
+                specs: $row.find('td:eq(4)').text(),
+                size: $row.find('td:eq(5)').text(),
+                packaging: $row.find('td:eq(6)').text(),
+                validity: $row.find('td:eq(7)').text(),
+            };
+            offersToUpdate.push(offerData);
+        });
+
+        // Send AJAX request to save all updated offers
+        // Example AJAX setup - adjust URL, data handling, and response handling as needed
+        $.ajax({
+            url: '/path/to/your/save/endpoint',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({offers: offersToUpdate}),
+            success: function(response) {
+                // Handle success - for example, toggle editable state off and update the UI
+                $card.find('td').attr('contenteditable', 'false');
+                $card.find('.btn-edit-all').show(); // Show the edit button again
+                $card.find('.btn-save-all').hide(); // Hide the save button
+                // Possibly update the UI to reflect that the save was successful
+            },
+            error: function(error) {
+                // Handle errors - for example, alert the user that the save operation failed
+                console.log(error);
+            }
+        });
+    });
+});
+
+</script>
+    <script>
+$(document).on('click', '.btn-save', function() {
+    console.log("I've passed")
+    var $row = $(this).closest('tr'); // Find the row of the clicked button
+    var offerId = $row.data('offer-id'); // Assuming each row has a data-offer-id attribute
+    
+    // Collect data from the row's cells
+    var updatedData = {
+        supplier: $row.find('td:eq(0)').text(),
+        supplier_price: $row.find('td:eq(1)').text(),
+        payment_terms: $row.find('td:eq(2)').text(),
+        incoterms: $row.find('td:eq(3)').text(),
+        specs: $row.find('td:eq(4)').text(),
+        size: $row.find('td:eq(5)').text(),
+        packaging: $row.find('td:eq(6)').text(),
+        validity: $row.find('td:eq(7)').text(),
+        // Add any other fields you need to update
+    };
+
+    // Send AJAX request to save the updated data
+    $.ajax({
+        url: `/save_offer/${offerId}`, // Adjust the URL to your actual endpoint for saving offer updates
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(updatedData),
+        dataType: 'json',
+        success: function(response) {
+            console.log('Update successful:', response);
+            // Optionally, toggle the editable state off and update the UI accordingly
+            $row.find('td').attr('contenteditable', 'false');
+            $row.find('.btn-edit').show(); // Show the edit button again
+            $row.find('.btn-save').hide(); // Hide the save button
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('Error saving data:', textStatus, errorThrown);
+            // Handle errors, maybe alert the user that the save operation failed
+        }
+    });
+});
+
+
+    </script>
+    
 </body>
 
 </html>
