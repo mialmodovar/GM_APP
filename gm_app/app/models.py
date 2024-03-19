@@ -52,12 +52,20 @@ class Offer(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True)
     supplier_price = models.TextField(blank=True, null=True)
     incoterms = models.TextField(blank=True, null=True)
-    specs = models.TextField(blank=True, null=True)
+    specs = models.TextField(blank=True, null=True)  
     size = models.TextField(blank=True, null=True)
     packaging = models.TextField(blank=True, null=True)
     payment_terms = models.TextField(blank=True, null=True)
     validity = models.DateField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
 
+class Offer_Client(models.Model):
+    request = models.ForeignKey('Request', related_name='offers_client', on_delete=models.SET_NULL, null=True, blank=True)
+    supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True)
+    price_offered = models.TextField(blank=True, null=True)
+    payment_term_offered = models.TextField(blank=True, null=True)
+    validity_offered = models.TextField(blank=True, null=True)
+    customer_feedback = models.TextField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
 
 

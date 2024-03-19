@@ -108,6 +108,7 @@ def requests_offers_for_enquiry(request, enquiry_id):
         
         req_dict = {
             'product': product_name,
+            'id': req.id,
             'specs': req.specs,
             'size': req.size,
             'quantity': req.quantity,
@@ -185,6 +186,30 @@ def update_offers(request):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
+
+@csrf_exempt
+def update_requests(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body).get('requests', [])
+            for req_data in data:
+                req = Request.objects.get(id=req_data['id'])
+                # Update request fields
+                req.quantity = req_data.get('quantity', req.quantity)
+                req.specs = req_data.get('specs', req.specs)
+                req.size = req_data.get('size', req.size)
+                req.payment_terms_requested = req_data.get('payment_terms_requested', req.payment_terms_requested)
+                req.incoterms = req_data.get('incoterms', req.incoterms)
+                req.discharge_port = req_data.get('discharge_port', req.discharge_port)
+                req.packaging = req_data.get('packaging', req.packaging)
+                req.notes = req_data.get('notes', req.notes)
+                req.save()
+            return JsonResponse({'status': 'success', 'message': 'Requests updated successfully.'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
+
 
 def enquiry_list(request):
     return render(request, 'app/enquiry_list.html')

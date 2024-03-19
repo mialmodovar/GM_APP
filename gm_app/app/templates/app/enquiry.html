@@ -272,126 +272,8 @@
                                     <input class="form-control" id="datepicker-year" placeholder="Year Range" type="text">
                                 </div>
                             </div>
-                            
+                            <div id="requests-table"></div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Offers Received from Supplier</h3>
-                                    </div>
-                                    <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered border text-nowrap mb-0" id="basic-edit">
-                                    <thead>
-                                        <tr>
-                                            <th>First name</th>
-                                            <th>Last name</th>
-                                            <th>Position</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                            <th>E-mail</th>
-                                        <th name="bstable-actions">Actions</th></tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Bella</td>
-                                            <td>Chloe</td>
-                                            <td>System Developer</td>
-                                            <td>2018/03/12</td>
-                                            <td>$654,765</td>
-                                            <td>b.Chloe@datatables.net</td>
-                                        <td name="bstable-actions"><div class="btn-list">
-        <button id="bEdit" type="button" class="btn btn-sm btn-primary">
-        <span class="fe fe-edit"> </span>
-        </button>
-        <button id="bDel" type="button" class="btn  btn-sm btn-danger">
-        <span class="fe fe-trash-2"> </span>
-        </button>
-        <button id="bAcep" type="button" class="btn  btn-sm btn-primary" style="display:none;">
-        <span class="fe fe-check-circle"> </span>
-        </button>
-        <button id="bCanc" type="button" class="btn  btn-sm btn-danger" style="display:none;">
-        <span class="fe fe-x-circle"> </span>
-        </button>
-        </div></td></tr>
-                                        <tr>
-                                            <td>Donna</td>
-                                            <td>Bond</td>
-                                            <td>Account Manager</td>
-                                            <td>2012/02/21</td>
-                                            <td>$543,654</td>
-                                            <td>d.bond@datatables.net</td>
-                                        <td name="bstable-actions"><div class="btn-list">
-        <button id="bEdit" type="button" class="btn btn-sm btn-primary">
-        <span class="fe fe-edit"> </span>
-        </button>
-        <button id="bDel" type="button" class="btn  btn-sm btn-danger">
-        <span class="fe fe-trash-2"> </span>
-        </button>
-        <button id="bAcep" type="button" class="btn  btn-sm btn-primary" style="display:none;">
-        <span class="fe fe-check-circle"> </span>
-        </button>
-        <button id="bCanc" type="button" class="btn  btn-sm btn-danger" style="display:none;">
-        <span class="fe fe-x-circle"> </span>
-        </button>
-        </div></td></tr>
-                                        <tr>
-                                            <td>Harry</td>
-                                            <td>Carr</td>
-                                            <td>Technical Manager</td>
-                                            <td>2011/02/87</td>
-                                            <td>$86,000</td>
-                                            <td>h.carr@datatables.net</td>
-                                        <td name="bstable-actions"><div class="btn-list">
-        <button id="bEdit" type="button" class="btn btn-sm btn-primary">
-        <span class="fe fe-edit"> </span>
-        </button>
-        <button id="bDel" type="button" class="btn  btn-sm btn-danger">
-        <span class="fe fe-trash-2"> </span>
-        </button>
-        <button id="bAcep" type="button" class="btn  btn-sm btn-primary" style="display:none;">
-        <span class="fe fe-check-circle"> </span>
-        </button>
-        <button id="bCanc" type="button" class="btn  btn-sm btn-danger" style="display:none;">
-        <span class="fe fe-x-circle"> </span>
-        </button>
-        </div></td></tr>
-                                        <tr>
-                                            <td>Lucas</td>
-                                            <td>Dyer</td>
-                                            <td>Javascript Developer</td>
-                                            <td>2014/08/23</td>
-                                            <td>$456,123</td>
-                                            <td>l.dyer@datatables.net</td>
-                                        <td name="bstable-actions"><div class="btn-list">
-        <button id="bEdit" type="button" class="btn btn-sm btn-primary">
-        <span class="fe fe-edit"> </span>
-        </button>
-        <button id="bDel" type="button" class="btn  btn-sm btn-danger">
-        <span class="fe fe-trash-2"> </span>
-        </button>
-        <button id="bAcep" type="button" class="btn  btn-sm btn-primary" style="display:none;">
-        <span class="fe fe-check-circle"> </span>
-        </button>
-        <button id="bCanc" type="button" class="btn  btn-sm btn-danger" style="display:none;">
-        <span class="fe fe-x-circle"> </span>
-        </button>
-        </div></td></tr>
-                                      
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-
-
-
-
-                        </div>
-
-                    </div>
-                </div> 
-            </div>
                           
                         </div>
                     </div>
@@ -1216,9 +1098,9 @@
    <!-- Switcher js -->
    <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
 
-    
+
    <script>
-   $(document).ready(function() {
+$(document).ready(function() {
     var enquiryId = '{{ enquiry.id }}'; // Dynamically set from Django template
 
     $.ajax({
@@ -1227,27 +1109,78 @@
         dataType: 'json',
         success: function(data) {
             console.log(data); // Confirmed to show correct data
-            data.forEach(function(request) {
-                // Assuming request has a product field or similar for the title
-                var cardTitle = request.product || "Request Offers"; // Adjust based on your data structure
 
+            // Since cardTitle is used within each request's offers card, it should not be defined in the requests table HTML
+            var requestsTableHtml = `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Requests Overview</h3>
+                    <div class="card-options">
+                                            <button type="button" class="btn btn-sm btn-primary btn-edit-requests">
+                                                <span class="fe fe-edit"></span> Edit All
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-success btn-save-requests" style="display:none;">
+                                                <span class="fe fe-save"></span> Save All
+                                            </button>
+                                        </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered border text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Specs</th>
+                                    <th>Size</th>
+                                    <th>Payment Terms Requested</th>
+                                    <th>Incoterms</th>
+                                    <th>Discharge Port</th>
+                                    <th>Packaging</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+
+            data.forEach(function(request) {
+                var productName = request.product || "Not Specified";
+                requestsTableHtml += `<tr data-request-id="${request.id}"">
+                    <td>${productName}</td>
+                    <td>${request.quantity || '-'}</td>
+                    <td>${request.specs || '-'}</td>
+                    <td>${request.size || '-'}</td>
+                    <td>${request.payment_terms_requested || '-'}</td>
+                    <td>${request.incoterms || '-'}</td>
+                    <td>${request.discharge_port || '-'}</td>
+                    <td>${request.packaging || '-'}</td>
+                    <td>${request.notes || '-'}</td>
+                </tr>`;
+            });
+
+            requestsTableHtml += `</tbody></table></div></div></div>`;
+            // Append the requests overview table to the "requests-table" div
+            $('#requests-table').html(requestsTableHtml);
+
+            // Generate and append cards for each request's offers
+            data.forEach(function(request) {
+                var cardTitle = request.product || "Request Offers";
                 var cardHtml = `<div class="card">
                                     <div class="card-header">
                                         <h3 class="card-title">${cardTitle}</h3>
                                         <div class="card-options">
                                             <button type="button" class="btn btn-sm btn-primary btn-edit-all">
-                            <span class="fe fe-edit"></span> Edit All
-                        </button>
-                        <button type="button" class="btn btn-sm btn-success btn-save-all" style="display:none;">
-                            <span class="fe fe-save"></span> Save All
-                        </button>
+                                                <span class="fe fe-edit"></span> Edit All
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-success btn-save-all" style="display:none;">
+                                                <span class="fe fe-save"></span> Save All
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered border text-nowrap mb-0">
-                            <thead>
-                                <tr>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered border text-nowrap mb-0">
+                                                <thead>
+                                                    <tr>
                                                         <th>Supplier</th>
                                                         <th>Price</th>
                                                         <th>Payment Terms</th>
@@ -1271,20 +1204,21 @@
                                     <td>${offer.size || '-'}</td>
                                     <td>${offer.packaging || '-'}</td>
                                     <td>${offer.validity || '-'}</td>
-                                    <td name="bstable-actions"><div class="btn-list">
-<button id="bEdit" type="button" class="btn btn-sm btn-primary" style="">
-<span class="fe fe-edit"> </span>
-</button>
-<button id="bDel" type="button" class="btn  btn-sm btn-danger" style="">
-<span class="fe fe-trash-2"> </span>
-</button>
-</div></td>
+                                    <td name="bstable-actions">
+                                        <div class="btn-list">
+                                            <button id="bEdit" type="button" class="btn btn-sm btn-primary">
+                                                <span class="fe fe-edit"> </span> Edit
+                                            </button>
+                                            <button id="bDel" type="button" class="btn btn-sm btn-danger">
+                                                <span class="fe fe-trash-2"> </span> Delete
+                                            </button>
+                                        </div>
+                                    </td>
                                   </tr>`;
                 });
 
                 cardHtml += `</tbody></table></div></div></div>`;
-
-                // Append the card to a container
+                // Append the card to the "tables-container" div
                 $('#tables-container').append(cardHtml);
             });
         },
@@ -1293,7 +1227,6 @@
         }
     });
 });
-
 
     </script>
     <script>
@@ -1352,6 +1285,58 @@ $(document).ready(function() {
 });
 
 
+
+    </script>
+
+    <script>
+
+$(document).ready(function() {
+    // Make request fields editable
+    $(document).on('click', '.btn-edit-requests', function() {
+        $('#requests-table').find('td').attr('contenteditable', 'true');
+        $('.btn-save-requests').show(); // Show the save button for requests
+        $(this).hide(); // Hide the edit button for requests
+    });
+
+    // Handle the save action for requests
+    $(document).on('click', '.btn-save-requests', function() {
+        var requestsToUpdate = [];
+        $('#requests-table tbody tr').each(function() {
+            var $row = $(this);
+            // Assuming each row has a data-request-id attribute
+            var requestId = $row.data('request-id');
+            var requestData = {
+                id: requestId,
+                // Collect data for this request, adjust selectors as needed
+                quantity: $row.find('td:eq(1)').text(),
+                specs: $row.find('td:eq(2)').text(),
+                size: $row.find('td:eq(3)').text(),
+                payment_terms_requested: $row.find('td:eq(4)').text(),
+                incoterms: $row.find('td:eq(5)').text(),
+                discharge_port: $row.find('td:eq(6)').text(),
+                packaging: $row.find('td:eq(7)').text(),
+                notes: $row.find('td:eq(8)').text(),
+            };
+            requestsToUpdate.push(requestData);
+        });
+
+        // Send AJAX request to save all updated requests
+        $.ajax({
+            url: '/update_requests/',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({requests: requestsToUpdate}),
+            success: function(response) {
+                $('#requests-table').find('td').attr('contenteditable', 'false');
+                $('.btn-edit-requests').show(); // Show the edit button for requests again
+                $('.btn-save-requests').hide(); // Hide the save button for requests
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+});
 
     </script>
     
