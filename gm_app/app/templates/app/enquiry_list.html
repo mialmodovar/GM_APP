@@ -10,7 +10,16 @@
     <meta name="description" content="Sash – Bootstrap 5  Admin & Dashboard Template">
     <meta name="author" content="Spruko Technologies Private Limited">
     <meta name="keywords" content="admin,admin dashboard,admin panel,admin template,bootstrap,clean,dashboard,flat,jquery,modern,responsive,premium admin templates,responsive admin,ui,ui kit.">
+    <style>
+        table#basic-datatable tbody tr {
+            cursor: pointer;
+        }
 
+        table#basic-datatable tbody tr:hover {
+            background-color:rgb( 28,103,147 );
+            color: #ffffff;
+        }
+    </style>
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href=" {% static '/assets/images/brand/favicon.ico' %} ">
 
@@ -210,9 +219,51 @@
                     </ol>
                 </div>
             </div>
-            <!-- PAGE-HEADER END -->
+            <!-- PAGE-HEADER END VARUN's CODE STARTS HERE -->
             </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Ongoing Enquiries</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div id="basic-datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="basic-datatable_length"><label>Show <select name="basic-datatable_length" aria-controls="basic-datatable" class="form-select form-select-sm select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 60.8px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-basic-datatable_length-x6-container"><span class="select2-selection__rendered" id="select2-basic-datatable_length-x6-container" title="10">10</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="basic-datatable_filter" class="dataTables_filter"><label><input type="search" class="form-control form-control" placeholder="Search..." aria-controls="basic-datatable"></label></div></div></div><div class="row"><div class="col-sm-12">
+                            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer" id="basic-datatable" role="grid" aria-describedby="basic-datatable_info" id="basic-datatable">
+                            <thead>
+                                <tr role="row"><th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 120.113px;">Manager</th>
+                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 111.887px;">Customer</th>
+                                    <th class="wd-20p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 217.938px;">Enquiry Receive Date</th>
+                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 116.588px;">Products</th>
+                                    <th class="wd-10p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 87.3375px;">Quantity</th></tr>
+                            </thead>
+                            <tbody>
+                                {% for enquiry in Enquiries %}
+                                <tr>
+                                    <td>{{ enquiry.manager.name }}</td>
+                                    <td>{{ enquiry.client.name }}</td>
+                                    <td>
+                                        {% for request in enquiry.enquiry_requests.all %}
+                                            {{ request.product.name }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{ enquiry.received_date }}</td>
+                                    <td>{{ enquiry.get_status_display }}</td>
+                                    <td>
+                                        <a href="{% url 'app:enquiry_detail' enquiry.id %}">View Details</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div></div>
+                    <div class="row"><div class="col-sm-12 col-md-12"><div class="dataTables_info" id="basic-datatable_info" role="status" aria-live="polite">Showing 1 to 10 of 50 entries</div></div><div class="col-sm-12 col-md-12"><div class="dataTables_paginate paging_simple_numbers" id="basic-datatable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="basic-datatable_previous"><a href="#" aria-controls="basic-datatable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="basic-datatable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item next" id="basic-datatable_next"><a href="#" aria-controls="basic-datatable" data-dt-idx="6" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                    </div>
+                </div>
             </div>
+        </div>
+    </div>
 </div>
 
 <!-- Sidebar-right -->
@@ -852,4 +903,16 @@
 
    <!-- Switcher js -->
    <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
+
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rows = document.querySelectorAll('table#basic-datatable tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('click', function() {
+                const enquiryId = this.getAttribute('data-enquiry-id');
+                window.location.href = `/enquiry/${enquiryId}`;
+            });
+        });
+    });
+    </script>
 
