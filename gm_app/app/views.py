@@ -25,6 +25,7 @@ from django.core import serializers
 import json
 from datetime import *
 from django.forms.models import model_to_dict
+from django.db.models import Prefetch
 
 load_dotenv()  # Load the .env file
 
@@ -186,5 +187,17 @@ def update_offers(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
 
+#def enquiry_list(request):
+    #return render(request, 'app/enquiry_list.html')
+
+#VARUN's CODE Below: 
 def enquiry_list(request):
-    return render(request, 'app/enquiry_list.html')
+    # Fetch enquiries with prefetch_related for optimized queries on related objects
+    enquiries = Enquiry.objects.prefetch_related(
+        Prefetch('enquiry_requests', queryset=Request.objects.select_related('product'))
+    ).select_related('manager', 'client').all()
+
+    context = {
+        'enquiries': enquiries
+    }
+    return render(request, 'app/enquiry_list.html', context)
