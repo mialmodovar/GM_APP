@@ -41,6 +41,15 @@
     <!-- INTERNAL Switcher css -->
     <link href=" {% static '/assets/switcher/css/switcher.css' %} " rel="stylesheet">
     <link href=" {% static '/assets/switcher/demo.css' %} " rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+
+
 </head>
 
 <body class="app sidebar-mini ltr light-mode">
@@ -183,7 +192,7 @@
                                         class="side-menu__label">Enquiries</span></a>
                             </li>
                             <li class="slide">
-                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href="index"><i
                                         class="side-menu__icon fe fe-pie-chart"></i><span
                                         class="side-menu__label">Create new Enquiry</span></a>
                             </li>
@@ -229,32 +238,30 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <div id="basic-datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="basic-datatable_length"><label>Show <select name="basic-datatable_length" aria-controls="basic-datatable" class="form-select form-select-sm select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 60.8px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-basic-datatable_length-x6-container"><span class="select2-selection__rendered" id="select2-basic-datatable_length-x6-container" title="10">10</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="basic-datatable_filter" class="dataTables_filter"><label><input type="search" class="form-control form-control" placeholder="Search..." aria-controls="basic-datatable"></label></div></div></div><div class="row"><div class="col-sm-12">
+                        <div id="basic-datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                            <div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="basic-datatable_length">
+                                <label>Show 
+                                    <select name="basic-datatable_length" aria-controls="basic-datatable" class="form-select form-select-sm">
+                                      <option value="10">5</option> 
+                                      <option value="10">10</option>
+                                      <option value="25">25</option>
+                                      <option value="50">50</option>
+                                      <option value="100">100</option>
+                                    </select> entries
+                                  </label>
+                            </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6"><div id="basic-datatable_filter" class="dataTables_filter"><label><input type="search" id="tableSearch" class="form-control" placeholder="Search..." aria-controls="basic-datatable"></label></div></div></div><div class="row"><div class="col-sm-12">
                             <table class="table table-bordered text-nowrap border-bottom dataTable no-footer" id="basic-datatable" role="grid" aria-describedby="basic-datatable_info" id="basic-datatable">
                             <thead>
-                                <tr role="row"><th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 120.113px;">Manager</th>
+                                <tr role="row"><th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 120.113px;">Status</th>
+                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 111.887px;">Manager</th>
                                     <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 111.887px;">Customer</th>
-                                    <th class="wd-20p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 217.938px;">Enquiry Receive Date</th>
-                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 116.588px;">Products</th>
-                                    <th class="wd-10p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 87.3375px;">Quantity</th></tr>
+                                    <th class="wd-20p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 217.938px;">Products</th>
+                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 116.588px;">Enquiry Receive Date</th>
+                                    <th class="wd-10p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 87.3375px;">Quantity (MT)</th></tr>
                             </thead>
                             <tbody>
-                                {% for enquiry in Enquiries %}
-                                <tr>
-                                    <td>{{ enquiry.manager.name }}</td>
-                                    <td>{{ enquiry.client.name }}</td>
-                                    <td>
-                                        {% for request in enquiry.enquiry_requests.all %}
-                                            {{ request.product.name }}{% if not forloop.last %}, {% endif %}
-                                        {% endfor %}
-                                    </td>
-                                    <td>{{ enquiry.received_date }}</td>
-                                    <td>{{ enquiry.get_status_display }}</td>
-                                    <td>
-                                        <a href="{% url 'app:enquiry_detail' enquiry.id %}">View Details</a>
-                                    </td>
-                                </tr>
-                                {% endfor %}
                             </tbody>
                         </table>
                     </div></div>
@@ -904,7 +911,8 @@
    <!-- Switcher js -->
    <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
 
-   <script>
+   <!--code for python table>
+   <!--<script>
     document.addEventListener('DOMContentLoaded', function() {
         const rows = document.querySelectorAll('table#basic-datatable tbody tr');
         rows.forEach(row => {
@@ -914,5 +922,85 @@
             });
         });
     });
+    </script>-->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function fetchEnquiries() {
+                fetch('/api/enquiries/')
+                    .then(response => response.json())
+                    .then(data => {
+                        populateTable(data); // Assuming 'data' is the array of enquiries
+                    })
+                    .catch(error => console.error('Error fetching enquiries:', error));
+            }
+        
+            function populateTable(enquiries) {
+            const tableBody = document.querySelector('#basic-datatable tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            enquiries.forEach(enquiry => {
+            const row = tableBody.insertRow();
+            row.setAttribute('data-enquiry-id', enquiry.id);
+
+        // Processed product names
+            const productsText = enquiry.enquiry_requests.map(request => {
+            return request.product_name ? request.product_name : 'Unknown Product';
+            }).join(', ');
+
+        const cellsData = [
+            enquiry.status || 'N/A',
+            enquiry.manager ? enquiry.manager.name : 'N/A',
+            enquiry.client ? enquiry.client.name : 'N/A',
+            productsText, // Ensure this correctly inserts into the table cell
+            enquiry.received_date || 'N/A',
+            enquiry.enquiry_requests.map(request => request.quantity).join(', ')
+        ];
+
+        cellsData.forEach(text => {
+            const cell = row.insertCell();
+            cell.textContent = text;
+        });
+
+        row.addEventListener('click', function() {
+            window.location.href = `/enquiry/${enquiry.id}`;
+        });
+    });
+}
+
+fetchEnquiries();
+        });
+        </script>
+        
+
+<script>
+    $(document).ready(function(){
+        $("#tableSearch").on("keyup", function() {
+        var value = $(this).val().toLowerCase().replace(/\s+/g, '');
+        $("#basic-datatable tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().replace(/\s+/g, '').indexOf(value) > -1)
+        });
+        });
+    });
     </script>
 
+<script>
+    $(document).ready(function() {
+        // Initialize the DataTable
+        var table = $('#basic-datatable').DataTable({
+            "lengthChange": true,
+            "pageLength": 5
+        });
+    
+        // Initialize the Select2 plugin
+        $('select[name="basic-datatable_length"]').select2().on('change.select2', function() {
+            // When the Select2 length change occurs, update DataTables page length
+            var selectedLength = $(this).val();
+            table.page.len(selectedLength).draw();
+        });
+    
+        // Ensure initial synchronization of Select2 with DataTables
+        $('select[name="basic-datatable_length"]').val('10').trigger('change.select2');
+    });
+    </script>
+    

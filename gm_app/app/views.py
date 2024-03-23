@@ -26,6 +26,11 @@ import json
 from datetime import *
 from django.forms.models import model_to_dict
 from django.db.models import Prefetch
+from django.db.models import Prefetch
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Enquiry
+from django.http import JsonResponse
 
 load_dotenv()  # Load the .env file
 
@@ -256,3 +261,45 @@ def enquiry_list(request):
         'enquiries': enquiries
     }
     return render(request, 'app/enquiry_list.html', context)
+
+from django.http import JsonResponse
+from .models import Enquiry, Request
+
+def get_enquiries(request):
+    enquiries_list = []
+    enquiries = Enquiry.objects.prefetch_related('enquiry_requests__product').select_related('client', 'manager').all()
+    
+    for enquiry in enquiries:
+        enquiry_dict = {
+            'id': enquiry.id,
+            'status': enquiry.status,
+            'manager': enquiry.manager.name if enquiry.manager else None,
+            'client': {
+                'name': enquiry.client.name,
+                'country': enquiry.client.country if enquiry.client.country else 'Unknown Country',
+                'person': enquiry.client.person if enquiry.client.person else 'Unknown Person',
+            } if enquiry.client else 'Unknown Client',
+            'received_date': enquiry.received_date.strftime('%Y-%m-%d') if enquiry.received_date else 'Unknown Date',
+            'enquiry_requests': [],
+        }
+
+        for req in enquiry.enquiry_requests.all():
+            # Fetching the product name directly from the Product related to the Request
+            product_name = 'Unknown Product'
+            if req.product_id and Product.objects.filter(id=req.product_id).exists():
+                product_name = Product.objects.get(id=req.product_id).name
+
+            request_dict = {
+                'id': req.id,
+                'quantity': req.quantity,
+                'specs': req.specs,
+                'product_name': product_name,  # Ensure you get the product name correctly
+                # Add other relevant fields from Request as needed
+            }
+            
+            enquiry_dict['enquiry_requests'].append(request_dict)
+
+        enquiries_list.append(enquiry_dict)
+    
+    return JsonResponse(enquiries_list, safe=False)
+
