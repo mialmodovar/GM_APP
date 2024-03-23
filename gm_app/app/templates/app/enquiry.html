@@ -285,19 +285,7 @@
  
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Offers Received from Supplier</h3>
-                </div>
-                <div class="card-body">
-                    
-                    <div id="tables-container">
-                        
-                    </div>
-
-                    
-                </div>
-            </div>
+            <div id="tables-container" class="mt-4"></div>
         </div>
     </div>
 
@@ -1098,31 +1086,170 @@
    <!-- Switcher js -->
    <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
 
-
+<!-- Function to build requests/offers table -->
    <script>
 $(document).ready(function() {
-    var enquiryId = '{{ enquiry.id }}'; // Dynamically set from Django template
+    var enquiryId = '{{ enquiry.id }}'; // Ensure enquiryId is dynamically set
 
     $.ajax({
-        url: `/enquiry/${enquiryId}/requests_offers`, // Ensure this matches your actual URL pattern
+        url: `/enquiry/${enquiryId}/requests_offers`, // Adjust URL as needed
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-            console.log(data); // Confirmed to show correct data
 
-            // Since cardTitle is used within each request's offers card, it should not be defined in the requests table HTML
-            var requestsTableHtml = `
+            var requestsTableHtml = generateRequestsOverviewTable(data);
+            // Append the requests overview table to the "requests-table" div
+            $('#requests-table').html(requestsTableHtml);
+
+            data.forEach(function(request) {
+                // Dynamically set titles based on request data
+                var requestCardTitle = request.product || "Not Specified";
+
+                // Initialize the HTML for the parent card
+                var parentCardHtml = `
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Details for ${requestCardTitle}</h3>
+                    </div>
+                    <div class="card-body">`;
+
+                // Generate HTML for supplier offers card
+                var supplierOffersCardHtml = generateSupplierOffersCardHtml(request, `${requestCardTitle} - Supplier Offers`);
+
+                // Generate HTML for offers sent to clients card
+                var clientOffersCardHtml = generateClientOffersCardHtml(request, `${requestCardTitle} - Offers Sent to Clients`);
+
+                // Close the parent card HTML
+                parentCardHtml += supplierOffersCardHtml + clientOffersCardHtml + `</div></div>`;
+
+                // Append the combined parent card to the tables-container div
+                $('#tables-container').append(parentCardHtml);
+            });
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error fetching data:', textStatus, errorThrown);
+        }
+    });
+
+    // Function to generate HTML for supplier offers card
+    function generateSupplierOffersCardHtml(request, cardTitle) {
+        var cardHtml = `<div class="card">
+            <div class="card-header">
+                    <h3 class="card-title">Offers received overview</h3>
+                    <div class="card-options">
+                                            <button type="button" class="btn btn-sm btn-primary btn-edit-offers" data-target="offers-${request.id}">
+                                                <span class="fe fe-edit edit-offer"></span> Edit All
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-success btn-save-offers" style="display:none;" data-target="offers-${request.id}">
+                                                <span class="fe fe-save save-offer"></span> Save All
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-success btn-add-offer" style="display:none;" data-target="offers-${request.id}">
+                                                <span class="fe fe-plus-circle"></span> Add new offer
+                                            </button>
+                                        </div>
+                </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="offers-${request.id}" class="table table-bordered border text-nowrap mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Supplier</th>
+                                                <th>Price</th>
+                                                <th>Payment Terms</th>
+                                                <th>Incoterm</th>
+                                                <th>Specs</th>
+                                                <th>Size</th>
+                                                <th>Packaging</th>
+                                                <th>Validity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
+        // Append each offer row
+        if (request.offers && request.offers.length > 0) {
+    request.offers.forEach(function(offer) {
+        cardHtml += `<tr data-offer-id="${offer.id}">
+            <td contenteditable="false">${offer.supplier || '-'}</td>
+            <td contenteditable="false">${offer.supplier_price || '-'}</td>
+            <td contenteditable="false">${offer.payment_terms || '-'}</td>
+            <td contenteditable="false">${offer.incoterms || '-'}</td>
+            <td contenteditable="false">${offer.specs || '-'}</td>
+            <td contenteditable="false">${offer.size || '-'}</td>
+            <td contenteditable="false">${offer.packaging || '-'}</td>
+            <td contenteditable="false">${offer.validity || '-'}</td>
+        </tr>`;
+    });
+} else {
+    cardHtml += `<tr><td colspan="9">No offers available</td></tr>`;
+}
+        cardHtml += `</tbody></table></div></div></div>`;
+        return cardHtml;
+    }
+
+    // Function to generate HTML for offers sent to clients card
+    function generateClientOffersCardHtml(request, cardTitle) {
+        // Similar to the supplier offers card but with adjustments for client offers
+        var cardHtml = `
+<div class="card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">${cardTitle} - Offers Sent to Clients</h3>
+        <div class="card-options">
+            <button type="button" class="btn btn-sm btn-primary btn-edit-offers-clients">
+                <span class="fe fe-edit"></span> Edit All
+            </button>
+            <button type="button" class="btn btn-sm btn-success btn-save-offers-clients" style="display:none;">
+                <span class="fe fe-save"></span> Save All
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered border text-nowrap">
+                <thead>
+                    <tr>
+                        <th>Supplier</th>
+                        <th>Price Offered</th>
+                        <th>Payment Term Offered</th>
+                        <th>Validity Offered</th>
+                        <th>Customer Feedback</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>`;
+
+// Assuming 'clientOffers' is an array of client offer objects you've retrieved
+if (request.offers_client && request.offers_client.length > 0) {
+    request.offers_client.forEach(function(offer) {
+        // Append a new row to the table's tbody with the offer details
+        cardHtml += `
+        <tr data-offer-client-id="${offer.id}">
+            <td>${offer.supplier || '-'}</td>
+            <td>${offer.price_offered || '-'}</td>
+            <td>${offer.payment_term_offered || '-'}</td>
+            <td>${offer.validity_offered || '-'}</td>
+            <td>${offer.customer_feedback || '-'}</td>
+            <td>${offer.notes || '-'}</td>
+        </tr>`;
+    });
+} else {
+    // Make sure this line is correctly included within the cardHtml string and inside <tbody>
+    cardHtml += `<tr><td colspan="6">No offers sent to clients available</td></tr>`;
+}
+cardHtml += `</tbody></table></div></div></div>`; // This line closes the table and the card correctly
+        // Populate cardHtml with client offers data
+        return cardHtml;
+    }
+
+    function generateRequestsOverviewTable(data) {
+        var tableHtml = `
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Requests Overview</h3>
-                    <div class="card-options">
-                                            <button type="button" class="btn btn-sm btn-primary btn-edit-requests">
-                                                <span class="fe fe-edit"></span> Edit All
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-success btn-save-requests" style="display:none;">
-                                                <span class="fe fe-save"></span> Save All
-                                            </button>
-                                        </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -1142,114 +1269,78 @@ $(document).ready(function() {
                             </thead>
                             <tbody>`;
 
-            data.forEach(function(request) {
-                var productName = request.product || "Not Specified";
-                requestsTableHtml += `<tr data-request-id="${request.id}"">
-                    <td>${productName}</td>
-                    <td>${request.quantity || '-'}</td>
-                    <td>${request.specs || '-'}</td>
-                    <td>${request.size || '-'}</td>
-                    <td>${request.payment_terms_requested || '-'}</td>
-                    <td>${request.incoterms || '-'}</td>
-                    <td>${request.discharge_port || '-'}</td>
-                    <td>${request.packaging || '-'}</td>
-                    <td>${request.notes || '-'}</td>
-                </tr>`;
-            });
+        data.forEach(function(request) {
+            var productName = request.product || "Not Specified";
+            tableHtml += `<tr data-request-id="${request.id}">
+                <td>${productName}</td>
+                <td>${request.quantity || '-'}</td>
+                <td>${request.specs || '-'}</td>
+                <td>${request.size || '-'}</td>
+                <td>${request.payment_terms_requested || '-'}</td>
+                <td>${request.incoterms || '-'}</td>
+                <td>${request.discharge_port || '-'}</td>
+                <td>${request.packaging || '-'}</td>
+                <td>${request.notes || '-'}</td>
+            </tr>`;
+        });
 
-            requestsTableHtml += `</tbody></table></div></div></div>`;
-            // Append the requests overview table to the "requests-table" div
-            $('#requests-table').html(requestsTableHtml);
-
-            // Generate and append cards for each request's offers
-            data.forEach(function(request) {
-                var cardTitle = request.product || "Request Offers";
-                var cardHtml = `<div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">${cardTitle}</h3>
-                                        <div class="card-options">
-                                            <button type="button" class="btn btn-sm btn-primary btn-edit-all">
-                                                <span class="fe fe-edit"></span> Edit All
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-success btn-save-all" style="display:none;">
-                                                <span class="fe fe-save"></span> Save All
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered border text-nowrap mb-0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Supplier</th>
-                                                        <th>Price</th>
-                                                        <th>Payment Terms</th>
-                                                        <th>Incoterm</th>
-                                                        <th>Specs</th>
-                                                        <th>Size</th>
-                                                        <th>Packaging</th>
-                                                        <th>Validity</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>`;
-
-                request.offers.forEach(function(offer) {
-                    cardHtml += `<tr data-offer-id="${offer.id}">
-                                    <td>${offer.supplier || '-'}</td>
-                                    <td>${offer.supplier_price || '-'}</td>
-                                    <td>${offer.payment_terms || '-'}</td>
-                                    <td>${offer.incoterms || '-'}</td>
-                                    <td>${offer.specs || '-'}</td>
-                                    <td>${offer.size || '-'}</td>
-                                    <td>${offer.packaging || '-'}</td>
-                                    <td>${offer.validity || '-'}</td>
-                                    <td name="bstable-actions">
-                                        <div class="btn-list">
-                                            <button id="bEdit" type="button" class="btn btn-sm btn-primary">
-                                                <span class="fe fe-edit"> </span> Edit
-                                            </button>
-                                            <button id="bDel" type="button" class="btn btn-sm btn-danger">
-                                                <span class="fe fe-trash-2"> </span> Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                  </tr>`;
-                });
-
-                cardHtml += `</tbody></table></div></div></div>`;
-                // Append the card to the "tables-container" div
-                $('#tables-container').append(cardHtml);
-            });
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log('Error fetching data: ', textStatus, errorThrown);
-        }
-    });
+        tableHtml += `</tbody></table></div></div></div>`;
+        return tableHtml;
+    }
 });
 
+
     </script>
+
+    <!-- Function to make offers tables editable-->
+
     <script>
 $(document).ready(function() {
-    // Make all fields editable
-    $(document).on('click', '.btn-edit-all', function() {
-        var $card = $(this).closest('.card');
-        $card.find('td').not(':last').attr('contenteditable', 'true'); // Make cells editable
-        $card.find('.btn-save-all').show(); // Show the save button
-        $(this).hide(); // Hide the edit button
+    // Make all fields in the specified table editable
+    $(document).on('click', '.btn-edit-offers', function() {
+        var targetTableId = $(this).data('target');
+        var $table = $('#' + targetTableId);
+        var $card = $table.closest('.card');
+
+        $table.find('td').not(':last-child').attr('contenteditable', 'true');
+        $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').show();
+        $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').show();
+        $(this).hide();
     });
 
-    // Handle the save action
-    $(document).on('click', '.btn-save-all', function() {
-        var $card = $(this).closest('.card');
-        var offersToUpdate = []; // Array to hold data for all offers in this card
+        // Add a new editable row when "Add New Offer" is clicked
+        $(document).on('click', '.btn-add-offer', function() {
+        var targetTableId = $(this).data('target');
+        var $table = $('#' + targetTableId);
+        var newRow = `<tr>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                      </tr>`;
+        $table.find('tbody').append(newRow);
+    });
 
-        $card.find('tbody tr').each(function() {
+    // Handle the save action for the specified table
+    $(document).on('click', '.btn-save-offers', function() {
+        var targetTableId = $(this).data('target'); // Get the target table ID using the updated data-target format
+        var requestIdParts = targetTableId.split('-'); // Split the targetTableId by '-'
+        var requestId = requestIdParts[requestIdParts.length - 1]; // Get the last part, which is the requestId
+        var $table = $('#' + targetTableId); // Find the table by ID
+        var $card = $table.closest('.card'); // Find the closest card to this table
+        var offersToUpdate = []; // Array to hold data for all offers in this table
+        $table.find('tbody tr').each(function() {
             var $row = $(this);
             var offerId = $row.data('offer-id');
+            console.log(requestId)
             // Collect data for this offer
             var offerData = {
                 id: offerId,
+                request_id: requestId,
                 supplier: $row.find('td:eq(0)').text(),
                 supplier_price: $row.find('td:eq(1)').text(),
                 payment_terms: $row.find('td:eq(2)').text(),
@@ -1262,32 +1353,30 @@ $(document).ready(function() {
             offersToUpdate.push(offerData);
         });
 
-        // Send AJAX request to save all updated offers
-        // Example AJAX setup - adjust URL, data handling, and response handling as needed
+        // Send AJAX request to save all updated offers for this table
         $.ajax({
-            url: '/update_offers/',
+            url: '/update_offers/', // Update this URL to your actual endpoint
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({offers: offersToUpdate}),
             success: function(response) {
-                // Handle success - for example, toggle editable state off and update the UI
-                $card.find('td').attr('contenteditable', 'false');
-                $card.find('.btn-edit-all').show(); // Show the edit button again
-                $card.find('.btn-save-all').hide(); // Hide the save button
-                // Possibly update the UI to reflect that the save was successful
+                // Handle success
+                $table.find('td').attr('contenteditable', 'false');
+                $card.find('.btn-edit-offers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
+                $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').hide(); // Hide the save button
             },
             error: function(error) {
-                // Handle errors - for example, alert the user that the save operation failed
+                // Handle errors
                 console.log(error);
             }
         });
     });
 });
 
-
-
+   
     </script>
 
+<!-- Function to make request tables editables-->
     <script>
 
 $(document).ready(function() {

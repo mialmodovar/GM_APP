@@ -145,6 +145,19 @@ def requests_offers_for_enquiry(request, enquiry_id):
                 'notes': offer.notes,
             }
             req_dict['offers'].append(offer_dict)
+
+            for offer_client in req.offers_client.all():
+                supplier_name = offer_client.supplier.name if offer_client.supplier else "Not available"
+                offer_client_dict = {
+                    'id': offer_client.id,
+                    'supplier': supplier_name,
+                    'price_offered': offer_client.price_offered or "Not available",
+                    'payment_term_offered': offer_client.payment_term_offered or "Not available",
+                    'validity_offered': offer_client.validity_offered or "Not available",
+                    'customer_feedback': offer_client.customer_feedback or "Not available",
+                    'notes': offer_client.notes or "Not available",
+                }
+                req_dict['offers_client'].append(offer_client_dict)
         
         data.append(req_dict)
 
@@ -156,37 +169,54 @@ def update_offers(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+            print(data)
             offers = data.get('offers', [])
             for offer_data in offers:
-                offer_id = offer_data.get('id')
-                offer = Offer.objects.get(id=offer_id)
+                supplier_name = offer_data.get('supplier')
+                supplier, created = Supplier.objects.get_or_create(name=supplier_name)
 
-                # Handle date conversion for validity
+                # Convert validity string to date object, set to None if invalid or not provided
                 validity_str = offer_data.get('validity')
-                try:
-                    # Try parsing the date if it's not None or empty
-                    if validity_str:
+                validity_date = None
+                if validity_str:
+                    try:
                         validity_date = datetime.strptime(validity_str, "%Y-%m-%d").date()
-                    else:
-                        validity_date = None  # Or keep the current value if desired
-                except ValueError:
-                    validity_date = None  # Invalid date format, set to None or keep current value
-                
-                # Update fields
-                offer.supplier_price = offer_data.get('supplier_price', offer.supplier_price)
-                offer.payment_terms = offer_data.get('payment_terms', offer.payment_terms)
-                offer.incoterms = offer_data.get('incoterms', offer.incoterms)
-                offer.specs = offer_data.get('specs', offer.specs)
-                offer.size = offer_data.get('size', offer.size)
-                offer.packaging = offer_data.get('packaging', offer.packaging)
-                offer.validity = validity_date  # Set the validity field with the parsed date or None
-                offer.notes = offer_data.get('notes', offer.notes)
-                offer.save()
+                    except ValueError:
+                        # Invalid date format, keep validity_date as None
+                        pass
+
+                if 'id' not in offer_data or not offer_data['id']:
+                    request_instance = Request.objects.get(id=offer_data.get('request_id'))
+                    Offer.objects.create(
+                        request=request_instance,
+                        supplier=supplier,
+                        supplier_price=offer_data.get('supplier_price'),
+                        payment_terms=offer_data.get('payment_terms'),
+                        incoterms=offer_data.get('incoterms'),
+                        specs=offer_data.get('specs'),
+                        size=offer_data.get('size'),
+                        packaging=offer_data.get('packaging'),
+                        validity=validity_date,
+                        notes=offer_data.get('notes'),
+                    )
+                else:
+                    offer = Offer.objects.get(id=offer_data['id'])
+                    offer.supplier = supplier
+                    offer.supplier_price = offer_data.get('supplier_price', offer.supplier_price)
+                    offer.payment_terms = offer_data.get('payment_terms', offer.payment_terms)
+                    offer.incoterms = offer_data.get('incoterms', offer.incoterms)
+                    offer.specs = offer_data.get('specs', offer.specs)
+                    offer.size = offer_data.get('size', offer.size)
+                    offer.packaging = offer_data.get('packaging', offer.packaging)
+                    offer.validity = validity_date
+                    offer.notes = offer_data.get('notes', offer.notes)
+                    offer.save()
 
             return JsonResponse({'status': 'success', 'message': 'Offers updated successfully.'})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
 
 @csrf_exempt
 def update_requests(request):
