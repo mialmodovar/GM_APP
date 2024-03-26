@@ -1140,11 +1140,11 @@ $(document).ready(function() {
                                             <button type="button" class="btn btn-sm btn-primary btn-edit-offers" data-target="offers-${request.id}">
                                                 <span class="fe fe-edit edit-offer"></span> Edit All
                                             </button>
+                                            <button type="button" class="btn btn-sm btn-secondary btn-add-offer" style="display:none;" data-target="offers-${request.id}">
+                                                <span class="fe fe-plus-circle"></span> Add new offer
+                                            </button>
                                             <button type="button" class="btn btn-sm btn-success btn-save-offers" style="display:none;" data-target="offers-${request.id}">
                                                 <span class="fe fe-save save-offer"></span> Save All
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-success btn-add-offer" style="display:none;" data-target="offers-${request.id}">
-                                                <span class="fe fe-plus-circle"></span> Add new offer
                                             </button>
                                         </div>
                 </div>
@@ -1193,17 +1193,20 @@ $(document).ready(function() {
     <div class="card-header">
         <h3 class="card-title">${cardTitle} - Offers Sent to Clients</h3>
         <div class="card-options">
-            <button type="button" class="btn btn-sm btn-primary btn-edit-offers-clients">
-                <span class="fe fe-edit"></span> Edit All
-            </button>
-            <button type="button" class="btn btn-sm btn-success btn-save-offers-clients" style="display:none;">
-                <span class="fe fe-save"></span> Save All
-            </button>
+                                            <button type="button" class="btn btn-sm btn-primary btn-edit-clientoffers" data-target="offers_clients-${request.id}">
+                                                <span class="fe fe-edit edit-offer"></span> Edit All
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary btn-add-clientoffers" style="display:none;" data-target="offers_clients-${request.id}">
+                                                <span class="fe fe-plus-circle"></span> Add new offer
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-success btn-save-clientoffers" style="display:none;" data-target="offers_clients-${request.id}">
+                                                <span class="fe fe-save save-offer"></span> Save All
+                                            </button>
         </div>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered border text-nowrap">
+            <table id="offers_clients-${request.id}" class="table table-bordered border text-nowrap">
                 <thead>
                     <tr>
                         <th>Supplier</th>
@@ -1215,12 +1218,7 @@ $(document).ready(function() {
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Rows will be dynamically inserted here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>`;
+                  `;
 
 // Assuming 'clientOffers' is an array of client offer objects you've retrieved
 if (request.offers_client && request.offers_client.length > 0) {
@@ -1364,6 +1362,7 @@ $(document).ready(function() {
                 $table.find('td').attr('contenteditable', 'false');
                 $card.find('.btn-edit-offers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
                 $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').hide(); // Hide the save button
+                $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').hide(); // Hide the save button
             },
             error: function(error) {
                 // Handle errors
@@ -1428,6 +1427,94 @@ $(document).ready(function() {
 });
 
     </script>
+
+
+ <!-- Function to make client offers tables editable-->
+<script>
+
+$(document).ready(function() {
+    $(document).on('click', '.btn-edit-clientoffers', function() {
+    var targetTableId = $(this).data('target');
+    var $table = $('#' + targetTableId);
+    var $card = $table.closest('.card');
+
+    console.log("Edit button clicked for targetTableId:", targetTableId);
+    console.log("$table length:", $table.length);
+    console.log("$card length:", $card.length);
+
+    $table.find('td').not(':last-child').attr('contenteditable', 'true');
+
+    var $btnSave = $card.find('.btn-save-clientoffers[data-target="' + targetTableId + '"]');
+    var $btnAdd = $card.find('.btn-add-clientoffers[data-target="' + targetTableId + '"]');
+
+    console.log("$btnSave length:", $btnSave.length);
+    console.log("$btnAdd length:", $btnAdd.length);
+
+    $btnSave.show();
+    $btnAdd.show();
+    $(this).hide();
+});
+
+    // Add a new editable row for client offers when "Add New Offer" is clicked
+    $(document).on('click', '.btn-add-clientoffers', function() {
+        var targetTableId = $(this).data('target');
+        var $table = $('#' + targetTableId);
+        var newRow = `<tr>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                      </tr>`;
+        $table.find('tbody').append(newRow);
+    });
+
+    // Handle the save action for client offers in the specified table
+    $(document).on('click', '.btn-save-clientoffers', function() {
+        var targetTableId = $(this).data('target');
+        var $table = $('#' + targetTableId);
+        var $card = $table.closest('.card');
+        var offersToUpdate = [];
+
+        $table.find('tbody tr').each(function() {
+            var $row = $(this);
+            var offerClientId = $row.data('offer-client-id');
+            var offerData = {
+                id: offerClientId, // This may be 'new' for new rows
+                request_id: targetTableId.split('-').pop(), // Extract request ID from the target table ID
+                supplier: $row.find('td:eq(0)').text(),
+                price_offered: $row.find('td:eq(1)').text(),
+                payment_term_offered: $row.find('td:eq(2)').text(),
+                validity_offered: $row.find('td:eq(3)').text(),
+                customer_feedback: $row.find('td:eq(4)').text(),
+                notes: $row.find('td:eq(5)').text(),
+            };
+            offersToUpdate.push(offerData);
+        });
+
+        // AJAX request to save/update client offers
+        $.ajax({
+            url: '/update_client_offers/', // Update this URL to your actual endpoint for client offers
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({offers: offersToUpdate}),
+            success: function(response) {
+                // Handle success
+                $table.find('td').attr('contenteditable', 'false');
+                $card.find('.btn-edit-clientoffers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
+                $card.find('.btn-save-clientoffers[data-target="' + targetTableId + '"]').hide(); // Hide the save button
+                $card.find('.btn-add-clientoffers[data-target="' + targetTableId + '"]').hide(); // Hide the add new offer button
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+});
+
+
+</script>
     
 </body>
 

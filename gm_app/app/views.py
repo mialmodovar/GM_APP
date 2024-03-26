@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.views.generic import TemplateView
 
-from .models import Enquiry, Client, Offer, Product, Request, Supplier 
+from .models import Enquiry, Client, Offer, Product, Request, Supplier, Offer_Client
 import time
 from django.db.models import F
 from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
@@ -27,8 +27,8 @@ from datetime import *
 from django.forms.models import model_to_dict
 from django.db.models import Prefetch
 from django.db.models import Prefetch
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+
+
 from .models import Enquiry
 from django.http import JsonResponse
 
@@ -127,7 +127,8 @@ def requests_offers_for_enquiry(request, enquiry_id):
             'payment_term_offered': req.payment_term_offered,
             'validity_offered': req.validity_offered if req.validity_offered else "Not available",  # Handle DateField
             'customer_feedback': req.customer_feedback,
-            'offers': []
+            'offers': [],
+            'offers_client': []
         }
 
         offers = req.offers.all()
@@ -218,6 +219,57 @@ def update_offers(request):
                     offer.save()
 
             return JsonResponse({'status': 'success', 'message': 'Offers updated successfully.'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
+    
+
+@csrf_exempt
+def update_client_offers(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            client_offers = data.get('offers', [])
+            for offer_data in client_offers:
+                supplier_name = offer_data.get('supplier')
+                supplier, created = Supplier.objects.get_or_create(name=supplier_name)
+
+                # Assume validity_offered is a string that needs to be converted to a date object, or None if not provided
+                validity_str = offer_data.get('validity_offered')
+                validity_date = None
+                if validity_str:
+                    try:
+                        validity_date = datetime.strptime(validity_str, "%Y-%m-%d").date()
+                    except ValueError:
+                        # Invalid date format, keep validity_date as None
+                        pass
+
+                # Create new Offer_Client instances or update existing ones
+                if 'id' not in offer_data or not offer_data['id']:
+                    # Assuming 'request_id' is part of offer_data when creating a new offer
+                    request_instance = Request.objects.get(id=offer_data.get('request_id'))
+                    Offer_Client.objects.create(
+                        request=request_instance,
+                        supplier=supplier,
+                        price_offered=offer_data.get('price_offered'),
+                        payment_term_offered=offer_data.get('payment_term_offered'),
+                        validity_offered=validity_date,  # Assuming this should be a DateField, adjust if it's a TextField
+                        customer_feedback=offer_data.get('customer_feedback'),
+                        notes=offer_data.get('notes'),
+                    )
+                else:
+                    # For updating existing client offers
+                    client_offer = Offer_Client.objects.get(id=offer_data['id'])
+                    client_offer.supplier = supplier
+                    client_offer.price_offered = offer_data.get('price_offered', client_offer.price_offered)
+                    client_offer.payment_term_offered = offer_data.get('payment_term_offered', client_offer.payment_term_offered)
+                    client_offer.validity_offered = validity_date
+                    client_offer.customer_feedback = offer_data.get('customer_feedback', client_offer.customer_feedback)
+                    client_offer.notes = offer_data.get('notes', client_offer.notes)
+                    client_offer.save()
+
+            return JsonResponse({'status': 'success', 'message': 'Client offers updated successfully.'})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     else:
