@@ -247,6 +247,7 @@ def update_client_offers(request):
 
                 # Create new Offer_Client instances or update existing ones
                 if 'id' not in offer_data or not offer_data['id']:
+                    print("been here")
                     # Assuming 'request_id' is part of offer_data when creating a new offer
                     request_instance = Request.objects.get(id=offer_data.get('request_id'))
                     Offer_Client.objects.create(

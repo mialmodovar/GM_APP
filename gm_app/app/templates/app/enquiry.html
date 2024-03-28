@@ -1236,7 +1236,7 @@ if (request.offers_client && request.offers_client.length > 0) {
     });
 } else {
     // Make sure this line is correctly included within the cardHtml string and inside <tbody>
-    cardHtml += `<tr><td colspan="6">No offers sent to clients available</td></tr>`;
+    cardHtml += ``;
 }
 cardHtml += `</tbody></table></div></div></div>`; // This line closes the table and the card correctly
         // Populate cardHtml with client offers data
@@ -1248,6 +1248,14 @@ cardHtml += `</tbody></table></div></div></div>`; // This line closes the table 
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Requests Overview</h3>
+                    <div class="card-options">
+                                            <button type="button" class="btn btn-sm btn-primary btn-edit-requests">
+                                                <span class="fe fe-edit edit-offer"></span> Edit All
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-success btn-save-requests" style="display:none;">
+                                                <span class="fe fe-save save-offer"></span> Save All
+                                            </button>
+        </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -1500,7 +1508,7 @@ $(document).ready(function() {
             contentType: 'application/json',
             data: JSON.stringify({offers: offersToUpdate}),
             success: function(response) {
-                // Handle success
+                console.log(offersToUpdate)
                 $table.find('td').attr('contenteditable', 'false');
                 $card.find('.btn-edit-clientoffers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
                 $card.find('.btn-save-clientoffers[data-target="' + targetTableId + '"]').hide(); // Hide the save button

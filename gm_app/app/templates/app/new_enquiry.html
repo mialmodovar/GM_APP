@@ -300,20 +300,20 @@
                                             <section id="wizard3-p-1" role="tabpanel" aria-labelledby="wizard3-h-1" class="body" aria-hidden="true" style="display: none;">
                                                 <div class="form-group" id = "product_selector">
                                                     <label class="form-label">Products</label>
-                                                    <select class="form-control select2 select2-hidden-accessible" data-placeholder="Choose Browser" multiple="" tabindex="-1" aria-hidden="true">
-                                                            <option value="Firefox">
+                                                    <select class="form-control select2 select2-hidden-accessible" data-placeholder="" multiple="" tabindex="-1" aria-hidden="true">
+                                                            <option value="">
                                                                 CSN
                                                             </option>
-                                                            <option value="Chrome">
+                                                            <option value="">
                                                                4 S Refractories
                                                             </option>
-                                                            <option value="Safari">
+                                                            <option value="">
                                                                 Sanac
                                                             </option>
-                                                            <option value="Opera">
+                                                            <option value="">
                                                                 Trent
                                                             </option>
-                                                            <option value="Internet Explorer">
+                                                            <option value="">
                                                                 Morgan Advanced
                                                             </option>
                                                         </select>
@@ -321,7 +321,7 @@
                                                 <div id="size-selectors-container"></div>
                                                 
                                             </section>
-                                            <h3 id="wizard3-h-2" tabindex="-1" class="title">Payment Details</h3>
+                                            <h3 id="wizard3-h-2" tabindex="-1" class="title">Select Suppliers to Contact</h3>
                                             <section id="wizard3-p-2" role="tabpanel" aria-labelledby="wizard3-h-2" class="body" aria-hidden="true" style="display: none;">
                                             
                                             </section>
@@ -1101,46 +1101,42 @@
 <script>
     $(document).ready(function() {
         // Function to initialize Select2 with specified settings
-        function initializeSelect2($elements) {
-            $elements.select2({
+        function initializeSelect2WithTags($elements) {
+        $elements.each(function() { // Iterate over each element individually
+            var $element = $(this); // Current Select2 element being initialized
+            $element.select2({
                 width: '100%',
                 tags: true, // Allows new options to be added
                 minimumInputLength: 1, // Only start searching when at least one character is typed
+                placeholder: "Select suppliers", // Placeholder text
                 createTag: function(params) {
-                    // Ensure the term is not empty and normalize it for comparison
                     var term = $.trim(params.term);
                     if (term === '') {
                         return null;
                     }
-
-                    // Normalize input for comparison by making it lowercase and removing extra spaces
                     var normalizedTerm = term.replace(/\s+/g, ' ').toLowerCase();
-
-                    // Check if the normalized term already exists in the options
-                    var exists = $('.select2-show-search option').filter(function() {
-                        return $.trim($(this).text()).toLowerCase() === normalizedTerm;
+                    // Check for existing options within the current Select2 element
+                    var exists = $element.find('option').filter(function() {
+                        return $(this).text().toLowerCase() === normalizedTerm;
                     }).length > 0;
-
-                    // Prevent creating a duplicate tag if the term exists
                     if (exists) {
                         return null;
                     }
-
-                    // Allow creating a new tag if the term doesn't exist
                     return {
                         id: term,
                         text: term,
-                        newTag: true // Custom property indicating this is a new tag
+                        newTag: true
                     };
                 }
             }).on('select2:select', function(e) {
-                var data = e.params.data;
-                if (data.newTag) {
-                    console.log("New option added:", data.text);
-                    // Implement additional logic here for new tags
+                if (e.params.data.newTag) {
+                    console.log("New option added:", e.params.data.text);
+                    // Additional logic for new tags can be implemented here
                 }
             });
-        }
+        });
+    }
+
 
         // Initialize Select2 for elements already present
         initializeSelect2($('.select2-show-search'));
@@ -1180,12 +1176,10 @@
             var productName = $('#product_selector .select2 option[value="' + product + '"]').text();
             var elementHtml = '<hr><div class="form-group product-detail" data-product-name="' + productName + '">' + // Include the data-product-name attribute
                               '<input type="hidden" class="product-name" value="' + productName + '">' + // Hidden input to store the product name
+                              '<div class="form-group">' +
                               '<label class="form-label">' + productName + ' Size Selection</label>' +
-                              '<select class="form-control select2-size" multiple="multiple" tabindex="-1" aria-hidden="true">' +
-                              '<option value="10mm">10mm</option>' +
-                              '<option value="20mm">20mm</option>' +
-                              '<option value="30mm">30mm</option>' +
-                              '</select></div>' +
+                              '<input type="text" class="form-control required" placeholder="Enter sizes for ' + productName + '" />' +
+                              '</div>' +
                               '<div class="form-group">' +
                               '<label class="form-label">' + productName + ' Specs</label>' +
                               '<textarea class="form-control product-specs" placeholder="Enter specs for ' + productName + '" rows="4" style="height: 100px;"></textarea>' +
@@ -1202,11 +1196,8 @@
             $sizeSelectorsContainer.append(elementHtml);
         });
 
-        // Initialize Select2 on dynamically added size selectors
-        $('.select2-size').select2({
-            width: '100%',
-            placeholder: "Choose Size",
-        });
+   
+        
     });
 });
 
@@ -1215,60 +1206,67 @@
         <!-- Script to add the fields as the user adds products in step 3 of the wizard-->>
 
         <script>
-         $(document).ready(function() {
-                function initializeSelect2WithTags($elements) {
-                    $elements.select2({
-                        width: '100%',
-                        tags: true, // Allows new options to be added
-                        minimumInputLength: 1, // Only start searching when at least one character is typed
-                        placeholder: "Select suppliers", // Placeholder text
-                        createTag: function(params) {
-                            var term = $.trim(params.term);
-                            if (term === '') {
-                                return null;
-                            }
-                            var normalizedTerm = term.replace(/\s+/g, ' ').toLowerCase();
-                            var exists = $elements.find('option').filter(function() {
-                                return $(this).text().toLowerCase() === normalizedTerm;
-                            }).length > 0;
-                            if (exists) {
-                                return null;
-                            }
-                            return {
-                                id: term,
-                                text: term,
-                                newTag: true
-                            };
-                        }
-                    }).on('select2:select', function(e) {
-                        if (e.params.data.newTag) {
-                            console.log("New option added:", e.params.data.text);
-                        }
-                    });
+  $(document).ready(function() {
+    // Define the initialization function outside of any event handler
+    function initializeSelect2WithTags($element) {
+        $element.select2({
+            width: '100%',
+            tags: true, // Allows new options to be added
+            minimumInputLength: 1, // Only start searching when at least one character is typed
+            placeholder: "Select suppliers", // Placeholder text
+            createTag: function(params) {
+                var term = $.trim(params.term);
+                if (term === '') {
+                    return null;
                 }
-        
-                // Initialize for initial .select2-show-search elements
-                initializeSelect2WithTags($('.select2-show-search'));
-        
-                // Function to handle new selections and unselections
-                $('#product_selector .select2').on('select2:select select2:unselect', function(e) {
-                    var selectedProducts = $(this).val() || [];
-                    var $stepThreeSection = $('#wizard3-p-2');
-                    $stepThreeSection.empty();
-                    selectedProducts.forEach(function(product) {
-                        var productName = $('#product_selector .select2 option[value="' + product + '"]').text();
-                        var suppliersSelectHtml = '<div class="form-group" data-product-name="' + productName + '">' +
-                                                  '<label class="form-label">' + productName + ' Suppliers to be contacted</label>' +
-                                                  '<select class="form-control select2-suppliers" multiple="" tabindex="-1" aria-hidden="true"></select></div>';
-                        $stepThreeSection.append(suppliersSelectHtml);
-                    });
-        
-                    // Re-initialize Select2 for dynamically added .select2-suppliers selects
-                    initializeSelect2WithTags($('.select2-suppliers'));
-                });
-            });
+                var normalizedTerm = term.replace(/\s+/g, ' ').toLowerCase();
+                // Check if the normalized term already exists in this specific select's options
+                var exists = $element.find('option').filter(function() {
+                    return $(this).text().toLowerCase() === normalizedTerm;
+                }).length > 0;
+                if (exists) {
+                    return null;
+                }
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true
+                };
+            }
+        }).on('select2:select', function(e) {
+            if (e.params.data.newTag) {
+                console.log("New option added:", e.params.data.text);
+            }
+        });
+    }
 
-        </script>
+    // Initialize for initially present .select2-show-search elements
+    $('.select2-show-search').each(function() {
+        initializeSelect2WithTags($(this));
+    });
+
+    // Function to handle new selections and unselections
+    $('#product_selector .select2').on('select2:select select2:unselect', function(e) {
+        var selectedProducts = $(this).val() || [];
+        var $stepThreeSection = $('#wizard3-p-2');
+        $stepThreeSection.empty();
+        selectedProducts.forEach(function(product) {
+            var productName = $('#product_selector .select2 option[value="' + product + '"]').text();
+            var suppliersSelectHtml = `<div class="form-group" data-product-name="${productName}">
+                                           <label class="form-label">${productName} Suppliers to be contacted</label>
+                                           <select class="form-control select2-suppliers" multiple="" tabindex="-1" aria-hidden="true"></select>
+                                       </div>`;
+            $stepThreeSection.append(suppliersSelectHtml);
+        });
+
+        // Re-initialize Select2 for dynamically added .select2-suppliers selects
+        $('.select2-suppliers').each(function() {
+            initializeSelect2WithTags($(this));
+        });
+    });
+});
+ 
+           </script>
 
         <!-- Script to  send the ajax request !-->
 
@@ -1277,6 +1275,10 @@
     $('#submit-button-id').click(function(e) {  // Ensure this ID matches your submit button
         e.preventDefault();
 
+        // Show the loader
+        var loaderHtml = '<div class="dimmer active"><div class="spinner"></div></div>';
+        $('body').append(loaderHtml); // Append the loader to the body or a specific div as per your layout
+
         var data = {
             'client': $('.select2-show-search option:selected').val(),
             'inquiry_received_date': $('#inquiryReceivedDate').val(),
@@ -1284,43 +1286,53 @@
             'products_details': []
         };
 
-        // Iterate over each product details section to collect product info and associated suppliers
-        $('#size-selectors-container').children('.product-detail').each(function() {
+            // Iterate over each product details section to collect product info and associated suppliers
+            $('#size-selectors-container').children('.product-detail').each(function() {
             var $this = $(this);
-            var productName = $this.find('.product-name').val(); // Assuming productName is captured as before
+            var productName = $this.data('product-name').val(); // Use data-product-name attribute for productName
 
             var productDetails = {
                 'product_name': productName,
-                'size': $this.find('.select2-size').val() || [], // Collecting size details
-                'specs': $this.next().find('.product-specs').val(), // Assuming .next() correctly targets the specs textarea
-                'quantity': $this.next().next().find('input[type="text"]').val(), // Assuming .next().next() targets the quantity input
-                'packaging': $this.next().next().next().find('input[type="text"]').val(), // Assuming .next().next().next() targets the packaging input
+                'size': $this.find('input[type="text"]').eq(0).val(), // Size is the first input
+                'specs': $this.find('.product-specs').val(), // Textarea for specs
+                'quantity': $this.find('input[type="text"]').eq(1).val(), // Quantity is the second input
+                'packaging': $this.find('input[type="text"]').eq(2).val(), // Packaging is the third input
                 'suppliers': [] // Preparing to collect associated suppliers
             };
 
             // Find the suppliers section that corresponds to this product
             var suppliersSelection = $('#wizard3-p-2').find(`.form-group[data-product-name="${productName}"]`).find('.select2-suppliers').val();
             if (suppliersSelection) {
-                productDetails.suppliers = suppliersSelection; // Add selected suppliers to this product's details
+                productDetails.suppliers = suppliersSelection;
             }
 
             data.products_details.push(productDetails);
         });
-
         // Send AJAX request with product details and their corresponding suppliers
         $.ajax({
             type: "POST",
-            url: "/create_enquiry_ajax",  // Adjust URL as needed
+            url: "/create_enquiry_ajax", // Adjust URL as needed
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(response) {
                 console.log(response);
-                // Handle success
+                // Handle success - remove the loader
+                $('.dimmer').remove();
+                
+                // Redirect to the new enquiry page using the pk from the response
+                if(response && response.pk) {
+                    window.location.href = '/enquiry/' + response.pk;
+                } else {
+                    // Handle cases where pk is not returned or response is not as expected
+                    console.error("Server did not return the expected response.");
+                }
             },
             error: function(response) {
                 console.log(response);
-                // Handle error
+                // Handle error - remove the loader
+                $('.dimmer').remove();
+                alert("There was an error processing your request. Please try again.");
             }
         });
     });
