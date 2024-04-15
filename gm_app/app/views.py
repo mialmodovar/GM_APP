@@ -356,3 +356,37 @@ def get_enquiries(request):
     
     return JsonResponse(enquiries_list, safe=False)
 
+#SUPPLIER PAGE-----------------------------------------------------------------------------------------------------------------------
+
+def supplier_list(request):
+    return render(request, 'app/supplier_list.html')
+
+from django.http import JsonResponse
+from .models import Supplier
+
+
+def suppliers_api(request):
+    suppliers = list(Supplier.objects.values('id','name', 'contact_person', 'email'))
+    return JsonResponse({'suppliers': suppliers}, safe=False)
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Supplier, Offer
+from django.db.models import Prefetch
+from django.db.models import Avg, Count
+
+def supplier_detail(request, id):
+    supplier = get_object_or_404(Supplier, id=id)
+    # Fetch recent offers related to this supplier
+    offers = Offer.objects.filter(supplier=supplier).prefetch_related(Prefetch('request', queryset=Request.objects.select_related('product'))).order_by('-validity')[:5]
+
+    product_stats = (
+        Offer.objects.filter(supplier=supplier)
+        .values('request__product__name')  # Group by product name
+        .annotate(
+            average_price=Avg('supplier_price'),
+            total_offers=Count('id')
+        )
+    )
+
+    return render(request, 'app/supplier_detail.html', {'supplier': supplier, 'offers': offers, 'product_stats': product_stats})

@@ -1,0 +1,1294 @@
+<!doctype html>
+<html lang="en" dir="ltr" style="--primary-rgb: 28,103,147;">
+
+<head>
+    {% load static %}
+    <!-- META DATA -->
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Sash – Bootstrap 5  Admin & Dashboard Template">
+    <meta name="author" content="Spruko Technologies Private Limited">
+    <meta name="keywords" content="admin,admin dashboard,admin panel,admin template,bootstrap,clean,dashboard,flat,jquery,modern,responsive,premium admin templates,responsive admin,ui,ui kit.">
+
+    <!-- FAVICON -->
+    <link rel="shortcut icon" type="image/x-icon" href=" {% static '/assets/images/brand/favicon.ico' %} ">
+
+    <!-- TITLE -->
+    <title>Global Monarch</title>
+
+    <!-- BOOTSTRAP CSS -->
+    <link id="style" href=" {% static '/assets/plugins/bootstrap/css/bootstrap.min.css' %} " rel="stylesheet">
+
+    <!-- STYLE CSS -->
+     <link href=" {% static '/assets/css/style.css' %} " rel="stylesheet">
+
+	<!-- Plugins CSS -->
+    <link href=" {% static '/assets/css/plugins.css' %} " rel="stylesheet">
+
+    <!--- FONT-ICONS CSS -->
+    <link href=" {% static '/assets/css/icons.css' %} " rel="stylesheet">
+
+    <!-- INTERNAL Switcher css -->
+    <link href=" {% static '/assets/switcher/css/switcher.css' %} " rel="stylesheet">
+    <link href=" {% static '/assets/switcher/demo.css' %} " rel="stylesheet">
+</head>
+
+<body class="app sidebar-mini ltr light-mode">
+
+    <!-- GLOBAL-LOADER -->
+    <div id="global-loader">
+        <img src=" {% static '/assets/images/loader.svg' %} " class="loader-img" alt="Loader">
+    </div>
+    <!-- /GLOBAL-LOADER -->
+
+    <!-- PAGE -->
+    <div class="page">
+        <div class="page-main">
+
+            <!-- app-Header -->
+            <div class="app-header header sticky">
+                <div class="container-fluid main-container">
+                    <div class="d-flex">
+                        <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" href=" {% static 'javascript:void(0)' %} "></a>
+                        <!-- sidebar-toggle-->
+                        <a class="logo-horizontal " href=" {% static 'index.html' %} ">
+                            <img src=" {% static '/assets/images/brand/logo-white.png' %} " class="header-brand-img desktop-logo" alt="logo">
+                            <img src=" {% static '/assets/images/brand/logo-dark.png' %} " class="header-brand-img light-logo1"
+                                alt="logo">
+                        </a>
+
+                       
+                        <div class="d-flex order-lg-2 ms-auto header-right-icons">
+                            <!-- SEARCH -->
+                            <button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-4"
+                                aria-controls="navbarSupportedContent-4" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon fe fe-more-vertical"></span>
+                            </button>
+                            <div class="navbar navbar-collapse responsive-navbar p-0">
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+                                    <div class="d-flex order-lg-2">
+                                            <a href="{% static 'javascript:void(0)' %}" class="nav-link icon"
+                                                data-bs-toggle="dropdown" data-target="">
+                                                <i class="fa fa-sort-down"></i>
+                                            </a>
+                                            <div class="dropdown  d-flex notifications">
+                                                <a class="nav-link icon" data-bs-toggle="dropdown" aria-expanded="false"><i class="fe fe-bell"></i><span class=" pulse"></span>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                    <div class="drop-heading border-bottom">
+                                                        <div class="d-flex">
+                                                            <h6 class="mt-1 mb-0 fs-16 fw-semibold text-dark">Notifications
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="notifications-menu ps">
+                                                        <a class="dropdown-item d-flex" href="notify-list.html">
+                                                            <div class="me-3 notifyimg  bg-primary brround box-shadow-primary">
+                                                                <i class="fe fe-mail"></i>
+                                                            </div>
+                                                            <div class="mt-1 wd-80p">
+                                                                <h5 class="notification-label mb-1">New change made to enquiry of FM96 to Kumas
+                                                                </h5>
+                                                                <span class="notification-subtext">1 hour ago</span>
+                                                            </div>
+                                                        </a>
+                                                        <a class="dropdown-item d-flex" href="notify-list.html">
+                                                            <div class="me-3 notifyimg  bg-secondary brround box-shadow-secondary">
+                                                                <i class="fe fe-mail"></i>
+                                                            </div>
+                                                            <div class="mt-1 wd-80p">
+                                                                <h5 class="notification-label mb-1">Enquiry deadline coming up</h5>
+                                                                <span class="notification-subtext">2 hours ago</span>
+                                                            </div>
+                                                        </a>
+                                                       
+                                                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+                                                    <div class="dropdown-divider m-0"></div>
+                                                    <a href="notify-list.html" class="dropdown-item text-center p-3 text-muted">View all
+                                                        Notification</a>
+                                                </div>
+                                            </div>
+                                        <!-- SIDE-MENU -->
+                                        <div class="dropdown d-flex profile-1">
+                                            <a href=" {% static 'javascript:void(0)' %} " data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
+                                                <img src=" {% static '/assets/images/users/21.jpg' %} " alt="profile-user"
+                                                    class="avatar  profile-user brround cover-image">
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                <div class="drop-heading">
+                                                    <div class="text-center">
+                                                        <h5 class="text-dark mb-0 fs-14 fw-semibold">{{request.user.username}}</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-divider m-0"></div>
+                                                <a class="dropdown-item" href="">
+                                                    <i class="dropdown-icon fe fe-user"></i> Profile
+                                                </a>
+                                                <a class="dropdown-item" href="">
+                                                    <i class="dropdown-icon fe fe-alert-circle"></i> Sign out
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /app-Header -->
+
+            <!--APP-SIDEBAR-->
+            <div class="sticky">
+                <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
+                <div class="app-sidebar">
+                    <div class="side-header">
+                        <a class="header-brand1" href="">
+                            <img src=" {% static '/assets/images/brand/logo-white.png' %} " class="header-brand-img desktop-logo" alt="logo">
+                            <img src=" {% static '/assets/images/brand/icon-white.png' %} " class="header-brand-img toggle-logo"
+                                alt="logo">
+                            <img src=" {% static '/assets/images/brand/icon-dark.png' %} " class="header-brand-img light-logo" alt="logo">
+                            <img src=" {% static '/assets/images/brand/logo-dark.png' %} " class="header-brand-img light-logo1"
+                                alt="logo">
+                        </a>
+                        <!-- LOGO -->
+                    </div>
+                    <div class="main-sidemenu">
+                        <div class="slide-left disabled" id="slide-left"><svg xmlns="http://www.w3.org/2000/svg"
+                                fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" />
+                            </svg></div>
+                        <ul class="side-menu">
+                           
+                            <li class="slide">
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                        class="side-menu__icon fe fe-home"></i><span
+                                        class="side-menu__label">Dashboard</span></a>
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                        class="side-menu__icon fe fe-send"></i><span
+                                        class="side-menu__label">Enquiries</span></a>
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                        class="side-menu__icon fe fe-pie-chart"></i><span
+                                        class="side-menu__label">Create new Enquiry</span></a>
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                        class="side-menu__icon fe fe-activity"></i><span
+                                        class="side-menu__label">Supplier Management</span></a>
+                            </li>
+
+                        </ul>
+                        <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"
+                                width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z" />
+                            </svg></div>
+                    </div>
+                </div>
+            </div>
+            <!--/APP-SIDEBAR-->
+<!--app-content open-->
+<div class="main-content app-content mt-0">
+    <div class="side-app">
+
+        <!-- CONTAINER -->
+        <div class="main-container container-fluid">
+
+            <!-- PAGE-HEADER -->
+           <div class="page-header">
+    <h1 class="page-title">Supplier Information</h1>
+    <!-- Breadcrumb and other header content -->
+</div>
+<!-- PAGE-HEADER END -->
+
+<!-- Supplier Details Section -->
+<div class="row d-flex">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Supplier Details</div>
+            </div>
+            <div class="card-body">
+                <!-- Single row for all details to ensure even spacing -->
+                <div class="row">
+                    <!-- Supplier Name -->
+                    <div class="col-md-4 mb-4">
+                        <label for="exampleInputEmail1">Supplier Name</label>
+                        <input type="text" class="form-control" readonly value="{{supplier.name}}">
+                    </div>
+                    <!-- Supplier Contact Person -->
+                    <div class="col-md-4 mb-4">
+                        <label for="exampleInputEmail1">Supplier Contact Person</label>
+                        <input type="text" class="form-control" readonly value="{{supplier.contact_person}}">
+                    </div>
+                    <!-- Supplier Email -->
+                    <div class="col-md-4 mb-4">
+                        <label for="exampleInputEmail1">Supplier Email</label>
+                        <input type="text" class="form-control" readonly value="{{supplier.email}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Supplier Summary Stats</div>
+            </div>
+            <div class="card-body">
+                <!-- Single row for all details to ensure even spacing -->
+                {% for stat in product_stats %}
+                <div class="row">
+                    <!-- Supplier Name -->
+                    <div class="col-md-4 mb-4">
+                        <label for="exampleInputEmail1">{{ stat.request__product__name }}</label>
+                    </div>
+                    <!-- Supplier Contact Person -->
+                    <div class="col-md-4 mb-4">
+                        <label for="exampleInputEmail1">Average Price: {{ stat.average_price }}</label>
+                    </div>
+                    <!-- Supplier Email -->
+                    <div class="col-md-4 mb-4">
+                        <label for="exampleInputEmail1">Total Offers: {{ stat.total_offers }}</label>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>  
+</div>
+
+<!-- Recent Offers Section -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3 class="card-title">Recent Offers from {{supplier.name}}</h3>
+            </div>
+            <div class="card-body">
+                <h3>Recent Offers</h3>
+                {% if offers %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Supplier Price</th>
+                            <th>Product</th>
+                            <th>Incoterms</th>
+                            <th>Specs</th>
+                            <th>Size</th>
+                            <!-- Add other headers -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for offer in offers %}
+                        <tr>
+                            <td>{{ offer.supplier_price }}</td>
+                            <td>{{ offer.request.product.name }}</td>
+                            <td>{{ offer.incoterms }}</td>
+                            <td>{{ offer.specs }}</td>
+                            <td>{{ offer.size }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No recent offers found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!--app-content closed-->
+</div>
+
+ <!-- Sidebar-right -->
+ <div class="sidebar sidebar-right sidebar-animate">
+    <div class="panel panel-primary card mb-0 shadow-none border-0">
+        <div class="tab-menu-heading border-0 d-flex p-3">
+            <div class="card-title mb-0"><i class="fe fe-bell me-2"></i><span
+                    class=" pulse"></span>Notifications</div>
+            <div class="card-options ms-auto">
+                <a href=" {% static 'javascript:void(0);' %} " class="sidebar-icon text-end float-end me-3 mb-1"
+                    data-bs-toggle="sidebar-right" data-target=".sidebar-right"><i
+                        class="fe fe-x text-white"></i></a>
+            </div>
+        </div>
+        <div class="panel-body tabs-menu-body latest-tasks p-0 border-0">
+            <div class="tabs-menu border-bottom">
+                <!-- Tabs -->
+                <ul class="nav panel-tabs">
+                    <li class=""><a href=" {% static '#sidebar-side1' %} " class="active" data-bs-toggle="tab"><i
+                                class="fe fe-settings me-1"></i>Feeds</a></li>
+                    <li><a href=" {% static '#sidebar-side2' %} " data-bs-toggle="tab"><i class="fe fe-message-circle me-1"></i> Chat</a></li>
+                    <li><a href=" {% static '#sidebar-side3' %} " data-bs-toggle="tab"><i class="fe fe-anchor me-1"></i>Timeline</a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="sidebar-side1">
+                    <div class="p-3 fw-semibold ps-5">Feeds</div>
+                    <div class="card-body pt-2">
+                        <div class="browser-stats">
+                            <div class="row mb-4">
+                                <div class="col-sm-2 mb-sm-0 mb-3">
+                                    <span class="feeds avatar-circle brround bg-primary-transparent"><i
+                                            class="fe fe-user text-primary"></i></span>
+                                </div>
+                                <div class="col-sm-10 ps-sm-0">
+                                    <div class="d-flex align-items-end justify-content-between ms-2">
+                                        <h6 class="">New user registered</h6>
+                                        <div>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-sm-2 mb-sm-0 mb-3">
+                                    <span
+                                        class="feeds avatar-circle avatar-circle-secondary brround bg-secondary-transparent"><i
+                                            class="fe fe-shopping-cart text-secondary"></i></span>
+                                </div>
+                                <div class="col-sm-10 ps-sm-0">
+                                    <div class="d-flex align-items-end justify-content-between ms-2">
+                                        <h6 class="">New order delivered</h6>
+                                        <div>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-sm-2 mb-sm-0 mb-3">
+                                    <span
+                                        class="feeds avatar-circle avatar-circle-danger brround bg-danger-transparent"><i
+                                            class="fe fe-bell text-danger"></i></span>
+                                </div>
+                                <div class="col-sm-10 ps-sm-0">
+                                    <div class="d-flex align-items-end justify-content-between ms-2">
+                                        <h6 class="">You have pending tasks</h6>
+                                        <div>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-sm-2 mb-sm-0 mb-3">
+                                    <span
+                                        class="feeds avatar-circle avatar-circle-warning brround bg-warning-transparent"><i
+                                            class="fe fe-gitlab text-warning"></i></span>
+                                </div>
+                                <div class="col-sm-10 ps-sm-0">
+                                    <div class="d-flex align-items-end justify-content-between ms-2">
+                                        <h6 class="">New version arrived</h6>
+                                        <div>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-sm-2 mb-sm-0 mb-3">
+                                    <span
+                                        class="feeds avatar-circle avatar-circle-pink brround bg-pink-transparent"><i
+                                            class="fe fe-database text-pink"></i></span>
+                                </div>
+                                <div class="col-sm-10 ps-sm-0">
+                                    <div class="d-flex align-items-end justify-content-between ms-2">
+                                        <h6 class="">Server #1 overloaded</h6>
+                                        <div>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2 mb-sm-0 mb-3">
+                                    <span
+                                        class="feeds avatar-circle avatar-circle-info brround bg-info-transparent"><i
+                                            class="fe fe-check-circle text-info"></i></span>
+                                </div>
+                                <div class="col-sm-10 ps-sm-0">
+                                    <div class="d-flex align-items-end justify-content-between ms-2">
+                                        <h6 class="">New project launched</h6>
+                                        <div>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 fw-semibold ps-5">Settings</div>
+                    <div class="card-body pt-2">
+                        <div class="browser-stats">
+                            <div class="row mb-4">
+                                <div class="col-sm-2 mb-sm-0 mb-3">
+                                    <span class="feeds avatar-circle brround bg-primary-transparent"><i
+                                            class="fe fe-settings text-primary"></i></span>
+                                </div>
+                                <div class="col-sm-10 ps-sm-0">
+                                    <div class="d-flex align-items-end justify-content-between ms-2">
+                                        <h6 class="">General Settings</h6>
+                                        <div>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-sm-2 mb-sm-0 mb-3">
+                                    <span
+                                        class="feeds avatar-circle avatar-circle-secondary brround bg-secondary-transparent"><i
+                                            class="fe fe-map-pin text-secondary"></i></span>
+                                </div>
+                                <div class="col-sm-10 ps-sm-0">
+                                    <div class="d-flex align-items-end justify-content-between ms-2">
+                                        <h6 class="">Map Settings</h6>
+                                        <div>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-sm-2 mb-sm-0 mb-3">
+                                    <span
+                                        class="feeds avatar-circle avatar-circle-danger brround bg-danger-transparent"><i
+                                            class="fe fe-headphones text-danger"></i></span>
+                                </div>
+                                <div class="col-sm-10 ps-sm-0">
+                                    <div class="d-flex align-items-end justify-content-between ms-2">
+                                        <h6 class="">Support Settings</h6>
+                                        <div>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-sm-2 mb-sm-0 mb-3">
+                                    <span
+                                        class="feeds avatar-circle avatar-circle-warning brround bg-warning-transparent"><i
+                                            class="fe fe-credit-card text-warning"></i></span>
+                                </div>
+                                <div class="col-sm-10 ps-sm-0">
+                                    <div class="d-flex align-items-end justify-content-between ms-2">
+                                        <h6 class="">Payment Settings</h6>
+                                        <div>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-sm-2 mb-sm-0 mb-3">
+                                    <span
+                                        class="feeds avatar-circle avatar-circle-pink brround bg-pink-transparent"><i
+                                            class="fe fe-bell text-pink"></i></span>
+                                </div>
+                                <div class="col-sm-10 ps-sm-0">
+                                    <div class="d-flex align-items-end justify-content-between ms-2">
+                                        <h6 class="">Notification Settings</h6>
+                                        <div>
+                                            <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="sidebar-side2">
+                    <div class="list-group list-group-flush">
+                        <div class="pt-3 fw-semibold ps-5">Today</div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/2.jpg' %} "></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Addie Minstra</div>
+                                    <p class="mb-0 fs-12 text-muted"> Hey! there I' am available </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/11.jpg' %} "><span
+                                        class="avatar-status bg-success"></span></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Rose Bush</div>
+                                    <p class="mb-0 fs-12 text-muted"> Okay.I will be waiting for you </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/10.jpg' %} "></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Claude Strophobia</div>
+                                    <p class="mb-0 fs-12 text-muted"> Hi we can explain our new project
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/13.jpg' %} "></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Eileen Dover</div>
+                                    <p class="mb-0 fs-12 text-muted"> New product Launching. </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/12.jpg' %} "><span
+                                        class="avatar-status bg-success"></span></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Willie Findit</div>
+                                    <p class="mb-0 fs-12 text-muted"> Okay.I will be waiting for you </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/15.jpg' %} "></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Manny Jah</div>
+                                    <p class="mb-0 fs-12 text-muted"> Hi we can explain our new project
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/4.jpg' %} "></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Cherry Blossom</div>
+                                    <p class="mb-0 fs-12 text-muted"> Hey! there I' am available</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="pt-3 fw-semibold ps-5">Yesterday</div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/7.jpg' %} "><span
+                                        class="avatar-status bg-success"></span></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Simon Sais</div>
+                                    <p class="mb-0 fs-12 text-muted">Schedule Realease </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/9.jpg' %} "></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Laura Biding</div>
+                                    <p class="mb-0 fs-12 text-muted"> Hi we can explain our new project
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/2.jpg' %} "><span
+                                        class="avatar-status bg-success"></span></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Addie Minstra</div>
+                                    <p class="mb-0 fs-12 text-muted">Contact me for details</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/9.jpg' %} "></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Ivan Notheridiya</div>
+                                    <p class="mb-0 fs-12 text-muted"> Hi we can explain our new project
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/14.jpg' %} "></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Dulcie Veeta</div>
+                                    <p class="mb-0 fs-12 text-muted"> Okay.I will be waiting for you </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/11.jpg' %} "></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Florinda Carasco</div>
+                                    <p class="mb-0 fs-12 text-muted">New product Launching.</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="me-2">
+                                <span class="avatar avatar-md brround cover-image"
+                                    data-bs-image-src=" {% static '/assets/images/users/4.jpg' %} "><span
+                                        class="avatar-status bg-success"></span></span>
+                            </div>
+                            <div class="">
+                                <a href=" {% static 'chat.html' %} ">
+                                    <div class="fw-semibold text-dark" data-bs-toggle="modal"
+                                        data-target="#chatmodel">Cherry Blossom</div>
+                                    <p class="mb-0 fs-12 text-muted">cherryblossom@gmail.com</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="sidebar-side3">
+                    <ul class="task-list timeline-task">
+                        <li class="d-sm-flex mt-4">
+                            <div>
+                                <i class="task-icon1"></i>
+                                <h6 class="fw-semibold">Task Finished<span
+                                        class="text-muted fs-11 mx-2 fw-normal">09 July 2021</span></h6>
+                                <p class="text-muted fs-12">Adam Berry finished task on<a href=" {% static 'javascript:void(0)' %} "
+                                        class="fw-semibold"> Project Management</a></p>
+                            </div>
+                            <div class="ms-auto d-md-flex me-3">
+                                <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
+                                <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
+                            </div>
+                        </li>
+                        <li class="d-sm-flex">
+                            <div>
+                                <i class="task-icon1"></i>
+                                <h6 class="fw-semibold">New Comment<span
+                                        class="text-muted fs-11 mx-2 fw-normal">05 July 2021</span></h6>
+                                <p class="text-muted fs-12">Victoria commented on Project <a href=" {% static 'javascript:void(0)' %} "
+                                        class="fw-semibold"> AngularJS Template</a></p>
+                            </div>
+                            <div class="ms-auto d-md-flex me-3">
+                                <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
+                                <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
+                            </div>
+                        </li>
+                        <li class="d-sm-flex">
+                            <div>
+                                <i class="task-icon1"></i>
+                                <h6 class="fw-semibold">New Comment<span
+                                        class="text-muted fs-11 mx-2 fw-normal">25 June 2021</span></h6>
+                                <p class="text-muted fs-12">Victoria commented on Project <a href=" {% static 'javascript:void(0)' %} "
+                                        class="fw-semibold"> AngularJS Template</a></p>
+                            </div>
+                            <div class="ms-auto d-md-flex me-3">
+                                <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
+                                <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
+                            </div>
+                        </li>
+                        <li class="d-sm-flex">
+                            <div>
+                                <i class="task-icon1"></i>
+                                <h6 class="fw-semibold">Task Overdue<span
+                                        class="text-muted fs-11 mx-2 fw-normal">14 June 2021</span></h6>
+                                <p class="text-muted mb-0 fs-12">Petey Cruiser finished task <a href=" {% static 'javascript:void(0)' %} "
+                                        class="fw-semibold"> Integrated management</a></p>
+                            </div>
+                            <div class="ms-auto d-md-flex me-3">
+                                <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
+                                <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
+                            </div>
+                        </li>
+                        <li class="d-sm-flex">
+                            <div>
+                                <i class="task-icon1"></i>
+                                <h6 class="fw-semibold">Task Overdue<span
+                                        class="text-muted fs-11 mx-2 fw-normal">29 June 2021</span></h6>
+                                <p class="text-muted mb-0 fs-12">Petey Cruiser finished task <a href=" {% static 'javascript:void(0)' %} "
+                                        class="fw-semibold"> Integrated management</a></p>
+                            </div>
+                            <div class="ms-auto d-md-flex me-3">
+                                <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
+                                <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
+                            </div>
+                        </li>
+                        <li class="d-sm-flex">
+                            <div>
+                                <i class="task-icon1"></i>
+                                <h6 class="fw-semibold">Task Finished<span
+                                        class="text-muted fs-11 mx-2 fw-normal">09 July 2021</span></h6>
+                                <p class="text-muted fs-12">Adam Berry finished task on<a href=" {% static 'javascript:void(0)' %} "
+                                        class="fw-semibold"> Project Management</a></p>
+                            </div>
+                            <div class="ms-auto d-md-flex me-3">
+                                <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
+                                <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/Sidebar-right-->
+
+<!-- Country-selector modal-->
+<div class="modal fade" id="country-selector">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content country-select-modal">
+            <div class="modal-header">
+                <h6 class="modal-title">Choose Country</h6><button aria-label="Close" class="btn-close"
+                    data-bs-dismiss="modal" type="button"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <ul class="row p-3">
+                    <li class="col-lg-6 mb-2">
+                        <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block active">
+                            <span class="country-selector"><img alt="" src=" {% static '/assets/images/flags-img/us_flag.jpg' %} "
+                                    class="me-3 language"></span>USA
+                        </a>
+                    </li>
+                    <li class="col-lg-6 mb-2">
+                        <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                            <span class="country-selector"><img alt=""
+                                src=" {% static '/assets/images/flags-img/italy_flag.jpg' %} "
+                                class="me-3 language"></span>Italy
+                        </a>
+                    </li>
+                    <li class="col-lg-6 mb-2">
+                        <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                            <span class="country-selector"><img alt=""
+                                src=" {% static '/assets/images/flags-img/spain_flag.jpg' %} "
+                                class="me-3 language"></span>Spain
+                        </a>
+                    </li>
+                    <li class="col-lg-6 mb-2">
+                        <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                            <span class="country-selector"><img alt=""
+                                src=" {% static '/assets/images/flags-img/india_flag.jpg' %} "
+                                class="me-3 language"></span>India
+                        </a>
+                    </li>
+                    <li class="col-lg-6 mb-2">
+                        <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                            <span class="country-selector"><img alt=""
+                                src=" {% static '/assets/images/flags-img/french_flag.jpg' %} "
+                                class="me-3 language"></span>French
+                        </a>
+                    </li>
+                    <li class="col-lg-6 mb-2">
+                        <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                            <span class="country-selector"><img alt=""
+                                src=" {% static '/assets/images/flags-img/russia_flag.jpg' %} "
+                                class="me-3 language"></span>Russia
+                        </a>
+                    </li>
+                    <li class="col-lg-6 mb-2">
+                        <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                            <span class="country-selector"><img alt=""
+                                src=" {% static '/assets/images/flags-img/germany_flag.jpg' %} "
+                                class="me-3 language"></span>Germany
+                        </a>
+                    </li>
+                    <li class="col-lg-6 mb-2">
+                        <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                            <span class="country-selector"><img alt=""
+                                src=" {% static '/assets/images/flags-img/argentina.jpg' %} "
+                                class="me-3 language"></span>Argentina
+                        </a>
+                    </li>
+                    <li class="col-lg-6 mb-2">
+                        <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                            <span class="country-selector"><img alt="" src=" {% static '/assets/images/flags-img/malaysia.jpg' %} "
+                                class="me-3 language"></span>Malaysia
+                        </a>
+                    </li>
+                    <li class="col-lg-6 mb-2">
+                        <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
+                            <span class="country-selector"><img alt="" src=" {% static '/assets/images/flags-img/turkey.jpg' %} "
+                                class="me-3 language"></span>Turkey
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Country-selector modal-->
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="row align-items-center flex-row-reverse">
+            <div class="col-md-12 col-sm-12 text-center">
+                Copyright © <span id="year"></span> <a href=" {% static 'javascript:void(0)' %} ">Sash</a>. Designed with <span class="fa fa-heart text-danger"></span> by <a href="javascript:void(0)"> Spruko </a> All rights reserved.
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- FOOTER CLOSED -->
+</div>
+
+     
+
+<!-- BACK-TO-TOP -->
+<a href=" {% static '#top' %} " id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+   <!-- JQUERY JS -->
+   <script src=" {% static '/assets/js/jquery.min.js' %} "></script>
+
+   <!-- BOOTSTRAP JS -->
+   <script src=" {% static '/assets/plugins/bootstrap/js/popper.min.js' %} "></script>
+   <script src=" {% static '/assets/plugins/bootstrap/js/bootstrap.min.js' %} "></script>
+
+   <!-- SPARKLINE JS-->
+   <script src=" {% static '/assets/js/jquery.sparkline.min.js' %} "></script>
+
+   <!-- Select2 js-->
+   <script src=" {% static '/assets/plugins/select2/select2.full.min.js' %} "></script>
+
+   <!-- TypeHead js -->
+   <script src=" {% static '/assets/plugins/bootstrap5-typehead/autocomplete.js' %} "></script>
+   <script src=" {% static '/assets/js/typehead.js' %} "></script>
+
+   <!-- INTERNAL Edit-Table JS -->
+   <script src=" {% static '/assets/plugins/edit-table/bst-edittable.js' %} "></script>
+   <script src=" {% static '/assets/plugins/edit-table/edit-table.js' %} "></script>
+
+   <!-- Perfect SCROLLBAR JS-->
+   <script src=" {% static '/assets/plugins/p-scroll/perfect-scrollbar.js' %} "></script>
+   <script src=" {% static '/assets/plugins/p-scroll/pscroll.js' %} "></script>
+   <script src=" {% static '/assets/plugins/p-scroll/pscroll-1.js' %} "></script>
+
+   <!-- SIDE-MENU JS -->
+   <script src=" {% static '/assets/plugins/sidemenu/sidemenu.js' %} "></script>
+
+   <!-- SIDEBAR JS -->
+   <script src=" {% static '/assets/plugins/sidebar/sidebar.js' %} "></script>
+
+   <!-- Color Theme js -->
+   <script src=" {% static '/assets/js/themeColors.js' %} "></script>
+
+   <!-- Sticky js -->
+   <script src=" {% static '/assets/js/sticky.js' %} "></script>
+
+   <!-- CUSTOM JS -->
+   <script src=" {% static '/assets/js/custom.js' %} "></script>
+
+   <!-- Custom-switcher -->
+   <script src=" {% static '/assets/js/custom-swicher.js' %} "></script>
+
+   <!-- Switcher js -->
+   <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
+
+<!-- Function to build requests/offers table -->
+   <script>
+$(document).ready(function() {
+    var enquiryId = '{{ enquiry.id }}'; // Ensure enquiryId is dynamically set
+
+    $.ajax({
+        url: `/enquiry/${enquiryId}/requests_offers`, // Adjust URL as needed
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+
+            var requestsTableHtml = generateRequestsOverviewTable(data);
+            // Append the requests overview table to the "requests-table" div
+            $('#requests-table').html(requestsTableHtml);
+
+            data.forEach(function(request) {
+                // Dynamically set titles based on request data
+                var requestCardTitle = request.product || "Not Specified";
+
+                // Initialize the HTML for the parent card
+                var parentCardHtml = `
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Details for ${requestCardTitle}</h3>
+                    </div>
+                    <div class="card-body">`;
+
+                // Generate HTML for supplier offers card
+                var supplierOffersCardHtml = generateSupplierOffersCardHtml(request, `${requestCardTitle} - Supplier Offers`);
+
+                // Generate HTML for offers sent to clients card
+                var clientOffersCardHtml = generateClientOffersCardHtml(request, `${requestCardTitle} - Offers Sent to Clients`);
+
+                // Close the parent card HTML
+                parentCardHtml += supplierOffersCardHtml + clientOffersCardHtml + `</div></div>`;
+
+                // Append the combined parent card to the tables-container div
+                $('#tables-container').append(parentCardHtml);
+            });
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error fetching data:', textStatus, errorThrown);
+        }
+    });
+
+    // Function to generate HTML for supplier offers card
+    function generateSupplierOffersCardHtml(request, cardTitle) {
+        var cardHtml = `<div class="card">
+            <div class="card-header">
+                    <h3 class="card-title">Offers received overview</h3>
+                    <div class="card-options">
+                                            <button type="button" class="btn btn-sm btn-primary btn-edit-offers" data-target="offers-${request.id}">
+                                                <span class="fe fe-edit edit-offer"></span> Edit All
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-success btn-save-offers" style="display:none;" data-target="offers-${request.id}">
+                                                <span class="fe fe-save save-offer"></span> Save All
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-success btn-add-offer" style="display:none;" data-target="offers-${request.id}">
+                                                <span class="fe fe-plus-circle"></span> Add new offer
+                                            </button>
+                                        </div>
+                </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="offers-${request.id}" class="table table-bordered border text-nowrap mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Supplier</th>
+                                                <th>Price</th>
+                                                <th>Payment Terms</th>
+                                                <th>Incoterm</th>
+                                                <th>Specs</th>
+                                                <th>Size</th>
+                                                <th>Packaging</th>
+                                                <th>Validity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
+        // Append each offer row
+        if (request.offers && request.offers.length > 0) {
+    request.offers.forEach(function(offer) {
+        cardHtml += `<tr data-offer-id="${offer.id}">
+            <td contenteditable="false">${offer.supplier || '-'}</td>
+            <td contenteditable="false">${offer.supplier_price || '-'}</td>
+            <td contenteditable="false">${offer.payment_terms || '-'}</td>
+            <td contenteditable="false">${offer.incoterms || '-'}</td>
+            <td contenteditable="false">${offer.specs || '-'}</td>
+            <td contenteditable="false">${offer.size || '-'}</td>
+            <td contenteditable="false">${offer.packaging || '-'}</td>
+            <td contenteditable="false">${offer.validity || '-'}</td>
+        </tr>`;
+    });
+} else {
+    cardHtml += `<tr><td colspan="9">No offers available</td></tr>`;
+}
+        cardHtml += `</tbody></table></div></div></div>`;
+        return cardHtml;
+    }
+
+    // Function to generate HTML for offers sent to clients card
+    function generateClientOffersCardHtml(request, cardTitle) {
+        // Similar to the supplier offers card but with adjustments for client offers
+        var cardHtml = `
+<div class="card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">${cardTitle} - Offers Sent to Clients</h3>
+        <div class="card-options">
+            <button type="button" class="btn btn-sm btn-primary btn-edit-offers-clients">
+                <span class="fe fe-edit"></span> Edit All
+            </button>
+            <button type="button" class="btn btn-sm btn-success btn-save-offers-clients" style="display:none;">
+                <span class="fe fe-save"></span> Save All
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered border text-nowrap">
+                <thead>
+                    <tr>
+                        <th>Supplier</th>
+                        <th>Price Offered</th>
+                        <th>Payment Term Offered</th>
+                        <th>Validity Offered</th>
+                        <th>Customer Feedback</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>`;
+
+// Assuming 'clientOffers' is an array of client offer objects you've retrieved
+if (request.offers_client && request.offers_client.length > 0) {
+    request.offers_client.forEach(function(offer) {
+        // Append a new row to the table's tbody with the offer details
+        cardHtml += `
+        <tr data-offer-client-id="${offer.id}">
+            <td>${offer.supplier || '-'}</td>
+            <td>${offer.price_offered || '-'}</td>
+            <td>${offer.payment_term_offered || '-'}</td>
+            <td>${offer.validity_offered || '-'}</td>
+            <td>${offer.customer_feedback || '-'}</td>
+            <td>${offer.notes || '-'}</td>
+        </tr>`;
+    });
+} else {
+    // Make sure this line is correctly included within the cardHtml string and inside <tbody>
+    cardHtml += `<tr><td colspan="6">No offers sent to clients available</td></tr>`;
+}
+cardHtml += `</tbody></table></div></div></div>`; // This line closes the table and the card correctly
+        // Populate cardHtml with client offers data
+        return cardHtml;
+    }
+
+    function generateRequestsOverviewTable(data) {
+        var tableHtml = `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Requests Overview</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered border text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Specs</th>
+                                    <th>Size</th>
+                                    <th>Payment Terms Requested</th>
+                                    <th>Incoterms</th>
+                                    <th>Discharge Port</th>
+                                    <th>Packaging</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+
+        data.forEach(function(request) {
+            var productName = request.product || "Not Specified";
+            tableHtml += `<tr data-request-id="${request.id}">
+                <td>${productName}</td>
+                <td>${request.quantity || '-'}</td>
+                <td>${request.specs || '-'}</td>
+                <td>${request.size || '-'}</td>
+                <td>${request.payment_terms_requested || '-'}</td>
+                <td>${request.incoterms || '-'}</td>
+                <td>${request.discharge_port || '-'}</td>
+                <td>${request.packaging || '-'}</td>
+                <td>${request.notes || '-'}</td>
+            </tr>`;
+        });
+
+        tableHtml += `</tbody></table></div></div></div>`;
+        return tableHtml;
+    }
+});
+
+
+    </script>
+
+    <!-- Function to make offers tables editable-->
+
+    <script>
+$(document).ready(function() {
+    // Make all fields in the specified table editable
+    $(document).on('click', '.btn-edit-offers', function() {
+        var targetTableId = $(this).data('target');
+        var $table = $('#' + targetTableId);
+        var $card = $table.closest('.card');
+
+        $table.find('td').not(':last-child').attr('contenteditable', 'true');
+        $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').show();
+        $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').show();
+        $(this).hide();
+    });
+
+        // Add a new editable row when "Add New Offer" is clicked
+        $(document).on('click', '.btn-add-offer', function() {
+        var targetTableId = $(this).data('target');
+        var $table = $('#' + targetTableId);
+        var newRow = `<tr>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                      </tr>`;
+        $table.find('tbody').append(newRow);
+    });
+
+    // Handle the save action for the specified table
+    $(document).on('click', '.btn-save-offers', function() {
+        var targetTableId = $(this).data('target'); // Get the target table ID using the updated data-target format
+        var requestIdParts = targetTableId.split('-'); // Split the targetTableId by '-'
+        var requestId = requestIdParts[requestIdParts.length - 1]; // Get the last part, which is the requestId
+        var $table = $('#' + targetTableId); // Find the table by ID
+        var $card = $table.closest('.card'); // Find the closest card to this table
+        var offersToUpdate = []; // Array to hold data for all offers in this table
+        $table.find('tbody tr').each(function() {
+            var $row = $(this);
+            var offerId = $row.data('offer-id');
+            console.log(requestId)
+            // Collect data for this offer
+            var offerData = {
+                id: offerId,
+                request_id: requestId,
+                supplier: $row.find('td:eq(0)').text(),
+                supplier_price: $row.find('td:eq(1)').text(),
+                payment_terms: $row.find('td:eq(2)').text(),
+                incoterms: $row.find('td:eq(3)').text(),
+                specs: $row.find('td:eq(4)').text(),
+                size: $row.find('td:eq(5)').text(),
+                packaging: $row.find('td:eq(6)').text(),
+                validity: $row.find('td:eq(7)').text(),
+            };
+            offersToUpdate.push(offerData);
+        });
+
+        // Send AJAX request to save all updated offers for this table
+        $.ajax({
+            url: '/update_offers/', // Update this URL to your actual endpoint
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({offers: offersToUpdate}),
+            success: function(response) {
+                // Handle success
+                $table.find('td').attr('contenteditable', 'false');
+                $card.find('.btn-edit-offers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
+                $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').hide(); // Hide the save button
+            },
+            error: function(error) {
+                // Handle errors
+                console.log(error);
+            }
+        });
+    });
+});
+
+   
+    </script>
+
+<!-- Function to make request tables editables-->
+    <script>
+
+$(document).ready(function() {
+    // Make request fields editable
+    $(document).on('click', '.btn-edit-requests', function() {
+        $('#requests-table').find('td').attr('contenteditable', 'true');
+        $('.btn-save-requests').show(); // Show the save button for requests
+        $(this).hide(); // Hide the edit button for requests
+    });
+
+    // Handle the save action for requests
+    $(document).on('click', '.btn-save-requests', function() {
+        var requestsToUpdate = [];
+        $('#requests-table tbody tr').each(function() {
+            var $row = $(this);
+            // Assuming each row has a data-request-id attribute
+            var requestId = $row.data('request-id');
+            var requestData = {
+                id: requestId,
+                // Collect data for this request, adjust selectors as needed
+                quantity: $row.find('td:eq(1)').text(),
+                specs: $row.find('td:eq(2)').text(),
+                size: $row.find('td:eq(3)').text(),
+                payment_terms_requested: $row.find('td:eq(4)').text(),
+                incoterms: $row.find('td:eq(5)').text(),
+                discharge_port: $row.find('td:eq(6)').text(),
+                packaging: $row.find('td:eq(7)').text(),
+                notes: $row.find('td:eq(8)').text(),
+            };
+            requestsToUpdate.push(requestData);
+        });
+
+        // Send AJAX request to save all updated requests
+        $.ajax({
+            url: '/update_requests/',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({requests: requestsToUpdate}),
+            success: function(response) {
+                $('#requests-table').find('td').attr('contenteditable', 'false');
+                $('.btn-edit-requests').show(); // Show the edit button for requests again
+                $('.btn-save-requests').hide(); // Hide the save button for requests
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+});
+
+    </script>
+    
+</body>
+
+</html>

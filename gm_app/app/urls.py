@@ -11,6 +11,9 @@ urlpatterns = [
    path('update_client_offers/', views.update_client_offers, name='update_client_offers'),
    path('enquiry_list', views.enquiry_list,name = 'enquiry_list'),
    path('update_requests/', views.update_requests, name='update_requests'),
-   path('api/enquiries/', views.get_enquiries, name='api_enquiries')
+   path('api/enquiries/', views.get_enquiries, name='api_enquiries'),
+   path('supplier_list/', views.supplier_list, name='supplier_list'),
+   path('api/suppliers/', views.suppliers_api, name='suppliers_api'),
+   path('supplier_detail/<int:id>/', views.supplier_detail, name='supplier_detail')
 ]
                                                             

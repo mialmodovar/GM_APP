@@ -24,7 +24,8 @@ class Supplier(models.Model):
     name = models.TextField(blank=True, null=True)
     country = models.TextField(blank=True, null=True)
     contact_person = models.TextField(blank=True, null=True)
-    
+    email = models.TextField(blank=True, null=True)
+
 class Client(models.Model):
     name = models.TextField(blank=True, null=True)
     country = models.TextField(blank=True, null=True)

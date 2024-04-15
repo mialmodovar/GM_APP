@@ -187,7 +187,7 @@
                                         class="side-menu__label">Dashboard</span></a>
                             </li>
                             <li class="slide">
-                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href="enquiry_list.html"><i
                                         class="side-menu__icon fe fe-send"></i><span
                                         class="side-menu__label">Enquiries</span></a>
                             </li>
@@ -197,7 +197,8 @@
                                         class="side-menu__label">Create new Enquiry</span></a>
                             </li>
                             <li class="slide">
-                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href="supplier_list".html
+                                "><i
                                         class="side-menu__icon fe fe-activity"></i><span
                                         class="side-menu__label">Supplier Management</span></a>
                             </li>
@@ -985,22 +986,27 @@ fetchEnquiries();
     </script>
 
 <script>
-    $(document).ready(function() {
-        // Initialize the DataTable
-        var table = $('#basic-datatable').DataTable({
-            "lengthChange": true,
-            "pageLength": 5
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to show only the selected number of rows
+        function updateTableDisplay(tableId, numRows) {
+            const tableBody = document.querySelector(tableId + ' tbody');
+            const rows = tableBody.querySelectorAll('tr');
+            rows.forEach((row, index) => {
+                row.style.display = index < numRows ? '' : 'none';
+            });
+        }
+    
+        // Event listener for the supplier table dropdown
+        document.querySelector('#basic-datatable_length select').addEventListener('change', function() {
+            updateTableDisplay('#basic-datatable', parseInt(this.value));
         });
     
-        // Initialize the Select2 plugin
-        $('select[name="basic-datatable_length"]').select2().on('change.select2', function() {
-            // When the Select2 length change occurs, update DataTables page length
-            var selectedLength = $(this).val();
-            table.page.len(selectedLength).draw();
+        // Optionally, add a similar listener for the enquiries table if it has a different ID
+        // Assuming the enquiries table has an ID of 'enquiries-datatable'
+        document.querySelector('#enquiries-datatable_length select').addEventListener('change', function() {
+            updateTableDisplay('#enquiries-datatable', parseInt(this.value));
         });
-    
-        // Ensure initial synchronization of Select2 with DataTables
-        $('select[name="basic-datatable_length"]').val('10').trigger('change.select2');
     });
     </script>
+    
     
