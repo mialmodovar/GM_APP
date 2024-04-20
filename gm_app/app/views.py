@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.views.generic import TemplateView
 
-from .models import Enquiry, Client, Offer, Product, Request, Supplier, Offer_Client
+from .models import Enquiry, Client, Offer, Product, Request, Supplier, Offer_Client, Manager
 import time
 from django.db.models import F
 from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
@@ -38,11 +38,43 @@ gpt4_api_key = os.getenv('OPEN_AI')
 
 
 def index(request):
-    return render(request, 'app/new_enquiry.html')
+    # Fetch all client names
+    clients = Client.objects.all().order_by('name').values_list('name', flat=True)
+
+    # Fetch all product names
+    products = Product.objects.all().order_by('name').values_list('name', flat=True)
+
+    # Fetch all supplier names
+    suppliers = Supplier.objects.all().order_by('name').values_list('name', flat=True)
+
+    # Prepare context to be passed to the template
+    context = {
+        'clients': list(clients),
+        'products': list(products),
+        'suppliers': list(suppliers)
+    }
+
+    return render(request, 'app/new_enquiry.html', context)
 
 def enquiry(request,pk):
     enquiry = get_object_or_404(Enquiry, pk=pk)
-    return render(request, 'app/enquiry.html', {'enquiry': enquiry})
+    # Fetch all client names
+    clients = Client.objects.all().order_by('name').values_list('name', flat=True)
+
+    # Fetch all product names
+    products = Product.objects.all().order_by('name').values_list('name', flat=True)
+
+    # Fetch all supplier names
+    suppliers = Supplier.objects.all().order_by('name').values_list('name', flat=True)
+    print(enquiry)
+    # Prepare context to be passed to the template
+    context = {
+        'enquiry': enquiry,
+        'clients': list(clients),
+        'products': list(products),
+        'suppliers': list(suppliers)
+    }
+    return render(request, 'app/enquiry.html', context)
 
 
 @csrf_exempt
@@ -50,18 +82,25 @@ def create_enquiry_ajax(request):
     if request.method == 'POST':
         # Decode the JSON payload
         data = json.loads(request.body)
-
+        print(data)
         # Create or get the client
         client_name = data.get('client')
+        print(client_name)
         client, _ = Client.objects.get_or_create(name=client_name)
 
+        # Create or get the manager
+        manager_name = data.get('manager')
+        manager, _ = Manager.objects.get_or_create(name=manager_name)
+        print(manager)
+
         # Parse dates
-        received_date = datetime.strptime(data.get('inquiry_received_date'), '%m/%d/%Y').date() if data.get('inquiry_received_date') else None
-        deadline_date = datetime.strptime(data.get('inquiry_deadline_date'), '%m/%d/%Y').date() if data.get('inquiry_deadline_date') else None
+        received_date = datetime.strptime(data.get('inquiry_received_date'), '%d/%m/%Y').date() if data.get('inquiry_received_date') else None
+        deadline_date = datetime.strptime(data.get('inquiry_deadline_date'), '%d/%m/%Y').date() if data.get('inquiry_deadline_date') else None
 
         # Create the enquiry
         enquiry = Enquiry.objects.create(
             client=client,
+            manager = manager,
             received_date=received_date,
             submission_deadline=deadline_date,
             status='ACTIVE'  # Assuming a new enquiry starts as 'ACTIVE'
@@ -80,6 +119,9 @@ def create_enquiry_ajax(request):
                 size=product_detail.get('size', ''),
                 quantity=product_detail.get('quantity', ''),
                 packaging=product_detail.get('packaging', ''),
+                incoterms = data.get('incoterm_wanted'),
+                discharge_port = data.get('port_of_discharge')
+
                 # Add other fields as necessary
             )
 
@@ -107,64 +149,61 @@ def requests_offers_for_enquiry(request, enquiry_id):
     
     data = []
     for req in requests:
-        try:
-            product_name = req.product.name  # Assuming 'name' field in Product model
-        except ObjectDoesNotExist:
-            product_name = "Not available"
+        product_name = req.product.name if req.product and req.product.name else "Not available"
         
         req_dict = {
             'product': product_name,
             'id': req.id,
-            'specs': req.specs,
-            'size': req.size,
-            'quantity': req.quantity,
-            'incoterms': req.incoterms,
-            'packaging': req.packaging,
-            'discharge_port': req.discharge_port,
-            'payment_terms_requested': req.payment_terms_requested,
-            'notes': req.notes,
-            'price_offered': req.price_offered,
-            'payment_term_offered': req.payment_term_offered,
-            'validity_offered': req.validity_offered if req.validity_offered else "Not available",  # Handle DateField
-            'customer_feedback': req.customer_feedback,
+            'specs': req.specs or "",
+            'size': req.size or "",
+            'quantity': req.quantity or "",
+            'incoterms': req.incoterms or "",
+            'packaging': req.packaging or "",
+            'discharge_port': req.discharge_port or "",
+            'payment_terms_requested': req.payment_terms_requested or "",
+            'notes': req.notes or "",
+            'price_offered': req.price_offered or "",
+            'payment_term_offered': req.payment_term_offered or "",
+            'validity_offered': req.validity_offered.strftime("%Y-%m-%d") if req.validity_offered else "DD/MM/YYYY",
+            'customer_feedback': req.customer_feedback or "",
             'offers': [],
             'offers_client': []
         }
 
         offers = req.offers.all()
+        offers_client = req.offers_client.all()
+        
         for offer in offers:
-            try:
-                supplier_name = offer.supplier.name  # Assuming 'name' field in Supplier model
-            except ObjectDoesNotExist:
-                supplier_name = "Not available"
+            supplier_name = offer.supplier.name if offer.supplier and offer.supplier.name else "Not available"
 
             offer_dict = {
                 'id': offer.id,
                 'supplier': supplier_name,
-                'supplier_price': offer.supplier_price,
-                'incoterms': offer.incoterms,
-                'specs': offer.specs,
-                'size': offer.size,
-                'packaging': offer.packaging,
-                'payment_terms': offer.payment_terms,
-                'validity': offer.validity.strftime("%Y-%m-%d") if offer.validity else "Not available",  # Format DateField
-                'notes': offer.notes,
+                'supplier_price': offer.supplier_price or "",
+                'incoterms': offer.incoterms or "",
+                'specs': offer.specs or "",
+                'size': offer.size or "",
+                'packaging': offer.packaging or "",
+                'payment_terms': offer.payment_terms or "",
+                'validity': offer.validity.strftime("%Y-%m-%d") if offer.validity else "DD/MM/YYYY",
+                'notes': offer.notes or "",
             }
             req_dict['offers'].append(offer_dict)
 
-            for offer_client in req.offers_client.all():
-                supplier_name = offer_client.supplier.name if offer_client.supplier else "Not available"
-                offer_client_dict = {
-                    'id': offer_client.id,
-                    'supplier': supplier_name,
-                    'price_offered': offer_client.price_offered or "Not available",
-                    'payment_term_offered': offer_client.payment_term_offered or "Not available",
-                    'validity_offered': offer_client.validity_offered or "Not available",
-                    'customer_feedback': offer_client.customer_feedback or "Not available",
-                    'notes': offer_client.notes or "Not available",
-                }
-                req_dict['offers_client'].append(offer_client_dict)
-        
+        for offer_client in offers_client:
+            supplier_name = offer_client.supplier.name if offer_client.supplier and offer_client.supplier.name else "Not available"
+
+            offer_client_dict = {
+                'id': offer_client.id,
+                'supplier': supplier_name,
+                'price_offered': offer_client.price_offered or "",
+                'payment_term_offered': offer_client.payment_term_offered or "",
+                'validity_offered': offer_client.validity_offered or "DD/MM/YYYY",
+                'customer_feedback': offer_client.customer_feedback or "",
+                'notes': offer_client.notes or "",
+            }
+            req_dict['offers_client'].append(offer_client_dict)
+
         data.append(req_dict)
 
     return JsonResponse(data, safe=False)
@@ -298,6 +337,35 @@ def update_requests(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
+
+
+@csrf_exempt
+def update_enquiry_details(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            enquiry_id = data.get('enquiry_id')  # Retrieve the enquiry ID from the data
+            enquiry = get_object_or_404(Enquiry, pk=enquiry_id)
+            
+            # Update the fields based on data keys
+            for key, value in data.items():
+                if hasattr(enquiry, key) and key != 'enquiry_id':  # Exclude 'enquiry_id' from being treated as a field
+                    # Special handling for date fields
+                    if 'date' in key and value:
+                        try:
+                            value = datetime.strptime(value, '%d/%m/%Y').date()
+                        except ValueError:
+                            return JsonResponse({'error': 'Invalid date format'}, status=400)
+                    setattr(enquiry, key, value)
+            
+            enquiry.save()
+            return JsonResponse({'success': True, 'message': 'Enquiry updated successfully'})
+        
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
 
 
 #def enquiry_list(request):

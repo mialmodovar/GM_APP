@@ -223,57 +223,66 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-2">
-                                <div class=" row mb-4">
+                                <div class="row mb-4">
                                     <div class="col-md-12">
-                                        <label for="exampleInputEmail1">Manager</label>
-                                        <input type="text" class="form-control" readonly="" value="Himanshu">
+                                        <div>
+                                            <label>Status</label>
+                                            <select name="status" class="form-control form-select select2 select2-hidden-accessible" data-bs-placeholder="Select Status" tabindex="-1" aria-hidden="true">
+                                                <option value="ACTIVE" {% if enquiry.status == 'ACTIVE' %}selected{% endif %}>ACTIVE</option>
+                                                <option value="CLOSED" {% if enquiry.status == 'CLOSED' %}selected{% endif %}>CLOSED</option>
+                                                <option value="ORDER" {% if enquiry.status == 'ORDER' %}selected{% endif %}>ORDER</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <div class=" row mb-4">
+                                <div class="row mb-4">
                                     <div class="col-md-12">
-                                        <label for="exampleInputEmail1">Client</label>
-                                        <input type="text" class="form-control" readonly="" value="CSN">
+                                        <label>Manager</label>
+                                        <input type="text" class="form-control"  value="{{ enquiry.manager.name }}">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <div class=" row mb-4">
+                                <div class="row mb-4">
                                     <div class="col-md-12">
-                                        <label for="exampleInputEmail1">Company Guy</label>
-                                        <input type="text" class="form-control" readonly="" value="Luiz">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class=" row mb-4">
-                                    <div class="col-md-12">
-                                        <label for="exampleInputEmail1">Manager</label>
-                                        <input type="text" class="form-control" readonly="" value="Himanshu">
+                                        <label>Client</label>
+                                      
+                                     <input type="text" class="form-control"  value="{{ enquiry.client.name }}"> 
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-2 mt-2 mt-md-0">
-                                <label for="exampleInputEmail1">Manager</label>
+                                <label>Received Date</label>
                                 <div class="input-group">
                                     <div class="input-group-text">
-                                        <span class="fa fa-clock-o tx-16 lh-0 op-6"></span>
+                                        <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                     </div>
-                                    <input class="form-control" id="datepicker-month" placeholder="Month Range" type="text">
+                                    <input class="form-control fc-datepicker" placeholder="DD/MM/YYYY" type="text" value="{{ enquiry.received_date|date:"d/m/Y" }}" >
                                 </div>
                             </div>
                             <div class="col-md-2 mt-2 mt-md-0">
-                                <label for="exampleInputEmail1">Manager</label>
+                                <label>Deadline</label>
                                 <div class="input-group">
                                     <div class="input-group-text">
-                                        <span class="fa fa-clock-o tx-16 lh-0 op-6"></span>
+                                        <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                     </div>
-                                    <input class="form-control" id="datepicker-year" placeholder="Year Range" type="text">
+                                    <input class="form-control fc-datepicker" placeholder="DD/MM/YYYY" type="text" value="{{ enquiry.submission_deadline|date:"d/m/Y" }}" >
+                                </div>
+                            </div>
+                            <div class="col-md-2 mt-2 mt-md-0">
+                                <label>Submission Date</label>
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
+                                    </div>
+                                    <input class="form-control fc-datepicker" placeholder="DD/MM/YYYY" type="text" value="{{ enquiry.submission_date|date:"m/d/Y" }}" >
                                 </div>
                             </div>
                             <div id="requests-table"></div>
                         </div>
+                        
                           
                         </div>
                     </div>
@@ -289,159 +298,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Basic Edit Table</h3>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered border text-nowrap mb-0" id="basic-edit">
-                            <thead>
-                                <tr>
-                                    <th>First name</th>
-                                    <th>Last name</th>
-                                    <th>Position</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                    <th>E-mail</th>
-                                <th name="bstable-actions">Actions</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Bella</td>
-                                    <td>Chloe</td>
-                                    <td>System Developer</td>
-                                    <td>2018/03/12</td>
-                                    <td>$654,765</td>
-                                    <td>b.Chloe@datatables.net</td>
-                                <td name="bstable-actions"><div class="btn-list">
-<button id="bEdit" type="button" class="btn btn-sm btn-primary">
-<span class="fe fe-edit"> </span>
-</button>
-<button id="bDel" type="button" class="btn  btn-sm btn-danger">
-<span class="fe fe-trash-2"> </span>
-</button>
-<button id="bAcep" type="button" class="btn  btn-sm btn-primary" style="display:none;">
-<span class="fe fe-check-circle"> </span>
-</button>
-<button id="bCanc" type="button" class="btn  btn-sm btn-danger" style="display:none;">
-<span class="fe fe-x-circle"> </span>
-</button>
-</div></td></tr>
-                                <tr>
-                                    <td>Donna</td>
-                                    <td>Bond</td>
-                                    <td>Account Manager</td>
-                                    <td>2012/02/21</td>
-                                    <td>$543,654</td>
-                                    <td>d.bond@datatables.net</td>
-                                <td name="bstable-actions"><div class="btn-list">
-<button id="bEdit" type="button" class="btn btn-sm btn-primary">
-<span class="fe fe-edit"> </span>
-</button>
-<button id="bDel" type="button" class="btn  btn-sm btn-danger">
-<span class="fe fe-trash-2"> </span>
-</button>
-<button id="bAcep" type="button" class="btn  btn-sm btn-primary" style="display:none;">
-<span class="fe fe-check-circle"> </span>
-</button>
-<button id="bCanc" type="button" class="btn  btn-sm btn-danger" style="display:none;">
-<span class="fe fe-x-circle"> </span>
-</button>
-</div></td></tr>
-                                <tr>
-                                    <td>Harry</td>
-                                    <td>Carr</td>
-                                    <td>Technical Manager</td>
-                                    <td>2011/02/87</td>
-                                    <td>$86,000</td>
-                                    <td>h.carr@datatables.net</td>
-                                <td name="bstable-actions"><div class="btn-list">
-<button id="bEdit" type="button" class="btn btn-sm btn-primary">
-<span class="fe fe-edit"> </span>
-</button>
-<button id="bDel" type="button" class="btn  btn-sm btn-danger">
-<span class="fe fe-trash-2"> </span>
-</button>
-<button id="bAcep" type="button" class="btn  btn-sm btn-primary" style="display:none;">
-<span class="fe fe-check-circle"> </span>
-</button>
-<button id="bCanc" type="button" class="btn  btn-sm btn-danger" style="display:none;">
-<span class="fe fe-x-circle"> </span>
-</button>
-</div></td></tr>
-                                <tr>
-                                    <td>Lucas</td>
-                                    <td>Dyer</td>
-                                    <td>Javascript Developer</td>
-                                    <td>2014/08/23</td>
-                                    <td>$456,123</td>
-                                    <td>l.dyer@datatables.net</td>
-                                <td name="bstable-actions"><div class="btn-list">
-<button id="bEdit" type="button" class="btn btn-sm btn-primary">
-<span class="fe fe-edit"> </span>
-</button>
-<button id="bDel" type="button" class="btn  btn-sm btn-danger">
-<span class="fe fe-trash-2"> </span>
-</button>
-<button id="bAcep" type="button" class="btn  btn-sm btn-primary" style="display:none;">
-<span class="fe fe-check-circle"> </span>
-</button>
-<button id="bCanc" type="button" class="btn  btn-sm btn-danger" style="display:none;">
-<span class="fe fe-x-circle"> </span>
-</button>
-</div></td></tr>
-                                <tr>
-                                    <td>Karen</td>
-                                    <td>Hill</td>
-                                    <td>Sales Manager</td>
-                                    <td>2010/7/14</td>
-                                    <td>$432,230</td>
-                                    <td>k.hill@datatables.net</td>
-                                <td name="bstable-actions"><div class="btn-list">
-<button id="bEdit" type="button" class="btn btn-sm btn-primary">
-<span class="fe fe-edit"> </span>
-</button>
-<button id="bDel" type="button" class="btn  btn-sm btn-danger">
-<span class="fe fe-trash-2"> </span>
-</button>
-<button id="bAcep" type="button" class="btn  btn-sm btn-primary" style="display:none;">
-<span class="fe fe-check-circle"> </span>
-</button>
-<button id="bCanc" type="button" class="btn  btn-sm btn-danger" style="display:none;">
-<span class="fe fe-x-circle"> </span>
-</button>
-</div></td></tr>
-                                <tr>
-                                    <td>Dominic</td>
-                                    <td>Hudson</td>
-                                    <td>Sales Assistant</td>
-                                    <td>2015/10/16</td>
-                                    <td>$654,300</td>
-                                    <td>d.hudson@datatables.net</td>
-                                <td name="bstable-actions"><div class="btn-list">
-<button id="bEdit" type="button" class="btn btn-sm btn-primary">
-<span class="fe fe-edit"> </span>
-</button>
-<button id="bDel" type="button" class="btn  btn-sm btn-danger">
-<span class="fe fe-trash-2"> </span>
-</button>
-<button id="bAcep" type="button" class="btn  btn-sm btn-primary" style="display:none;">
-<span class="fe fe-check-circle"> </span>
-</button>
-<button id="bCanc" type="button" class="btn  btn-sm btn-danger" style="display:none;">
-<span class="fe fe-x-circle"> </span>
-</button>
-</div></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     </div>
 </div>
@@ -1042,6 +899,8 @@
    <!-- JQUERY JS -->
    <script src=" {% static '/assets/js/jquery.min.js' %} "></script>
 
+
+
    <!-- BOOTSTRAP JS -->
    <script src=" {% static '/assets/plugins/bootstrap/js/popper.min.js' %} "></script>
    <script src=" {% static '/assets/plugins/bootstrap/js/bootstrap.min.js' %} "></script>
@@ -1052,6 +911,20 @@
    <!-- Select2 js-->
    <script src=" {% static '/assets/plugins/select2/select2.full.min.js' %} "></script>
 
+      <!-- INTERNAL SELECT2 JS -->
+      <script src="{% static '/assets/plugins/select2/select2.full.min.js' %}"></script>
+
+      <script src="{% static '/assets/js/select2.js' %}"></script>
+
+      <!-- INTERNAL Bootstrap-Datepicker js-->
+    <script src=" {% static '/assets/plugins/bootstrap-daterangepicker/daterangepicker.js' %} "></script>
+
+    <!-- BOOTSTRAP-DATERANGEPICKER JS -->
+    <script src=" {% static '/assets/plugins/bootstrap-daterangepicker/moment.min.js' %} "></script>
+
+    <!-- INTERNAL Bootstrap-Datepicker js-->
+    <script src=" {% static '/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js' %} "></script>
+
    <!-- TypeHead js -->
    <script src=" {% static '/assets/plugins/bootstrap5-typehead/autocomplete.js' %} "></script>
    <script src=" {% static '/assets/js/typehead.js' %} "></script>
@@ -1059,6 +932,7 @@
    <!-- INTERNAL Edit-Table JS -->
    <script src=" {% static '/assets/plugins/edit-table/bst-edittable.js' %} "></script>
    <script src=" {% static '/assets/plugins/edit-table/edit-table.js' %} "></script>
+
 
    <!-- Perfect SCROLLBAR JS-->
    <script src=" {% static '/assets/plugins/p-scroll/perfect-scrollbar.js' %} "></script>
@@ -1084,7 +958,13 @@
    <script src=" {% static '/assets/js/custom-swicher.js' %} "></script>
 
    <!-- Switcher js -->
-   <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
+   <script src="{% static '/assets/switcher/js/switcher.js' %} "></script>
+
+
+
+  
+   
+
 
 <!-- Function to build requests/offers table -->
    <script>
@@ -1096,7 +976,7 @@ $(document).ready(function() {
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-
+            console.log(data)
             var requestsTableHtml = generateRequestsOverviewTable(data);
             // Append the requests overview table to the "requests-table" div
             $('#requests-table').html(requestsTableHtml);
@@ -1135,7 +1015,7 @@ $(document).ready(function() {
     function generateSupplierOffersCardHtml(request, cardTitle) {
         var cardHtml = `<div class="card">
             <div class="card-header">
-                    <h3 class="card-title">Offers received overview</h3>
+                    <h3 class="card-title">${request.product} - Offers received from suppliers</h3>
                     <div class="card-options">
                                             <button type="button" class="btn btn-sm btn-primary btn-edit-offers" data-target="offers-${request.id}">
                                                 <span class="fe fe-edit edit-offer"></span> Edit All
@@ -1168,19 +1048,17 @@ $(document).ready(function() {
         if (request.offers && request.offers.length > 0) {
     request.offers.forEach(function(offer) {
         cardHtml += `<tr data-offer-id="${offer.id}">
-            <td contenteditable="false">${offer.supplier || '-'}</td>
-            <td contenteditable="false">${offer.supplier_price || '-'}</td>
-            <td contenteditable="false">${offer.payment_terms || '-'}</td>
-            <td contenteditable="false">${offer.incoterms || '-'}</td>
-            <td contenteditable="false">${offer.specs || '-'}</td>
-            <td contenteditable="false">${offer.size || '-'}</td>
-            <td contenteditable="false">${offer.packaging || '-'}</td>
-            <td contenteditable="false">${offer.validity || '-'}</td>
+            <td contenteditable="false">${offer.supplier}</td>
+            <td contenteditable="false">${offer.supplier_price}</td>
+            <td contenteditable="false">${offer.payment_terms}</td>
+            <td contenteditable="false">${offer.incoterms}</td>
+            <td contenteditable="false">${offer.specs}</td>
+            <td contenteditable="false">${offer.size}</td>
+            <td contenteditable="false">${offer.packaging}</td>
+            <td contenteditable="false">${offer.validity}</td>
         </tr>`;
     });
-} else {
-    cardHtml += `<tr><td colspan="9">No offers available</td></tr>`;
-}
+} 
         cardHtml += `</tbody></table></div></div></div>`;
         return cardHtml;
     }
@@ -1191,7 +1069,7 @@ $(document).ready(function() {
         var cardHtml = `
 <div class="card mb-4">
     <div class="card-header">
-        <h3 class="card-title">${cardTitle} - Offers Sent to Clients</h3>
+        <h3 class="card-title">${request.product} - Offers sent to Client</h3>
         <div class="card-options">
                                             <button type="button" class="btn btn-sm btn-primary btn-edit-clientoffers" data-target="offers_clients-${request.id}">
                                                 <span class="fe fe-edit edit-offer"></span> Edit All
@@ -1226,12 +1104,12 @@ if (request.offers_client && request.offers_client.length > 0) {
         // Append a new row to the table's tbody with the offer details
         cardHtml += `
         <tr data-offer-client-id="${offer.id}">
-            <td>${offer.supplier || '-'}</td>
-            <td>${offer.price_offered || '-'}</td>
-            <td>${offer.payment_term_offered || '-'}</td>
-            <td>${offer.validity_offered || '-'}</td>
-            <td>${offer.customer_feedback || '-'}</td>
-            <td>${offer.notes || '-'}</td>
+            <td>${offer.supplier}</td>
+            <td>${offer.price_offered}</td>
+            <td>${offer.payment_term_offered}</td>
+            <td>${offer.validity_offered}</td>
+            <td>${offer.customer_feedback}</td>
+            <td>${offer.notes}</td>
         </tr>`;
     });
 } else {
@@ -1279,14 +1157,14 @@ cardHtml += `</tbody></table></div></div></div>`; // This line closes the table 
             var productName = request.product || "Not Specified";
             tableHtml += `<tr data-request-id="${request.id}">
                 <td>${productName}</td>
-                <td>${request.quantity || '-'}</td>
-                <td>${request.specs || '-'}</td>
-                <td>${request.size || '-'}</td>
-                <td>${request.payment_terms_requested || '-'}</td>
-                <td>${request.incoterms || '-'}</td>
-                <td>${request.discharge_port || '-'}</td>
-                <td>${request.packaging || '-'}</td>
-                <td>${request.notes || '-'}</td>
+                <td>${request.quantity}</td>
+                <td>${request.specs}</td>
+                <td>${request.size}</td>
+                <td>${request.payment_terms_requested}</td>
+                <td>${request.incoterms}</td>
+                <td>${request.discharge_port}</td>
+                <td>${request.packaging}</td>
+                <td>${request.notes}</td>
             </tr>`;
         });
 
@@ -1308,7 +1186,7 @@ $(document).ready(function() {
         var $table = $('#' + targetTableId);
         var $card = $table.closest('.card');
 
-        $table.find('td').not(':last-child').attr('contenteditable', 'true');
+        $table.find('td').attr('contenteditable', 'true');
         $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').show();
         $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').show();
         $(this).hide();
@@ -1340,24 +1218,33 @@ $(document).ready(function() {
         var $card = $table.closest('.card'); // Find the closest card to this table
         var offersToUpdate = []; // Array to hold data for all offers in this table
         $table.find('tbody tr').each(function() {
-            var $row = $(this);
-            var offerId = $row.data('offer-id');
-            console.log(requestId)
-            // Collect data for this offer
-            var offerData = {
-                id: offerId,
-                request_id: requestId,
-                supplier: $row.find('td:eq(0)').text(),
-                supplier_price: $row.find('td:eq(1)').text(),
-                payment_terms: $row.find('td:eq(2)').text(),
-                incoterms: $row.find('td:eq(3)').text(),
-                specs: $row.find('td:eq(4)').text(),
-                size: $row.find('td:eq(5)').text(),
-                packaging: $row.find('td:eq(6)').text(),
-                validity: $row.find('td:eq(7)').text(),
-            };
-            offersToUpdate.push(offerData);
-        });
+        var $row = $(this);
+        var offerId = $row.data('offer-id');
+        var validity = $row.find('td:eq(7)').text().trim();
+        // Regular expression to check if date is in DD/MM/YYYY format
+        var dateRegex = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/\d{4}$/;
+
+        // Check if validity is either in the correct format, empty, or the default placeholder
+        if ((validity !== "" && validity !== "DD/MM/YYYY" && !dateRegex.test(validity))) {
+            allValid = false;
+            alert("Date should be entered in correct DD/MM/YYYY format, be left empty, or be 'DD/MM/YYYY' as a placeholder.");
+            return false;  // Break the each loop
+        }
+
+        var offerData = {
+            id: offerId,
+            request_id: requestId,
+            supplier: $row.find('td:eq(0)').text(),
+            supplier_price: $row.find('td:eq(1)').text(),
+            payment_terms: $row.find('td:eq(2)').text(),
+            incoterms: $row.find('td:eq(3)').text(),
+            specs: $row.find('td:eq(4)').text(),
+            size: $row.find('td:eq(5)').text(),
+            packaging: $row.find('td:eq(6)').text(),
+            validity: (dateRegex.test(validity) ? validity : "")
+        };
+        offersToUpdate.push(offerData);
+    });
 
         // Send AJAX request to save all updated offers for this table
         $.ajax({
@@ -1450,7 +1337,7 @@ $(document).ready(function() {
     console.log("$table length:", $table.length);
     console.log("$card length:", $card.length);
 
-    $table.find('td').not(':last-child').attr('contenteditable', 'true');
+    $table.find('td').attr('contenteditable', 'true');
 
     var $btnSave = $card.find('.btn-save-clientoffers[data-target="' + targetTableId + '"]');
     var $btnAdd = $card.find('.btn-add-clientoffers[data-target="' + targetTableId + '"]');
@@ -1523,6 +1410,45 @@ $(document).ready(function() {
 
 
 </script>
+
+<script>
+$(document).ready(function() {
+    // Selector for all inputs and selects to be monitored for changes
+    $('.col-md-2 input, .col-md-2 select').change(function() {
+        var $input = $(this);
+        var value = $input.val();
+        var name = $input.attr('name') || $input.attr('id');
+        var data = {'enquiry_id' : '{{ enquiry.id }} '};
+        data[name] = value;
+
+        // Validate date format if it's a date input
+        if ($input.hasClass('fc-datepicker')) {
+            var dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/(19|20)\d\d$/;
+            if (value && !dateRegex.test(value) && value.toLowerCase() !== 'null') {
+                alert('Please enter the date in DD/MM/YYYY format or leave it blank.');
+                return; // Stop the function if the date format is incorrect
+            }
+        }
+
+        // Send the AJAX request
+        $.ajax({
+            url: '/update_enquiry_details/', // URL of the Django view
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Update successful:', response);
+            },
+            error: function(error) {
+                console.error('Update failed:', error);
+                alert('Failed to update the information. Please try again.');
+            }
+        });
+    });
+});
+</script>
+
     
 </body>
 

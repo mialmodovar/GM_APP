@@ -948,10 +948,10 @@
             const productsText = enquiry.enquiry_requests.map(request => {
             return request.product_name ? request.product_name : 'Unknown Product';
             }).join(', ');
-
+            
         const cellsData = [
             enquiry.status || 'N/A',
-            enquiry.manager ? enquiry.manager.name : 'N/A',
+            enquiry.manager ? enquiry.manager : 'N/A',
             enquiry.client ? enquiry.client.name : 'N/A',
             productsText, // Ensure this correctly inserts into the table cell
             enquiry.received_date || 'N/A',
