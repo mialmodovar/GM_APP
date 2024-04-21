@@ -240,7 +240,7 @@
                                 <div class="row mb-4">
                                     <div class="col-md-12">
                                         <label>Manager</label>
-                                        <input type="text" class="form-control"  value="{{ enquiry.manager.name }}">
+                                        <input type="text" class="form-control"  id = "manage" value="{{ enquiry.manager.name }}">
                                     </div>
                                 </div>
                             </div>
@@ -259,7 +259,7 @@
                                     <div class="input-group-text">
                                         <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                     </div>
-                                    <input class="form-control fc-datepicker" placeholder="DD/MM/YYYY" type="text" value="{{ enquiry.received_date|date:"d/m/Y" }}" >
+                                    <input class="form-control fc-datepicker" id = 'received_date' placeholder="DD/MM/YYYY" type="text" value="{{ enquiry.received_date|date:"d/m/Y" }}" >
                                 </div>
                             </div>
                             <div class="col-md-2 mt-2 mt-md-0">
@@ -268,7 +268,7 @@
                                     <div class="input-group-text">
                                         <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                     </div>
-                                    <input class="form-control fc-datepicker" placeholder="DD/MM/YYYY" type="text" value="{{ enquiry.submission_deadline|date:"d/m/Y" }}" >
+                                    <input class="form-control fc-datepicker" id = 'deadline_date' placeholder="DD/MM/YYYY" type="text" value="{{ enquiry.submission_deadline|date:"d/m/Y" }}" >
                                 </div>
                             </div>
                             <div class="col-md-2 mt-2 mt-md-0">
@@ -277,7 +277,7 @@
                                     <div class="input-group-text">
                                         <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                     </div>
-                                    <input class="form-control fc-datepicker" placeholder="DD/MM/YYYY" type="text" value="{{ enquiry.submission_date|date:"m/d/Y" }}" >
+                                    <input class="form-control fc-datepicker" id = 'submission_date' placeholder="DD/MM/YYYY" type="text" value="{{ enquiry.submission_date|date:"m/d/Y" }}" >
                                 </div>
                             </div>
                             <div id="requests-table"></div>

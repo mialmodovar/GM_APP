@@ -346,7 +346,7 @@ def update_enquiry_details(request):
             data = json.loads(request.body)
             enquiry_id = data.get('enquiry_id')  # Retrieve the enquiry ID from the data
             enquiry = get_object_or_404(Enquiry, pk=enquiry_id)
-            
+            print(data.items())
             # Update the fields based on data keys
             for key, value in data.items():
                 if hasattr(enquiry, key) and key != 'enquiry_id':  # Exclude 'enquiry_id' from being treated as a field
@@ -357,8 +357,11 @@ def update_enquiry_details(request):
                         except ValueError:
                             return JsonResponse({'error': 'Invalid date format'}, status=400)
                     setattr(enquiry, key, value)
-            
-            enquiry.save()
+            try:
+                enquiry.save()
+            except Exception as e:
+                print(f"Failed to set attribute {key} to {value} on enquiry: {e}")
+                return JsonResponse({'error': str(e)}, status=500)
             return JsonResponse({'success': True, 'message': 'Enquiry updated successfully'})
         
         except Exception as e:
