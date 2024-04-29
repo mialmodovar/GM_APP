@@ -164,22 +164,22 @@
                         <ul class="side-menu">
                            
                             <li class="slide">
-                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href="/"><i
                                         class="side-menu__icon fe fe-home"></i><span
-                                        class="side-menu__label">Dashboard</span></a>
+                                        class="side-menu__label">Home</span></a>
                             </li>
                             <li class="slide">
-                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href="/enquiry_list"><i
                                         class="side-menu__icon fe fe-send"></i><span
                                         class="side-menu__label">Enquiries</span></a>
                             </li>
                             <li class="slide">
-                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href="/"><i
                                         class="side-menu__icon fe fe-pie-chart"></i><span
                                         class="side-menu__label">Create new Enquiry</span></a>
                             </li>
                             <li class="slide">
-                                <a class="side-menu__item has-link" data-bs-toggle="slide" href=""><i
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href="/supplier_list"><i
                                         class="side-menu__icon fe fe-activity"></i><span
                                         class="side-menu__label">Supplier Management</span></a>
                             </li>
@@ -1048,7 +1048,7 @@ $(document).ready(function() {
         if (request.offers && request.offers.length > 0) {
     request.offers.forEach(function(offer) {
         cardHtml += `<tr data-offer-id="${offer.id}">
-            <td contenteditable="false">${offer.supplier}</td>
+            <td contenteditable="false"><a href= "/supplier_detail/${offer.supplier_id}">${offer.supplier}</a></td>
             <td contenteditable="false">${offer.supplier_price}</td>
             <td contenteditable="false">${offer.payment_terms}</td>
             <td contenteditable="false">${offer.incoterms}</td>

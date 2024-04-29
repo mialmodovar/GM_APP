@@ -179,6 +179,7 @@ def requests_offers_for_enquiry(request, enquiry_id):
             offer_dict = {
                 'id': offer.id,
                 'supplier': supplier_name,
+                'supplier_id' : offer.supplier.id,
                 'supplier_price': offer.supplier_price or "",
                 'incoterms': offer.incoterms or "",
                 'specs': offer.specs or "",
