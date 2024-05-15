@@ -4,8 +4,9 @@ from django.views.generic import TemplateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.views.generic import TemplateView
-
-from .models import Enquiry, Client, Offer, Product, Request, Supplier, Offer_Client, Manager
+from .models import Enquiry, Client, Offer, Product, Request, Supplier, Offer_Client, Manager, UserProfile
+from django.contrib.auth.models import User
+from django.contrib.auth import login,logout
 import time
 from django.db.models import F
 from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
@@ -27,15 +28,182 @@ from datetime import *
 from django.forms.models import model_to_dict
 from django.db.models import Prefetch
 from django.db.models import Prefetch
-
-
 from .models import Enquiry
 from django.http import JsonResponse
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
+import requests
+from django.utils import timezone
+from django.conf import settings
+from django.dispatch import receiver
+import pprint
 load_dotenv()  # Load the .env file
-
+import datetime
 gpt4_api_key = os.getenv('OPEN_AI')
 
+
+
+import requests
+from django.shortcuts import redirect
+from django.conf import settings
+from django.contrib.auth import login
+from django.http import JsonResponse
+def microsoft_login(request):
+    # Step 1: Redirect user to Microsoft's OAuth 2.0 authorization endpoint
+    scope = 'openid profile email User.Read Mail.Read Mail.Read.Shared Mail.ReadBasic Mail.ReadBasic.Shared Mail.ReadWrite Mail.ReadWrite.Shared Mail.Send Mail.Send.Shared MailboxSettings.Read MailboxSettings.ReadWrite offline_access'
+    return redirect(
+        f"https://login.microsoftonline.com/{settings.MICROSOFT_AUTH_TENANT_ID}/oauth2/v2.0/authorize"
+        f"?client_id={settings.MICROSOFT_AUTH_CLIENT_ID}"
+        f"&response_type=code"
+        f"&redirect_uri={settings.MICROSOFT_AUTH_REDIRECT_URI}"
+        f"&response_mode=query"
+        f"&scope={scope}"
+        f"&state=12345"
+    )
+
+def microsoft_callback(request):
+    # Step 2: Get the authorization code from the callback
+    code = request.GET.get('code')
+
+    # Step 3: Exchange authorization code for access and refresh tokens
+    token_url = f"https://login.microsoftonline.com/{settings.MICROSOFT_AUTH_TENANT_ID}/oauth2/v2.0/token"
+    token_data = {
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': settings.MICROSOFT_AUTH_REDIRECT_URI,
+        'client_id': settings.MICROSOFT_AUTH_CLIENT_ID,
+        'client_secret': settings.MICROSOFT_AUTH_CLIENT_SECRET,
+    }
+    token_response = requests.post(token_url, data=token_data)
+    token_json = token_response.json()
+    
+    print(token_json)
+    access_token = token_json.get('access_token')
+    refresh_token = token_json.get('refresh_token')
+    expires_in = token_json.get('expires_in')
+    
+    # Handle the case where expires_in is None
+    if expires_in is not None:
+        expiry_date = datetime.datetime.now() + datetime.timedelta(seconds=expires_in)
+    else:
+        expiry_date = datetime.datetime.now() + datetime.timedelta(days=1)  # Default to 1 day
+
+    # Step 4: Use the access token to get user info
+    user_info_url = 'https://graph.microsoft.com/v1.0/me'
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+    user_info_response = requests.get(user_info_url, headers=headers)
+    user_info = user_info_response.json()
+
+    email = user_info.get('mail') or user_info.get('userPrincipalName')
+
+    # Step 5: Check if the user exists, create if not
+    user, created = User.objects.get_or_create(username=email, defaults={'email': email})
+    if created:
+        user.set_unusable_password()  # Since this is an OAuth login, the user won't have a usable password
+        user.save()
+
+    # Step 6: Create or update the user profile
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
+    user_profile.access_token = access_token
+    user_profile.refresh_token = refresh_token
+    user_profile.expiry_token = expiry_date
+    user_profile.save()
+
+    # Step 7: Log the user in
+    login(request, user)
+
+    # Redirect to the default login redirect URL
+    return redirect(settings.LOGIN_REDIRECT_URL)
+
+def ms_logout(request):
+    logout(request)
+    # Redirect to a success page or homepage
+    return redirect('/')
+
+def login_view(request): 
+    # Check if the user is already authenticated 
+    if request.user.is_authenticated: 
+        return redirect('/')  
+    # Redirect to the dashboard or appropriate page 
+    return render(request, 'app/login.html')
+
+
+@login_required
+def send_email(request):
+    recipient = "miguel.almodovar@globalmonarchuae.com"
+    subject = "Hello from Django!"
+    content = "This is a test email sent from our Django application using Microsoft Graph API."
+
+    # Get the access token
+    token = get_access_token(request)
+    if not token:
+        return JsonResponse({'error': 'Authentication token is missing or invalid'}, status=403)
+
+    # Construct the email message payload
+    email_payload = {
+        "message": {
+            "subject": subject,
+            "body": {
+                "contentType": "Text",
+                "content": content
+            },
+            "toRecipients": [
+                {
+                    "emailAddress": {
+                        "address": recipient
+                    }
+                }
+            ]
+        },
+        "saveToSentItems": "true"
+    }
+
+    # Send the email using Microsoft Graph API
+    email_url = 'https://graph.microsoft.com/v1.0/me/sendMail'
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    }
+    response = requests.post(email_url, headers=headers, json=email_payload)
+
+    if response.status_code == 202:
+        return JsonResponse({'message': 'Email sent successfully'}, status=202)
+    else:
+        return JsonResponse({'error': 'Failed to send email', 'details': response.json()}, status=response.status_code)
+
+def refresh_access_token(user_profile):
+    token_url = f"https://login.microsoftonline.com/{settings.MICROSOFT_AUTH_TENANT_ID}/oauth2/v2.0/token"
+    token_data = {
+        'grant_type': 'refresh_token',
+        'refresh_token': user_profile.refresh_token,
+        'client_id': settings.MICROSOFT_AUTH_CLIENT_ID,
+        'client_secret': settings.MICROSOFT_AUTH_CLIENT_SECRET,
+        'redirect_uri': settings.MICROSOFT_AUTH_REDIRECT_URI,
+    }
+    token_response = requests.post(token_url, data=token_data)
+    token_json = token_response.json()
+
+    access_token = token_json.get('access_token')
+    refresh_token = token_json.get('refresh_token')
+    expires_in = token_json.get('expires_in')
+    expiry_date = timezone.now() + datetime.timedelta(seconds=expires_in)
+
+    # Update the user profile with new tokens and expiry date
+    user_profile.access_token = access_token
+    user_profile.refresh_token = refresh_token
+    user_profile.expiry_token = expiry_date
+    user_profile.save()
+
+    return access_token
+
+def get_access_token(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    if user_profile.expiry_token and user_profile.expiry_token > timezone.now():
+        return user_profile.access_token
+    else:
+        return refresh_access_token(user_profile)
 
 def index(request):
     # Fetch all client names
@@ -46,7 +214,7 @@ def index(request):
 
     # Fetch all supplier names
     suppliers = Supplier.objects.all().order_by('name').values_list('name', flat=True)
-
+    
     # Prepare context to be passed to the template
     context = {
         'clients': list(clients),
@@ -451,7 +619,6 @@ def supplier_detail(request, id):
     supplier = get_object_or_404(Supplier, id=id)
     # Fetch recent offers related to this supplier
     offers = Offer.objects.filter(supplier=supplier).prefetch_related(Prefetch('request', queryset=Request.objects.select_related('product'))).order_by('-validity')[:5]
-
     product_stats = (
         Offer.objects.filter(supplier=supplier)
         .values('request__product__name')  # Group by product name
@@ -460,5 +627,6 @@ def supplier_detail(request, id):
             total_offers=Count('id')
         )
     )
-
     return render(request, 'app/supplier_detail.html', {'supplier': supplier, 'offers': offers, 'product_stats': product_stats})
+
+

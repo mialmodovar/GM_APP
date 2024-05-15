@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    
 ]
 
 MIDDLEWARE = [
@@ -49,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'gm_app.urls'
@@ -101,6 +104,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SITE_ID = 1
+
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+
+# Add the callback URL in your Django site as registered in Azure
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -123,3 +135,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MICROSOFT_AUTH_CLIENT_ID = 'de8b9866-61f5-40da-aeee-ded54c0e39e3'
+MICROSOFT_AUTH_CLIENT_SECRET = 'nyn8Q~GnMeMuX.HD9L5DRNO4GMHmjsVnMv7q5ce8'
+MICROSOFT_AUTH_REDIRECT_URI = 'http://localhost:8000/login/callback/'
+MICROSOFT_AUTH_TENANT_ID = 'c55a4430-1530-4ee2-8fac-98101223700c'

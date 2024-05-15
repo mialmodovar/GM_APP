@@ -1,8 +1,13 @@
 from django.urls import path
 from . import views
+from django.urls import path, include
+
 
 
 urlpatterns = [
+   path('login/microsoft/', views.microsoft_login, name='microsoft_login'),
+   path('login/callback/', views.microsoft_callback, name='microsoft_callback'),
+   path('logout',views.ms_logout,name= 'ms_logout'),
    path('',views.index, name='index'),
    path('enquiry/<pk>',views.enquiry, name='enquiry'),
    path('create_enquiry_ajax', views.create_enquiry_ajax, name='create_enquiry_ajax'),
@@ -15,6 +20,10 @@ urlpatterns = [
    path('api/enquiries/', views.get_enquiries, name='api_enquiries'),
    path('supplier_list/', views.supplier_list, name='supplier_list'),
    path('api/suppliers/', views.suppliers_api, name='suppliers_api'),
-   path('supplier_detail/<int:id>/', views.supplier_detail, name='supplier_detail')
+   path('supplier_detail/<int:id>/', views.supplier_detail, name='supplier_detail'),
+   path('login/', views.login_view, name='login'),
+   path('testmail',views.send_email,name ='send_email')
+
+   
 ]
                                                             

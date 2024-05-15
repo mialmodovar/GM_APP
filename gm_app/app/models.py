@@ -1,5 +1,18 @@
 from django.db import models
+from django.contrib.auth.models import User
 
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    title = models.TextField(blank=True, null=True)
+    division = models.TextField(blank=True, null=True)
+    access_token = models.TextField(blank=True, null=True)
+    refresh_token = models.TextField(blank=True, null=True)
+    expiry_token = models.DateTimeField(blank=True, null=True)
+    
+
+    
 class Manager(models.Model):
     name = models.TextField(blank=True, null=True)
     title = models.TextField(blank=True, null=True)
