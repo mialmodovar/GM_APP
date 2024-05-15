@@ -24,6 +24,7 @@ from dotenv import load_dotenv
 import openai
 from django.core import serializers
 import json
+from datetime import datetime  # Correct import for datetime class
 from datetime import *
 from django.forms.models import model_to_dict
 from django.db.models import Prefetch
@@ -37,17 +38,16 @@ from django.utils import timezone
 from django.conf import settings
 from django.dispatch import receiver
 import pprint
-load_dotenv()  # Load the .env file
-import datetime
+load_dotenv()  # Load the .env files
 gpt4_api_key = os.getenv('OPEN_AI')
-
-
-
 import requests
 from django.shortcuts import redirect
 from django.conf import settings
 from django.contrib.auth import login
 from django.http import JsonResponse
+
+
+
 def microsoft_login(request):
     # Step 1: Redirect user to Microsoft's OAuth 2.0 authorization endpoint
     scope = 'openid profile email User.Read Mail.Read Mail.Read.Shared Mail.ReadBasic Mail.ReadBasic.Shared Mail.ReadWrite Mail.ReadWrite.Shared Mail.Send Mail.Send.Shared MailboxSettings.Read MailboxSettings.ReadWrite offline_access'
@@ -630,3 +630,50 @@ def supplier_detail(request, id):
     return render(request, 'app/supplier_detail.html', {'supplier': supplier, 'offers': offers, 'product_stats': product_stats})
 
 
+def draft_email_display(request):
+    supplier_ids = request.GET.getlist('supplier_ids[]')  # Fetching with the exact key from the URL
+    print("Supplier IDs (string):", supplier_ids)
+
+    # Safely convert supplier_ids to integers
+    int_supplier_ids = []
+    for sid in supplier_ids:
+        try:
+            int_supplier_ids.append(int(sid))
+        except ValueError:
+            # Handle the exception if conversion fails
+            print(f"Error converting {sid} to integer.")
+            continue  # Skip this id
+
+    print("Supplier IDs (int):", int_supplier_ids)
+
+    if not int_supplier_ids:
+        # If no valid IDs, return an empty or error page
+        print("No valid supplier IDs found after conversion.")
+        return render(request, 'app/error.html', {'error': 'No valid supplier IDs provided'})
+
+    suppliers = Supplier.objects.filter(id__in=int_supplier_ids)
+    print("Suppliers QuerySet:", suppliers)
+
+    # Check if request_id is provided
+    request_id = request.GET.get('request_id')
+    if not request_id:
+        # If no request_id, return an error page
+        print("No request ID provided.")
+        return render(request, 'app/error.html', {'error': 'No request ID provided'})
+
+    try:
+        request_obj = Request.objects.get(id=request_id)
+    except Request.DoesNotExist:
+        # If no matching Request is found, return an error page
+        print("No Request matches the given query.")
+        return render(request, 'app/error.html', {'error': 'No Request matches the given query.'})
+
+    enquiry = request_obj.enquiry
+
+    context = {
+        'suppliers': suppliers,
+        'enquiry': enquiry,
+        'request_obj': request_obj,
+    }
+
+    return render(request, 'app/draft-email.html', context)
