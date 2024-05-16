@@ -3,5 +3,5 @@ from app.models import *
 
 admin.site.register(Supplier)
 admin.site.register(Enquiry)
-admin.site.register(UserProfile)
+admin.site.register(Manager)
 

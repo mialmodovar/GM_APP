@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.views.generic import TemplateView
-from .models import Enquiry, Client, Offer, Product, Request, Supplier, Offer_Client, Manager, UserProfile
+from .models import Enquiry, Client, Offer, Product, Request, Supplier, Offer_Client, Manager
 from django.contrib.auth.models import User
 from django.contrib.auth import login,logout
 import time
@@ -24,7 +24,6 @@ from dotenv import load_dotenv
 import openai
 from django.core import serializers
 import json
-from datetime import datetime  # Correct import for datetime class
 from datetime import *
 from django.forms.models import model_to_dict
 from django.db.models import Prefetch
@@ -38,7 +37,8 @@ from django.utils import timezone
 from django.conf import settings
 from django.dispatch import receiver
 import pprint
-load_dotenv()  # Load the .env files
+load_dotenv()  # Load the .env file
+import datetime
 gpt4_api_key = os.getenv('OPEN_AI')
 import requests
 from django.shortcuts import redirect
@@ -105,11 +105,11 @@ def microsoft_callback(request):
         user.save()
 
     # Step 6: Create or update the user profile
-    user_profile, created = UserProfile.objects.get_or_create(user=user)
-    user_profile.access_token = access_token
-    user_profile.refresh_token = refresh_token
-    user_profile.expiry_token = expiry_date
-    user_profile.save()
+    manager, created = Manager.objects.get_or_create(user=user)
+    manager.access_token = access_token
+    manager.refresh_token = refresh_token
+    manager.expiry_token = expiry_date
+    manager.save()
 
     # Step 7: Log the user in
     login(request, user)
@@ -173,11 +173,11 @@ def send_email(request):
     else:
         return JsonResponse({'error': 'Failed to send email', 'details': response.json()}, status=response.status_code)
 
-def refresh_access_token(user_profile):
+def refresh_access_token(manager):
     token_url = f"https://login.microsoftonline.com/{settings.MICROSOFT_AUTH_TENANT_ID}/oauth2/v2.0/token"
     token_data = {
         'grant_type': 'refresh_token',
-        'refresh_token': user_profile.refresh_token,
+        'refresh_token': manager.refresh_token,
         'client_id': settings.MICROSOFT_AUTH_CLIENT_ID,
         'client_secret': settings.MICROSOFT_AUTH_CLIENT_SECRET,
         'redirect_uri': settings.MICROSOFT_AUTH_REDIRECT_URI,
@@ -191,19 +191,19 @@ def refresh_access_token(user_profile):
     expiry_date = timezone.now() + datetime.timedelta(seconds=expires_in)
 
     # Update the user profile with new tokens and expiry date
-    user_profile.access_token = access_token
-    user_profile.refresh_token = refresh_token
-    user_profile.expiry_token = expiry_date
-    user_profile.save()
+    manager.access_token = access_token
+    manager.refresh_token = refresh_token
+    manager.expiry_token = expiry_date
+    manager.save()
 
     return access_token
 
 def get_access_token(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    if user_profile.expiry_token and user_profile.expiry_token > timezone.now():
-        return user_profile.access_token
+    manager = Manager.objects.get(user=request.user)
+    if manager.expiry_token and manager.expiry_token > timezone.now():
+        return manager.access_token
     else:
-        return refresh_access_token(user_profile)
+        return refresh_access_token(manager)
 
 def index(request):
     # Fetch all client names
