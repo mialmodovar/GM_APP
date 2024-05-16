@@ -38,7 +38,7 @@ from django.conf import settings
 from django.dispatch import receiver
 import pprint
 load_dotenv()  # Load the .env file
-import datetime
+from datetime import datetime
 gpt4_api_key = os.getenv('OPEN_AI')
 import requests
 from django.shortcuts import redirect
@@ -246,35 +246,37 @@ def enquiry(request,pk):
 
 
 @csrf_exempt
+@login_required
 def create_enquiry_ajax(request):
     if request.method == 'POST':
-        # Decode the JSON payload
         data = json.loads(request.body)
-        print(data)
-        # Create or get the client
+
+        # Ensure client name is provided
         client_name = data.get('client')
-        print(client_name)
+        if not client_name:
+            return JsonResponse({'success': False, 'message': 'Client name is required.'}, status=400)
+        
         client, _ = Client.objects.get_or_create(name=client_name)
+        manager = Manager.objects.filter(user=request.user).first()
+        if not manager:
+            return JsonResponse({'success': False, 'message': 'No manager associated with this user.'}, status=404)
 
-        # Create or get the manager
-        manager_name = data.get('manager')
-        manager, _ = Manager.objects.get_or_create(name=manager_name)
-        print(manager)
+        # Assuming data contains the necessary date information
+        try:
+            received_date = datetime.strptime(data.get('inquiry_received_date'), '%d/%m/%Y').date() if data.get('inquiry_received_date') else None
+            deadline_date = datetime.strptime(data.get('inquiry_deadline_date'), '%d/%m/%Y').date() if data.get('inquiry_deadline_date') else None
+        except ValueError:
+            return JsonResponse({'success': False, 'message': 'Invalid date format.'}, status=400)
 
-        # Parse dates
-        received_date = datetime.strptime(data.get('inquiry_received_date'), '%d/%m/%Y').date() if data.get('inquiry_received_date') else None
-        deadline_date = datetime.strptime(data.get('inquiry_deadline_date'), '%d/%m/%Y').date() if data.get('inquiry_deadline_date') else None
-
-        # Create the enquiry
         enquiry = Enquiry.objects.create(
             client=client,
-            manager = manager,
+            manager=manager,
             received_date=received_date,
             submission_deadline=deadline_date,
-            status='ACTIVE'  # Assuming a new enquiry starts as 'ACTIVE'
+            status='ACTIVE'
         )
 
-        # Process each product detail
+                # Process each product detail
         for product_detail in data.get('products_details', []):
             product_name = product_detail.get('product_name')
             product, _ = Product.objects.get_or_create(name=product_name)
@@ -301,15 +303,12 @@ def create_enquiry_ajax(request):
                 Offer.objects.create(
                     request=request,
                     supplier=supplier,
-                    # Populate other fields as necessary
+                    
                 )
-
-        # Once processing is complete, return a JsonResponse indicating success
-        return JsonResponse({'success': True, 'message': 'Enquiry and related data successfully processed.','pk':enquiry.id})
-
-    # If the request method is not POST or if we're not returning within the POST block above,
-    # return a response indicating the request method is not allowed.
-    return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
+        
+        return JsonResponse({'success': True, 'message': 'Enquiry and related data successfully processed.', 'pk': enquiry.id})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
 
 @csrf_exempt
 def requests_offers_for_enquiry(request, enquiry_id):
@@ -330,10 +329,6 @@ def requests_offers_for_enquiry(request, enquiry_id):
             'discharge_port': req.discharge_port or "",
             'payment_terms_requested': req.payment_terms_requested or "",
             'notes': req.notes or "",
-            'price_offered': req.price_offered or "",
-            'payment_term_offered': req.payment_term_offered or "",
-            'validity_offered': req.validity_offered.strftime("%Y-%m-%d") if req.validity_offered else "DD/MM/YYYY",
-            'customer_feedback': req.customer_feedback or "",
             'offers': [],
             'offers_client': []
         }

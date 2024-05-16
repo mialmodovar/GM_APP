@@ -18,7 +18,7 @@ class Manager(models.Model):
 
 
 class Enquiry(models.Model):
-    manager = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True, blank=True)
+    manager = models.TextField(blank=True, null=True)
     client = models.ForeignKey('Client', on_delete=models.SET_NULL, null=True, blank=True)
     received_date = models.DateField(blank=True, null=True)
     submission_deadline = models.DateField(blank=True, null=True)
