@@ -1,53 +1,33 @@
-from django.shortcuts import render, redirect,get_object_or_404
-from django.db.models.functions import Greatest
-from django.views.generic import TemplateView
-from django.core.exceptions import ObjectDoesNotExist
-from django.utils import timezone
-from django.views.generic import TemplateView
-from .models import Enquiry, Client, Offer, Product, Request, Supplier, Offer_Client, Manager, Email
-from django.contrib.auth.models import User
-from django.contrib.auth import login,logout
-import time
-from django.db.models import F
-from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
-from django.contrib.auth import logout as auth_logout
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.contrib.auth import login as auth_login
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import re
-import os
-from dotenv import load_dotenv
-import openai
-from django.core import serializers
 import json
-from datetime import *
-from django.forms.models import model_to_dict
-from django.db.models import Prefetch
-from django.db.models import Prefetch
-from .models import Enquiry
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
-from django.contrib.sites.shortcuts import get_current_site
-import requests
-from django.utils import timezone
-from django.conf import settings
-from django.dispatch import receiver
+import os
 import pprint
-load_dotenv()  # Load the .env file
-from datetime import datetime
-gpt4_api_key = os.getenv('OPEN_AI')
+import re
 import requests
-from django.shortcuts import redirect
+import time
+from datetime import datetime, timedelta
+
 from django.conf import settings
-from django.contrib.auth import login
+from django.contrib.auth import login as auth_login, logout as auth_logout, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm, UserChangeForm, UserCreationForm
+from django.contrib.auth.models import User
+from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Avg, Count, F, Prefetch
+from django.db.models.functions import Greatest
+from django.dispatch import receiver
+from django.forms.models import model_to_dict
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import TemplateView
 
+from dotenv import load_dotenv
 
-
+from .models import (Client, Email, Enquiry, Manager, Offer, Offer_Client, Product, Request, Supplier)
 def microsoft_login(request):
     # Step 1: Redirect user to Microsoft's OAuth 2.0 authorization endpoint
     scope = 'openid profile email User.Read Mail.Read Mail.Read.Shared Mail.ReadBasic Mail.ReadBasic.Shared Mail.ReadWrite Mail.ReadWrite.Shared Mail.Send Mail.Send.Shared MailboxSettings.Read MailboxSettings.ReadWrite offline_access'
@@ -82,11 +62,12 @@ def microsoft_callback(request):
     refresh_token = token_json.get('refresh_token')
     expires_in = token_json.get('expires_in')
     
-    # Handle the case where expires_in is None
+        # Handle the case where expires_in is None
     if expires_in is not None:
-        expiry_date = datetime.datetime.now() + datetime.timedelta(seconds=expires_in)
+        expiry_date = datetime.now() + timedelta(seconds=expires_in)
     else:
-        expiry_date = datetime.datetime.now() + datetime.timedelta(days=1)  # Default to 1 day
+        expiry_date = datetime.now() + timedelta(days=1)  # Default to 1 day
+
 
     # Step 4: Use the access token to get user info
     user_info_url = 'https://graph.microsoft.com/v1.0/me'
