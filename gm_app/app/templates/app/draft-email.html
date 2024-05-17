@@ -226,7 +226,7 @@
 <div class="tab-menu-heading">
     <div class="tabs-menu">
         <ul class="nav panel-tabs" role="tablist">
-            {% for supplier in suppliers %}
+            {% for email in emails %}
                 <li><a href="#tab{{ forloop.counter }}" class="{% if forloop.first %}active{% endif %}" data-bs-toggle="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" role="tab">Tab {{ forloop.counter }}</a></li>
             {% endfor %}
         </ul>
@@ -236,7 +236,7 @@
 <!-- Tab Content -->
                                                     <div class="panel-body tabs-menu-body">
                                                         <div class="tab-content">
-                                                            {% for supplier in suppliers %}
+                                                            {% for email in emails %}
                                                                 <div class="tab-pane {% if forloop.first %}active{% endif %}" id="tab{{ forloop.counter }}" role="tabpanel">
                                                                     <div class="col-xl-12">
                                                                         <div class="card">

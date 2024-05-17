@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.views.generic import TemplateView
-from .models import Enquiry, Client, Offer, Product, Request, Supplier, Offer_Client, Manager
+from .models import Enquiry, Client, Offer, Product, Request, Supplier, Offer_Client, Manager, Email
 from django.contrib.auth.models import User
 from django.contrib.auth import login,logout
 import time
@@ -625,49 +625,54 @@ def supplier_detail(request, id):
     return render(request, 'app/supplier_detail.html', {'supplier': supplier, 'offers': offers, 'product_stats': product_stats})
 
 
+
 def draft_email_display(request):
-    supplier_ids = request.GET.getlist('supplier_ids[]')  # Fetching with the exact key from the URL
+    supplier_ids = request.GET.getlist('supplier_ids[]')
     print("Supplier IDs (string):", supplier_ids)
 
-    # Safely convert supplier_ids to integers
+    request_id = request.GET.get('request_id')
+
+    # Convert supplier_ids to integers safely
     int_supplier_ids = []
     for sid in supplier_ids:
         try:
             int_supplier_ids.append(int(sid))
         except ValueError:
-            # Handle the exception if conversion fails
             print(f"Error converting {sid} to integer.")
-            continue  # Skip this id
+            continue  # Skip invalid ids
 
     print("Supplier IDs (int):", int_supplier_ids)
 
     if not int_supplier_ids:
-        # If no valid IDs, return an empty or error page
         print("No valid supplier IDs found after conversion.")
         return render(request, 'app/error.html', {'error': 'No valid supplier IDs provided'})
 
+    # Retrieve suppliers based on the converted IDs
     suppliers = Supplier.objects.filter(id__in=int_supplier_ids)
     print("Suppliers QuerySet:", suppliers)
 
-    # Check if request_id is provided
-    request_id = request.GET.get('request_id')
     if not request_id:
-        # If no request_id, return an error page
         print("No request ID provided.")
         return render(request, 'app/error.html', {'error': 'No request ID provided'})
 
     try:
         request_obj = Request.objects.get(id=request_id)
     except Request.DoesNotExist:
-        # If no matching Request is found, return an error page
         print("No Request matches the given query.")
         return render(request, 'app/error.html', {'error': 'No Request matches the given query.'})
 
-    enquiry = request_obj.enquiry
+    emails = []
+    # Retrieve or create Email objects for each supplier
+    for supplier in suppliers:
+        email, created = Email.objects.get_or_create(supplier=supplier, request=request_obj)
+        emails.append(email)
+        if created:
+            print(f"Created new Email instance for supplier {supplier.id} and request {request_obj.id}")
 
+    # Prepare the context with the email objects
     context = {
-        'suppliers': suppliers,
-        'enquiry': enquiry,
+        'emails': emails,
+        'enquiry': request_obj.enquiry,
         'request_obj': request_obj,
     }
 
