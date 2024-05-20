@@ -531,18 +531,26 @@ def enquiry_list(request):
     }
     return render(request, 'app/enquiry_list.html', context)
 
-from django.http import JsonResponse
-from .models import Enquiry, Request
+
 
 def get_enquiries(request):
     enquiries_list = []
-    enquiries = Enquiry.objects.prefetch_related('enquiry_requests__product').select_related('client', 'manager').all()
+    enquiries = Enquiry.objects.prefetch_related('enquiry_requests__product').select_related('client').all()
     
     for enquiry in enquiries:
+        # Fetch manager's name if available
+        manager_name = None
+        if enquiry.manager:
+            try:
+                manager = Manager.objects.get(name=enquiry.manager)  # Usinas identifier
+                manager_name = manager.name
+            except Manager.DoesNotExist:
+                manager_name = None
+
         enquiry_dict = {
             'id': enquiry.id,
             'status': enquiry.status,
-            'manager': enquiry.manager.name if enquiry.manager else None,
+            'manager': manager_name,
             'client': {
                 'name': enquiry.client.name,
                 'country': enquiry.client.country if enquiry.client.country else 'Unknown Country',
@@ -653,16 +661,25 @@ def draft_email_display(request):
             print(f"Created new Email instance for supplier {supplier.id}, request {request_obj.id}, and manager {manager.id}")
         emails.append(email)
 
+    # Prepare the context with the email objects and their attachments
+    emails_with_attachments = []
+    for email in emails:
+        attachments = Attachment.objects.filter(email=email)
+        emails_with_attachments.append({
+            'email': email,
+            'attachments': attachments,
+        })
+
     # Prepare the context with the email objects
     context = {
-        'emails': emails,
+        'emails_with_attachments': emails_with_attachments,
         'enquiry': request_obj.enquiry,
         'request_obj': request_obj,
     }
 
-    return render(request, 'app/draft-email.html',context)
+    return render(request, 'app/draft-email.html', context)
 
-def upload_attachment(request):
+#def upload_attachment(request):
     if request.method == 'POST' and request.FILES.get('file'):
         file = request.FILES['file']
         email_id = request.POST.get('email_id')
@@ -675,4 +692,38 @@ def upload_attachment(request):
         attachment = Attachment.objects.create(email=email, request=email.request, file=file)
         print(f"Attachment created: {attachment.file.path}")
         return JsonResponse({'success': True, 'attachment_id': attachment.id})
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+def upload_attachment(request):
+    if request.method == 'POST' and request.FILES.getlist('files[]'):
+        files = request.FILES.getlist('files[]')
+        email_ids = request.POST.getlist('email_id')
+
+        if not email_ids:
+            return JsonResponse({'success': False, 'error': 'No email IDs provided'})
+
+        for email_id in email_ids:
+            try:
+                email = Email.objects.get(id=email_id)
+            except Email.DoesNotExist:
+                return JsonResponse({'success': False, 'error': f'Email with id {email_id} not found'})
+
+            for file in files:
+                attachment = Attachment.objects.create(email=email, request=email.request, file=file)
+                print(f"Attachment created: {attachment.file.path}")
+
+        return JsonResponse({'success': True})
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+def remove_attachment(request):
+    if request.method == 'POST':
+        attachment_id = request.POST.get('attachment_id')
+        try:
+            attachment = Attachment.objects.get(id=attachment_id)
+            attachment.delete()
+            return JsonResponse({'success': True})
+        except Attachment.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Attachment not found'})
+    
     return JsonResponse({'success': False, 'error': 'Invalid request'})

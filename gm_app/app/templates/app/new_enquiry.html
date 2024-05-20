@@ -1008,72 +1008,100 @@
     <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
 
 
-    <!-- Script to Enable Wizard FUnctionality (lazy fix but it works) -->>
-    <script>
-        $(document).ready(function() {
-    // Function to show the step based on index
-    function showStep(index) {
-        // Hide all sections and remove 'current' class from all h3 titles and 'current' from steps
-        $('.wizard .content section').hide().attr('aria-hidden', 'true');
-        $('.wizard .content .title').removeClass('current');
-        $('.wizard .steps ul li').removeClass('current').attr('aria-selected', 'false');
+   <!-- Script to Enable Wizard FUnctionality (lazy fix but it works) -->>
+    
+<script>
+    $(document).ready(function() {
+        // Function to show the step based on index
+        function showStep(index) {
+            // Validate product selection before allowing transition to step 3
+            if (index === 2 && !validateProductSelection()) {
+                return; // Do not proceed to step 3 if validation fails
+            }
 
-        // Show the current section, add 'current' class to its title and step
-        $('.wizard .content section').eq(index).show().attr('aria-hidden', 'false');
-        $('#wizard3-h-' + index).addClass('current');
-        $('.wizard .steps ul li').eq(index).addClass('current').attr('aria-selected', 'true');
+            // Hide all sections and remove 'current' class from all h3 titles and 'current' from steps
+            $('.wizard .content section').hide().attr('aria-hidden', 'true');
+            $('.wizard .content .title').removeClass('current');
+            $('.wizard .steps ul li').removeClass('current').attr('aria-selected', 'false');
 
-        // Update steps status
-        $('.wizard .steps ul li').removeClass('done');
-        $('.wizard .steps ul li:lt(' + index + ')').addClass('done');
+            // Show the current section, add 'current' class to its title and step
+            $('.wizard .content section').eq(index).show().attr('aria-hidden', 'false');
+            $('#wizard3-h-' + index).addClass('current');
+            $('.wizard .steps ul li').eq(index).addClass('current').attr('aria-selected', 'true');
 
-        // Update button visibility
-        updateButtons(index);
-    }
+            // Update steps status
+            $('.wizard .steps ul li').removeClass('done');
+            $('.wizard .steps ul li:lt(' + index + ')').addClass('done');
 
-    // Function to update button visibility based on the current step
-    function updateButtons(currentIndex) {
-        $('.actions ul li').removeClass('disabled').show();
-        if (currentIndex === 0) {
-            $('.actions ul li').eq(0).addClass('disabled');
+            // Update button visibility
+            updateButtons(index);
         }
-        if (currentIndex === $('.wizard .content section').length - 1) {
-            $('.actions ul li').eq(1).hide();
-            $('.actions ul li').eq(2).show(); // Assuming there's a 'Finish' button
-        } else {
-            $('.actions ul li').eq(1).show();
-            $('.actions ul li').eq(2).hide(); // Assuming there's a 'Finish' button
-        }
-    }
 
-    // Initialize the wizard by showing the first step
-    showStep(0);
+        // Function to update button visibility based on the current step
+        function updateButtons(currentIndex) {
+            $('.actions ul li a').removeClass('disabled').parent().show();
+            $('.actions ul li a[href="#finish"]').parent().hide(); // Hide finish button initially
 
-    // Next and Previous button click handlers
-    $('.actions ul li a[href="#next"]').on('click', function(e) {
-        e.preventDefault();
-        var currentStep = $('.wizard .steps ul li.current').index();
-        if (currentStep < $('.wizard .content section').length - 1) {
-            showStep(currentStep + 1);
+            if (currentIndex === 0) {
+                $('.actions ul li a[href="#previous"]').addClass('disabled').parent().show();
+            } else {
+                $('.actions ul li a[href="#previous"]').removeClass('disabled').parent().show();
+            }
+
+            if (currentIndex === $('.wizard .content section').length - 1) {
+                $('.actions ul li a[href="#next"]').parent().hide();
+                $('.actions ul li a[href="#finish"]').parent().show(); // Show 'Finish' button on the last step
+            } else {
+                $('.actions ul li a[href="#next"]').parent().show();
+                $('.actions ul li a[href="#finish"]').parent().hide(); // Hide 'Finish' button on other steps
+            }
+
+            // Disable the "Next" button if no products are selected when trying to move to step 3
+            if (currentIndex === 1 && !validateProductSelection()) {
+                $('.actions ul li a[href="#next"]').addClass('disabled');
+            }
         }
+
+        // Function to validate if any products are selected
+        function validateProductSelection() {
+            return $('#product_selector select').val().length > 0;
+        }
+
+        // Initialize the wizard by showing the first step
+        showStep(0);
+
+        // Next and Previous button click handlers
+        $('.actions ul li a[href="#next"]').on('click', function(e) {
+            e.preventDefault();
+            var currentStep = $('.wizard .steps ul li.current').index();
+            if (currentStep < $('.wizard .content section').length - 1 && !$(this).hasClass('disabled')) {
+                showStep(currentStep + 1);
+            }
+        });
+
+        $('.actions ul li a[href="#previous"]').on('click', function(e) {
+            e.preventDefault();
+            var currentStep = $('.wizard .steps ul li.current').index();
+            if (currentStep > 0) {
+                showStep(currentStep - 1);
+            }
+        });
+
+        // Step title click handler to navigate directly to steps
+        $('.wizard .steps ul li a').on('click', function(e) {
+            e.preventDefault();
+            var selectedStepIndex = $(this).parent().index();
+            showStep(selectedStepIndex);
+        });
+
+        // Event listener for product selection change
+        $('#product_selector select').on('change', function() {
+            updateButtons($('.wizard .steps ul li.current').index());
+        });
     });
-
-    $('.actions ul li a[href="#previous"]').on('click', function(e) {
-        e.preventDefault();
-        var currentStep = $('.wizard .steps ul li.current').index();
-        if (currentStep > 0) {
-            showStep(currentStep - 1);
-        }
-    });
-
-    // Step title click handler to navigate directly to steps
-    $('.wizard .steps ul li a').on('click', function(e) {
-        e.preventDefault();
-        var selectedStepIndex = $(this).parent().index();
-        showStep(selectedStepIndex);
-    });
-});
 </script>
+
+
 
 <!-- Script to adjust selection boxes in the form-->>
 <script>
@@ -1370,6 +1398,18 @@
 
     </script> 
         
+
+<style>
+    .actions ul li a.disabled {
+pointer-events: none;
+background-color: #ccc; /* Greyed out background */
+color: #666; /* Greyed out text */
+cursor: not-allowed;
+}
+
+
+    </style>
+
         
     
 </body>

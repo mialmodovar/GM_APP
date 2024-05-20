@@ -25,7 +25,8 @@ urlpatterns = [
    path('login/', views.login_view, name='login'),
    path('testmail',views.send_email,name ='send_email'),
    path('display-draft-email/', views.draft_email_display, name='draft_email_display'),
-   path('upload-attachment/', views.upload_attachment, name='upload_attachment')
+   path('upload-attachment/', views.upload_attachment, name='upload_attachment'),
+   path('remove_attachment/', views.remove_attachment, name='remove_attachment')
 
    
 ]

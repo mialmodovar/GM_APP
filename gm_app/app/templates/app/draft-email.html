@@ -197,11 +197,7 @@
             <!--app-content open-->
             <div class="main-content app-content mt-0">
                 <div class="side-app">
-
-                    <!-- CONTAINER -->
                     <div class="main-container container-fluid">
-
-                        <!-- PAGE-HEADER -->
                         <div class="page-header">
                             <h1 class="page-title">Tabs</h1>
                             <div>
@@ -211,9 +207,7 @@
                                 </ol>
                             </div>
                         </div>
-                        <!-- PAGE-HEADER END -->
-
-                        <!-- ROW-1 OPEN -->
+            
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="card">
@@ -222,73 +216,85 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="panel panel-primary">
-<!-- Tabs -->
-<div class="tab-menu-heading">
-    <div class="tabs-menu">
-        <ul class="nav panel-tabs" role="tablist">
-            {% for email in emails %}
-                <li><a href="#tab{{ forloop.counter }}" class="{% if forloop.first %}active{% endif %}" data-bs-toggle="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" role="tab" data-email_id = {{email.id}}>Tab {{ forloop.counter }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-
-<!-- Tab Content -->
-<div class="panel-body tabs-menu-body">
-<div class="tab-content">
-{% for email in emails %}
-<div class="tab-pane {% if forloop.first %}active{% endif %}" id="tab{{ forloop.counter }}" role="tabpanel">
-<div class="col-xl-12">
-<div class="card">
-<div class="card-header">
-    <h3 class="card-title">Compose new message</h3>
-</div>
-<div class="card-body">
-    <form>
-        <div class="form-group">
-            <div class="row align-items-center">
-                <label class="col-xl-2 form-label" value={{supplier.email}}>To</label>
-                <div class="col-xl-10">
-                    <input type="text" class="form-control" value="{{ supplier.email }}">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="row align-items-center">
-                <label class="col-xl-2 form-label">CC</label>
-                <div class="col-xl-10">
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="row align-items-center">
-                <label class="col-xl-2 form-label">Subject</label>
-                <div class="col-xl-10">
-                    <input type="text" class="form-control" value="Enquiry for {{ request_obj.product.name }}">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="row">
-                <label class="col-xl-2 form-label">Message</label>
-                <div class="col-xl-10">
-                    <textarea rows="10" class="form-control" value = "">
-Dear {{ supplier.name }},
-
-We are reaching out to you regarding our recent enquiry with ID: {{ enquiry.id }} and subject: {{ enquiry.subject }}. 
-
-Below are the details of the request associated with this enquiry:
-
-Product: {{ request_obj.product }}
-Details: {{ request_obj.details }}
-Quantity: {{ request_obj.quantity }}
-Delivery Date: {{ request_obj.delivery_date }}
-
-Please review the information provided and get back to us with your offer at your earliest convenience.
-
-Thank you,
-                    </textarea>
+                                            <div class="tab-menu-heading">
+                                                <div class="tabs-menu">
+                                                    <ul class="nav panel-tabs" role="tablist">
+                                                        {% for email_with_attachments in emails_with_attachments %}
+                                                            <li>
+                                                                <a href="#tab{{ forloop.counter }}" class="{% if forloop.first %}active{% endif %}" data-bs-toggle="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" role="tab" data-email_id="attach-{{ email_with_attachments.email.id }}">Tab {{ forloop.counter }}</a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+            
+                                            <div class="panel-body tabs-menu-body">
+                                                <div class="tab-content">
+                                                    {% for email_with_attachments in emails_with_attachments %}
+                                                        <div class="tab-pane {% if forloop.first %}active{% endif %}" id="tab{{ forloop.counter }}" role="tabpanel">
+                                                            <div class="col-xl-12">
+                                                                <div class="card">
+                                                                    <div class="card-header">
+                                                                        <h3 class="card-title">Compose new message</h3>
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <form>
+                                                                            <div class="form-group">
+                                                                                <div class="row align-items-center">
+                                                                                    <label class="col-xl-2 form-label" value={{ supplier.email }}>To</label>
+                                                                                    <div class="col-xl-10">
+                                                                                        <input type="text" class="form-control" value="{{ supplier.email }}">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row align-items-center">
+                                                                                    <label class="col-xl-2 form-label">CC</label>
+                                                                                    <div class="col-xl-10">
+                                                                                        <input type="text" class="form-control">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row align-items-center">
+                                                                                    <label class="col-xl-2 form-label">Subject</label>
+                                                                                    <div class="col-xl-10">
+                                                                                        <input type="text" class="form-control" value="Enquiry for {{ request_obj.product.name }}">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row">
+                                                                                    <label class="col-xl-2 form-label">Message</label>
+                                                                                    <div class="col-xl-10">
+                                                                                        <textarea rows="10" class="form-control">
+            Dear {{ supplier.name }},
+            We are reaching out to you regarding our recent enquiry with ID: {{ enquiry.id }} and subject: {{ enquiry.subject }}.
+            
+            Below are the details of the request associated with this enquiry:
+            Product: {{ request_obj.product }}
+            Details: {{ request_obj.details }}
+            Quantity: {{ request_obj.quantity }}
+            Delivery Date: {{ request_obj.delivery_date }}
+            
+            Please review the information provided and get back to us with your offer at your earliest convenience.
+            
+            Thank you,
+                                                                                        </textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row align-items-center">
+                                                                                    <label class="col-xl-2 form-label">Files</label>
+                                                                                    <div class="col-xl-10" id="file-list-{{ email_with_attachments.email.id }}">
+                                                                                        <!-- Display existing attachments with a remove button -->
+                                                                                        {% for attachment in email_with_attachments.attachments %}
+                                                                                            <p>
+                                                                                                {{ attachment.file.name }}
+                                                                                                <button type="button" class="btn btn-danger btn-sm remove-attachment" data-attachment_id="{{ attachment.id }}" data-email_id="{{ email_with_attachments.email.id }}">Remove</button>
+                                                                                            </p>
+                                                                                        {% endfor %}
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -296,7 +302,9 @@ Thank you,
                                                                     </div>
                                                                     <div class="card-footer d-sm-flex">
                                                                         <div class="mt-2 mb-2">
-                                                                            <a href="javascript:void(0)" class="btn btn-icon btn-white btn-svg" data-bs-toggle="tooltip" title="Attach" data-email_id="{{ email.id }}" onclick="$('#attachment-input-{{ email.id }}').click();"><span class="ri-attachment-2"&gt;&lt;></span></a>
+                                                                            <a href="javascript:void(0)" class="btn btn-icon btn-white btn-svg attach-button" data-bs-toggle="tooltip" title="Attach" data-email_id="attach-{{ email_with_attachments.email.id }}">
+                                                                                <span class="ri-attachment-2"></span>
+                                                                            </a>
                                                                         </div>
                                                                         <div class="btn-list ms-auto my-auto">
                                                                             <button class="btn btn-danger btn-space mb-0">Cancel</button>
@@ -305,7 +313,7 @@ Thank you,
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <input type="file" id="attachment-input-{{ email.id }}" style="display: none;" data-email_id="{{ email.id }}">
+                                                            <input type="file" id="attachment-input-{{ email_with_attachments.email.id }}" style="display: none;" data-email_id="attach-{{ email_with_attachments.email.id }}" multiple>
                                                         </div>
                                                     {% endfor %}
                                                 </div>
@@ -316,16 +324,30 @@ Thank you,
                             </div>
                         </div>
                     </div>
-                    <!-- COL-END -->
                 </div>
-                <!-- ROW-1 CLOSED -->
             </div>
-            <!-- CONTAINER CLOSED -->
-        </div>
-    </div>
+            
     <!--app-content closed-->
 </div>
-
+<div class="modal fade" id="attachToAllModal" tabindex="-1" role="dialog" aria-labelledby="attachToAllModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="attachToAllModalLabel">Attach to All</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Do you want to attach the selected files to all draft emails?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="denyAttachToAll">No</button>
+                <button type="button" class="btn btn-primary" id="confirmAttachToAll">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
         <!-- Sidebar-right -->
         <div class="sidebar sidebar-right sidebar-animate">
             <div class="panel panel-primary card mb-0 shadow-none border-0">
@@ -951,7 +973,7 @@ Thank you,
 
     <!-- Switcher js -->
     <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
-    
+    <!--
     <script>
         $(document).ready(function() {
             $('input[type="file"]').on('change', function(event) {
@@ -988,6 +1010,128 @@ Thank you,
             });
         });
     </script>
+-->
+
+<script>
+    $(document).ready(function() {
+        let globalEmailId;
+        let attachToAll = false;
+
+        // Only bind to the attach buttons
+        $('.attach-button').on('click', function(event) {
+            event.preventDefault(); // Prevent the default action
+            event.stopPropagation(); // Prevent the click from bubbling up to the tabs
+            globalEmailId = $(this).data('email_id').replace('attach-', '');
+            $('#attachToAllModal').modal('show');
+        });
+
+        $('#confirmAttachToAll').on('click', function() {
+            attachToAll = true;
+            $('#attachToAllModal').modal('hide');
+            $(`#attachment-input-${globalEmailId}`).data('email_id', `attach-${globalEmailId}`).click();
+        });
+
+        $('#denyAttachToAll').on('click', function() {
+            attachToAll = false;
+            $('#attachToAllModal').modal('hide');
+            $(`#attachment-input-${globalEmailId}`).data('email_id', `attach-${globalEmailId}`).click();
+        });
+
+        $('input[type="file"]').on('change', function(event) {
+            const files = event.target.files;
+            if (files.length > 0) {
+                const emailIds = attachToAll ? getAllEmailIds() : [$(this).data('email_id').replace('attach-', '')];
+                const formData = new FormData();
+
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('files[]', files[i]);
+                }
+
+                emailIds.forEach(emailId => {
+                    formData.append('email_id', emailId);
+                });
+
+                $.ajax({
+                    url: '{% url "upload_attachment" %}',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        if (data.success) {
+                            alert('Files uploaded successfully');
+                            emailIds.forEach(emailId => {
+                                // Display file names and attach icon for each email
+                                const fileListDiv = $(`#file-list-${emailId}`);
+                                fileListDiv.empty(); // Clear the current file list
+                                for (let i = 0; i < files.length; i++) {
+                                    const fileName = $('<p>').text(files[i].name);
+                                    fileListDiv.append(fileName);
+                                }
+                                const attachIcon = $(`<span class="ri-check-line" title="Files uploaded"></span>`);
+                                $(`a[data-email_id="attach-${emailId}"]`).append(attachIcon);
+                            });
+                        } else {
+                            console.log(data);
+                            alert('File upload failed');
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                        alert('An error occurred while uploading the files');
+                    }
+                });
+            }
+            attachToAll = false; // Reset the flag
+        });
+
+        // Handle remove attachment button click
+        $(document).on('click', '.remove-attachment', function(event) {
+            event.preventDefault();
+            const attachmentId = $(this).data('attachment_id');
+            const emailId = $(this).data('email_id');
+            
+            $.ajax({
+                url: '{% url "remove_attachment" %}',
+                type: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                data: {
+                    'attachment_id': attachmentId
+                },
+                success: function(data) {
+                    if (data.success) {
+                        alert('Attachment removed successfully');
+                        // Remove the attachment element from the DOM
+                        $(`#file-list-${emailId}`).find(`button[data-attachment_id="${attachmentId}"]`).parent().remove();
+                    } else {
+                        console.log(data);
+                        alert('Failed to remove attachment');
+                    }
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while removing the attachment');
+                }
+            });
+        });
+
+        function getAllEmailIds() {
+            const emailIds = [];
+            $('.attach-button').each(function() {
+                emailIds.push($(this).data('email_id').replace('attach-', ''));
+            });
+            return emailIds;
+        }
+    });
+</script>
+
+
+
 
 </body>
 
