@@ -27,7 +27,7 @@ from django.views.generic import TemplateView
 
 from dotenv import load_dotenv
 
-from .models import (Client, Email, Enquiry, Manager, Offer, Offer_Client, Product, Request, Supplier)
+from .models import (Client, Email, Enquiry, Manager, Offer, Offer_Client, Product, Request, Supplier,Attachment)
 def microsoft_login(request):
     # Step 1: Redirect user to Microsoft's OAuth 2.0 authorization endpoint
     scope = 'openid profile email User.Read Mail.Read Mail.Read.Shared Mail.ReadBasic Mail.ReadBasic.Shared Mail.ReadWrite Mail.ReadWrite.Shared Mail.Send Mail.Send.Shared MailboxSettings.Read MailboxSettings.ReadWrite offline_access'
@@ -642,13 +642,16 @@ def draft_email_display(request):
         print("No Request matches the given query.")
         return render(request, 'app/error.html', {'error': 'No Request matches the given query.'})
 
+    manager = request.user.manager  # Get the Manager object from the request.user
+
     emails = []
     # Retrieve or create Email objects for each supplier
     for supplier in suppliers:
-        email, created = Email.objects.get_or_create(supplier=supplier, request=request_obj)
+        email = Email.objects.filter(supplier=supplier, request=request_obj).first()
+        if not email:
+            email = Email.objects.create(supplier=supplier, request=request_obj, manager=manager)
+            print(f"Created new Email instance for supplier {supplier.id}, request {request_obj.id}, and manager {manager.id}")
         emails.append(email)
-        if created:
-            print(f"Created new Email instance for supplier {supplier.id} and request {request_obj.id}")
 
     # Prepare the context with the email objects
     context = {
@@ -657,4 +660,19 @@ def draft_email_display(request):
         'request_obj': request_obj,
     }
 
-    return render(request, 'app/draft-email.html', context)
+    return render(request, 'app/draft-email.html',context)
+
+def upload_attachment(request):
+    if request.method == 'POST' and request.FILES.get('file'):
+        file = request.FILES['file']
+        email_id = request.POST.get('email_id')
+
+        try:
+            email = Email.objects.get(id=email_id)
+        except Email.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Email not found'})
+
+        attachment = Attachment.objects.create(email=email, request=email.request, file=file)
+        print(f"Attachment created: {attachment.file.path}")
+        return JsonResponse({'success': True, 'attachment_id': attachment.id})
+    return JsonResponse({'success': False, 'error': 'Invalid request'})

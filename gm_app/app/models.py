@@ -109,7 +109,7 @@ class Email(models.Model):
 class Attachment(models.Model):
     email = models.ForeignKey(Email, on_delete=models.CASCADE, related_name='attachments')
     request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='request')
-    file = models.FileField(upload_to='email_attachments/%Y/%m/%d/', storage=FileSystemStorage(location='/media/email_attachments'))
+    file = models.FileField(upload_to='email_attachments/%Y/%m/%d/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -1,7 +1,8 @@
-from django.urls import path
+
 from . import views
 from django.urls import path, include
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -24,8 +25,11 @@ urlpatterns = [
    path('login/', views.login_view, name='login'),
    path('testmail',views.send_email,name ='send_email'),
    path('display-draft-email/', views.draft_email_display, name='draft_email_display'),
-
+   path('upload-attachment/', views.upload_attachment, name='upload_attachment')
 
    
 ]
-                                                            
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

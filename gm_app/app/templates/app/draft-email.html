@@ -227,61 +227,53 @@
     <div class="tabs-menu">
         <ul class="nav panel-tabs" role="tablist">
             {% for email in emails %}
-                <li><a href="#tab{{ forloop.counter }}" class="{% if forloop.first %}active{% endif %}" data-bs-toggle="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" role="tab">Tab {{ forloop.counter }}</a></li>
+                <li><a href="#tab{{ forloop.counter }}" class="{% if forloop.first %}active{% endif %}" data-bs-toggle="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" role="tab" data-email_id = {{email.id}}>Tab {{ forloop.counter }}</a></li>
             {% endfor %}
         </ul>
     </div>
 </div>
 
 <!-- Tab Content -->
-                                                    <div class="panel-body tabs-menu-body">
-                                                        <div class="tab-content">
-                                                            {% for email in emails %}
-                                                                <div class="tab-pane {% if forloop.first %}active{% endif %}" id="tab{{ forloop.counter }}" role="tabpanel">
-                                                                    <div class="col-xl-12">
-                                                                        <div class="card">
-                                                                            <div class="card-header">
-                                                                                <h3 class="card-title">Compose new message</h3>
-                                                                            </div>
-                                                                            <div class="card-body">
-                                                                                <form>
-                                                                                    <div class="form-group">
-                                                                                        <div class="row align-items-center">
-                                                                                            <label class="col-xl-2 form-label">To</label>
-                                                                                            <div class="col-xl-10">
-                                                                                                <input type="text" class="form-control" value="{{ supplier.email }}">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <div class="row align-items-center">
-                                                                                            <label class="col-xl-2 form-label">CC</label>
-                                                                                            <div class="col-xl-10">
-                                                                                                <input type="text" class="form-control">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <div class="row align-items-center">
-                                                                                            <label class="col-xl-2 form-label">BC</label>
-                                                                                            <div class="col-xl-10">
-                                                                                                <input type="text" class="form-control">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <div class="row align-items-center">
-                                                                                            <label class="col-xl-2 form-label">Subject</label>
-                                                                                            <div class="col-xl-10">
-                                                                                                <input type="text" class="form-control">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <div class="row">
-                                                                                            <label class="col-xl-2 form-label">Message</label>
-                                                                                            <div class="col-xl-10">
-                                                                                                <textarea rows="10" class="form-control" value = "">
+<div class="panel-body tabs-menu-body">
+<div class="tab-content">
+{% for email in emails %}
+<div class="tab-pane {% if forloop.first %}active{% endif %}" id="tab{{ forloop.counter }}" role="tabpanel">
+<div class="col-xl-12">
+<div class="card">
+<div class="card-header">
+    <h3 class="card-title">Compose new message</h3>
+</div>
+<div class="card-body">
+    <form>
+        <div class="form-group">
+            <div class="row align-items-center">
+                <label class="col-xl-2 form-label" value={{supplier.email}}>To</label>
+                <div class="col-xl-10">
+                    <input type="text" class="form-control" value="{{ supplier.email }}">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row align-items-center">
+                <label class="col-xl-2 form-label">CC</label>
+                <div class="col-xl-10">
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row align-items-center">
+                <label class="col-xl-2 form-label">Subject</label>
+                <div class="col-xl-10">
+                    <input type="text" class="form-control" value="Enquiry for {{ request_obj.product.name }}">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-xl-2 form-label">Message</label>
+                <div class="col-xl-10">
+                    <textarea rows="10" class="form-control" value = "">
 Dear {{ supplier.name }},
 
 We are reaching out to you regarding our recent enquiry with ID: {{ enquiry.id }} and subject: {{ enquiry.subject }}. 
@@ -296,45 +288,43 @@ Delivery Date: {{ request_obj.delivery_date }}
 Please review the information provided and get back to us with your offer at your earliest convenience.
 
 Thank you,
-                                                                                                </textarea>
-                                                                                            </div>
-                                                                                        </div>
+                    </textarea>
                                                                                     </div>
-                                                                                </form>
-                                                                            </div>
-                                                                            <div class="card-footer d-sm-flex">
-                                                                                <div class="mt-2 mb-2">
-                                                                                    <a href="javascript:void(0)" class="btn btn-icon btn-white btn-svg" data-bs-toggle="tooltip" title="" data-bs-original-title="Attach"><span class="ri-attachment-2"></span></a>
-                                                                                    <a href="javascript:void(0)" class="btn btn-icon btn-white btn-svg" data-bs-toggle="tooltip" title="" data-bs-original-title="Link"><span class="ri-link"></span></a>
-                                                                                    <a href="javascript:void(0)" class="btn btn-icon btn-white btn-svg" data-bs-toggle="tooltip" title="" data-bs-original-title="Photos"><span class="ri-image-line"></span></a>
-                                                                                    <a href="javascript:void(0)" class="btn btn-icon btn-white btn-svg" data-bs-toggle="tooltip" title="" data-bs-original-title="Delete"><span class="ri-delete-bin-line"></span></a>
-                                                                                </div>
-                                                                                <div class="btn-list ms-auto my-auto">
-                                                                                    <button class="btn btn-danger btn-space mb-0">Cancel</button>
-                                                                                    <button class="btn btn-primary btn-space mb-0">Send message</button>
                                                                                 </div>
                                                                             </div>
+                                                                        </form>
+                                                                    </div>
+                                                                    <div class="card-footer d-sm-flex">
+                                                                        <div class="mt-2 mb-2">
+                                                                            <a href="javascript:void(0)" class="btn btn-icon btn-white btn-svg" data-bs-toggle="tooltip" title="Attach" data-email_id="{{ email.id }}" onclick="$('#attachment-input-{{ email.id }}').click();"><span class="ri-attachment-2"&gt;&lt;></span></a>
+                                                                        </div>
+                                                                        <div class="btn-list ms-auto my-auto">
+                                                                            <button class="btn btn-danger btn-space mb-0">Cancel</button>
+                                                                            <button class="btn btn-primary btn-space mb-0">Send message</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            {% endfor %}
+                                                            </div>
+                                                            <input type="file" id="attachment-input-{{ email.id }}" style="display: none;" data-email_id="{{ email.id }}">
                                                         </div>
-                                                    </div>
+                                                    {% endfor %}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- COL-END -->
                         </div>
-                        <!-- ROW-1 CLOSED -->
                     </div>
-                    <!-- CONTAINER CLOSED -->
+                    <!-- COL-END -->
                 </div>
+                <!-- ROW-1 CLOSED -->
             </div>
-            <!--app-content closed-->
+            <!-- CONTAINER CLOSED -->
         </div>
+    </div>
+    <!--app-content closed-->
+</div>
 
         <!-- Sidebar-right -->
         <div class="sidebar sidebar-right sidebar-animate">
@@ -961,6 +951,43 @@ Thank you,
 
     <!-- Switcher js -->
     <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
+    
+    <script>
+        $(document).ready(function() {
+            $('input[type="file"]').on('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const emailId = $(this).data('email_id');
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('email_id', emailId);
+
+                    $.ajax({
+                        url: '{% url "upload_attachment" %}',
+                        type: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(data) {
+                            if (data.success) {
+                                alert('File uploaded successfully');
+                            } else {
+                                console.log(data);
+                                alert('File upload failed');
+                            }
+                        },
+                        error: function(error) {
+                            console.error('Error:', error);
+                            alert('An error occurred while uploading the file');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
 </body>
 
