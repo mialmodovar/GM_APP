@@ -209,7 +209,7 @@
 
 <!-- Supplier Details Section -->
 <div class="row d-flex">
-    <div class="col-lg-6">
+    <div class="col-lg-6 d-flex">
         <div class="card">
             <div class="card-header">
                 <div class="card-title">Supplier Details</div>
@@ -237,7 +237,7 @@
         </div>
     </div>
 
-    <div class="col-lg-6">
+    <div class="col-lg-6 d-flex">
         <div class="card">
             <div class="card-header">
                 <div class="card-title">Supplier Summary Stats</div>
@@ -266,16 +266,20 @@
 </div>
 
 <!-- Recent Offers Section -->
+<!-- Recent Offers Section -->
 <div class="row">
     <div class="col-lg-12">
         <div class="card mt-4">
-            <div class="card-header">
-                <h3 class="card-title">Recent Offers from {{supplier.name}}</h3>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="card-title">Recent Offers from {{ supplier.name }}</h3>
+                <div>
+                    <input type="text" class="form-control d-inline-block mr-2" style="width: 200px;" placeholder="Search offers...">
+                    <button class="btn btn-primary">Export as CSV</button>
+                </div>
             </div>
             <div class="card-body">
-                <h3>Recent Offers</h3>
                 {% if offers %}
-                <table class="table">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Supplier Price</th>
@@ -305,6 +309,7 @@
         </div>
     </div>
 </div>
+
 <!--app-content closed-->
 </div>
 
@@ -1287,6 +1292,42 @@ $(document).ready(function() {
     });
 });
 
+    </script>
+
+<script>
+    $(document).ready(function() {
+        // Search functionality
+        $('input[type="text"]').on('keyup', function() {
+            var value = $(this).val().toLowerCase();
+            $('table tbody tr').filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    
+        // Export to CSV functionality
+        $('.btn-primary').on('click', function() {
+            var csv = [];
+            var rows = document.querySelectorAll('table tr');
+            
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].querySelectorAll('td, th');
+                
+                for (var j = 0; j < cols.length; j++) 
+                    row.push(cols[j].innerText);
+                
+                csv.push(row.join(','));        
+            }
+    
+            // Download CSV
+            var csvFile = new Blob([csv.join('\n')], {type: 'text/csv'});
+            var downloadLink = document.createElement('a');
+            downloadLink.download = 'offers.csv';
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+        });
+    });
     </script>
     
 </body>
