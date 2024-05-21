@@ -239,17 +239,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <div id="basic-datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-                            <div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="basic-datatable_length">
-                                <label>Show 
-                                    <select name="basic-datatable_length" aria-controls="basic-datatable" class="form-select form-select-sm">
-                                      <option value="10">5</option> 
-                                      <option value="10">10</option>
-                                      <option value="25">25</option>
-                                      <option value="50">50</option>
-                                      <option value="100">100</option>
-                                    </select> entries
-                                  </label>
-                            </div>
+                            <div class="row"><div class="col-sm-12 col-md-6">
                             </div>
                             <div class="col-sm-12 col-md-6"><div id="basic-datatable_filter" class="dataTables_filter"><label><input type="search" id="tableSearch" class="form-control" placeholder="Search..." aria-controls="basic-datatable"></label></div></div></div><div class="row"><div class="col-sm-12">
                             <table class="table table-bordered text-nowrap border-bottom dataTable no-footer" id="basic-datatable" role="grid" aria-describedby="basic-datatable_info" id="basic-datatable">
@@ -265,13 +255,31 @@
                             </tbody>
                         </table>
                     </div></div>
-                    <div class="row"><div class="col-sm-12 col-md-12"><div class="dataTables_info" id="basic-datatable_info" role="status" aria-live="polite">Showing 1 to 10 of 50 entries</div></div><div class="col-sm-12 col-md-12"><div class="dataTables_paginate paging_simple_numbers" id="basic-datatable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="basic-datatable_previous"><a href="#" aria-controls="basic-datatable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="basic-datatable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item next" id="basic-datatable_next"><a href="#" aria-controls="basic-datatable" data-dt-idx="6" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                    <div class="row">
+                        
+                            <div class="dataTables_info" id="basic-datatable_info" role="status" aria-live="polite">Showing 1 to 10 of 50 entries</div></div>
+                            <br>
+                            <div class="row">
+                            <div class="col-sm-6 col-md-6"><div class="dataTables_length" id="basic-datatable_length">
+                                <label>Show 
+                                    <select name="basic-datatable_length" aria-controls="basic-datatable" class="form-select form-select">
+                                      <option value="10">5</option> 
+                                      <option value="10">10</option>
+                                      <option value="25">25</option>
+                                      <option value="50">50</option>
+                                      <option value="100">100</option>
+                                    </select> entries
+                                  </label>
+                            </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="dataTables_paginate paging_simple_numbers" id="basic-datatable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="basic-datatable_previous"><a href="#" aria-controls="basic-datatable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="basic-datatable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item next" id="basic-datatable_next"><a href="#" aria-controls="basic-datatable" data-dt-idx="6" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                    </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+
 
 <!-- Sidebar-right -->
 <div class="sidebar sidebar-right sidebar-animate">
@@ -1007,3 +1015,5 @@ fetchEnquiries();
         });
     });
     </script>
+    
+    

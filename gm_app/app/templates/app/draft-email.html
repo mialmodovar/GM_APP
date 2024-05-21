@@ -268,18 +268,21 @@
                                                                                     <label class="col-xl-2 form-label">Message</label>
                                                                                     <div class="col-xl-10">
                                                                                         <textarea rows="10" class="form-control">
-            Dear {{ supplier.name }},
-            We are reaching out to you regarding our recent enquiry with ID: {{ enquiry.id }} and subject: {{ enquiry.subject }}.
-            
-            Below are the details of the request associated with this enquiry:
-            Product: {{ request_obj.product }}
-            Details: {{ request_obj.details }}
-            Quantity: {{ request_obj.quantity }}
-            Delivery Date: {{ request_obj.delivery_date }}
-            
-            Please review the information provided and get back to us with your offer at your earliest convenience.
-            
-            Thank you,
+                                                                                            Dear {{ supplier.name }},
+
+We are reaching out to you regarding our recent enquiry with ID: {{ enquiry.id }} and subject: {{ enquiry.subject }}. 
+
+Below are the details of the request associated with this enquiry:
+
+Product: {{ request_obj.product.name }}
+Details: 
+{{ request_obj.specs|escape }}
+Quantity: {{ request_obj.quantity }}
+Delivery Date: {{ request_obj.delivery_date }}
+
+Please review the information provided and get back to us with your offer at your earliest convenience.
+
+Thank you,
                                                                                         </textarea>
                                                                                     </div>
                                                                                 </div>
