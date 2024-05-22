@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" style="--primary-rgb: 28,103,147;">
 
 <head>
     {% load static %}
@@ -199,7 +199,7 @@
                 <div class="side-app">
                     <div class="main-container container-fluid">
                         <div class="page-header">
-                            <h1 class="page-title">Tabs</h1>
+                            <h1 class="page-title">Email Management</h1>
                             <div>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="javascript:void(0)">Bootstrap</a></li>
@@ -212,7 +212,7 @@
                             <div class="col-xl-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Tabs style</h3>
+                                        <h3 class="card-title">Email Enquiries to Suppliers</h3>
                                     </div>
                                     <div class="card-body">
                                         <div class="panel panel-primary">
@@ -221,13 +221,12 @@
                                                     <ul class="nav panel-tabs" role="tablist">
                                                         {% for email_with_attachments in emails_with_attachments %}
                                                             <li>
-                                                                <a href="#tab{{ forloop.counter }}" class="{% if forloop.first %}active{% endif %}" data-bs-toggle="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" role="tab" data-email_id="attach-{{ email_with_attachments.email.id }}">Tab {{ forloop.counter }}</a>
+                                                                <a href="#tab{{ forloop.counter }}" class="{% if forloop.first %}active{% endif %}" data-bs-toggle="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" role="tab" data-email_id="attach-{{ email_with_attachments.email.id }}">Mail to {{ email_with_attachments.email.supplier.name }}</a>
                                                             </li>
                                                         {% endfor %}
                                                     </ul>
                                                 </div>
                                             </div>
-            
                                             <div class="panel-body tabs-menu-body">
                                                 <div class="tab-content">
                                                     {% for email_with_attachments in emails_with_attachments %}
@@ -241,9 +240,9 @@
                                                                         <form>
                                                                             <div class="form-group">
                                                                                 <div class="row align-items-center">
-                                                                                    <label class="col-xl-2 form-label" value={{ supplier.email }}>To</label>
+                                                                                    <label class="col-xl-2 form-label">To</label>
                                                                                     <div class="col-xl-10">
-                                                                                        <input type="text" class="form-control" value="{{ supplier.email }}">
+                                                                                        <input type="text" id="recipient-{{ email_with_attachments.email.id }}" class="form-control" value="{{ email_with_attachments.email.supplier.email }}">
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -259,7 +258,7 @@
                                                                                 <div class="row align-items-center">
                                                                                     <label class="col-xl-2 form-label">Subject</label>
                                                                                     <div class="col-xl-10">
-                                                                                        <input type="text" class="form-control" value="Enquiry for {{ request_obj.product.name }}">
+                                                                                        <input type="text" id="subject-{{ email_with_attachments.email.id }}" class="form-control" value="[{{ enquiry.id }}] Enquiry for {{ request_obj.product.name }}">
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -267,8 +266,8 @@
                                                                                 <div class="row">
                                                                                     <label class="col-xl-2 form-label">Message</label>
                                                                                     <div class="col-xl-10">
-                                                                                        <textarea rows="10" class="form-control">
-                                                                                            Dear {{ supplier.name }},
+                                                                                        <textarea rows="10" id="message-{{ email_with_attachments.email.id }}" class="form-control">
+Dear {{ supplier.name }},
 
 We are reaching out to you regarding our recent enquiry with ID: {{ enquiry.id }} and subject: {{ enquiry.subject }}. 
 
@@ -287,19 +286,17 @@ Thank you,
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="form-group">
-                                                                                <div class="row align-items-center">
-                                                                                    <label class="col-xl-2 form-label">Files</label>
-                                                                                    <div class="col-xl-10" id="file-list-{{ email_with_attachments.email.id }}">
-                                                                                        <!-- Display existing attachments with a remove button -->
-                                                                                        {% for attachment in email_with_attachments.attachments %}
-                                                                                            <p>
-                                                                                                {{ attachment.file.name }}
-                                                                                                <button type="button" class="btn btn-danger btn-sm remove-attachment" data-attachment_id="{{ attachment.id }}" data-email_id="{{ email_with_attachments.email.id }}">Remove</button>
-                                                                                            </p>
-                                                                                        {% endfor %}
+                                                                            <div class="row align-items-center">
+                                                                                <label class="col-xl-2 form-label">Files</label>
+                                                                                <div class="col-xl-10" id="file-list-{{ email_with_attachments.email.id }}">
+                                                                                    <!-- Display existing attachments with a remove button -->
+                                                                                    {% for attachment in email_with_attachments.attachments %}
+                                                                                        <p>
+                                                                                            {{ attachment.file.name }}
+                                                                                            <button type="button" class="btn btn-danger btn-sm remove-attachment" data-attachment_id="{{ attachment.id }}" data-email_id="{{ email_with_attachments.email.id }}">Remove</button>
+                                                                                        </p>
+                                                                                    {% endfor %}
                                                                                     </div>
-                                                                                </div>
                                                                             </div>
                                                                         </form>
                                                                     </div>
@@ -311,7 +308,7 @@ Thank you,
                                                                         </div>
                                                                         <div class="btn-list ms-auto my-auto">
                                                                             <button class="btn btn-danger btn-space mb-0">Cancel</button>
-                                                                            <button class="btn btn-primary btn-space mb-0">Send message</button>
+                                                                            <button class="btn btn-primary btn-space mb-0 send-email-button" data-email_id="{{ email_with_attachments.email.id }}">Send message</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -320,7 +317,9 @@ Thank you,
                                                         </div>
                                                     {% endfor %}
                                                 </div>
+                                                
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -1016,6 +1015,7 @@ Thank you,
 -->
 
 <script>
+    //handle attachment
     $(document).ready(function() {
         let globalEmailId;
         let attachToAll = false;
@@ -1131,9 +1131,50 @@ Thank you,
             return emailIds;
         }
     });
+
+
 </script>
 
+<script>
+    $(document).ready(function() {
+        $('.send-email-button').on('click', function(event) {
+            event.preventDefault();
 
+            let emailId = $(this).data('email_id');
+            let subject = $(`#subject-${emailId}`).val();
+            let message = $(`#message-${emailId}`).val();
+            let recipient = $(`#recipient-${emailId}`).val();
+            console.log(emailId);
+            console.log(subject);
+            console.log(message);
+            console.log(recipient);
+            $.ajax({
+                url: "{% url 'send_email_ajax' %}",
+                type: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                data: {
+                    email_id: emailId,
+                    subject: subject,
+                    message: message,
+                    recipient: recipient
+                },
+                success: function(response) {
+                    if (response.message) {
+                        alert('Email sent successfully!');
+                    } else {
+                        alert('Error: ' + response.error);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while sending the email.');
+                }
+            });
+        });
+    });
+</script>
 
 
 </body>

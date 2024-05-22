@@ -6,4 +6,5 @@ admin.site.register(Enquiry)
 admin.site.register(Manager)
 admin.site.register(Email)
 admin.site.register(Attachment)
+admin.site.register(Division)
 

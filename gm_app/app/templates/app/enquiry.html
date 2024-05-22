@@ -969,7 +969,6 @@ $(document).ready(function() {
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-            console.log(data)
             var requestsTableHtml = generateRequestsOverviewTable(data);
             // Append the requests overview table to the "requests-table" div
             $('#requests-table').html(requestsTableHtml);
@@ -1004,67 +1003,84 @@ $(document).ready(function() {
         }
     });
 
-    // Function to generate HTML for supplier offers card
-    function generateSupplierOffersCardHtml(request, cardTitle) {
-        var cardHtml = 
-        `<div class="card">
-            <div class="card-header">
-                    <h3 class="card-title">${request.product} - Offers received from suppliers</h3>
-                    <div class="card-options">
-                                            <button type="button" class="btn btn-sm btn-primary btn-edit-offers" data-target="offers-${request.id}">
-                                                <span class="fe fe-edit edit-offer"></span> Edit All
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-secondary btn-add-offer" style="display:none;" data-target="offers-${request.id}">
-                                                <span class="fe fe-plus-circle"></span> Add new offer
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-success btn-save-offers" style="display:none;" data-target="offers-${request.id}">
-                                                <span class="fe fe-save save-offer"></span> Save All
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-info btn-add-checkboxes"  data-table-id="offers-${request.id}">
-                                                <span class="fe fe-check-square"></span> Send emails
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-secondary btn-cancel-emails" style="display:none;" data-table-id="offers-${request.id}">
-                                                <span class="fe fe-x"></span> Cancel
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-success btn-confirm-emails" style="display:none;" data-table-id="offers-${request.id}">
-                                                <span class="fe fe-check"></span> Confirm Send
-                                            </button>
-                                        </div>
-                                        </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table id="offers-${request.id}" class="table table-bordered border text-nowrap mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>Supplier</th>
-                                                <th>Price</th>
-                                                <th>Payment Terms</th>
-                                                <th>Incoterm</th>
-                                                <th>Specs</th>
-                                                <th>Size</th>
-                                                <th>Packaging</th>
-                                                <th>Validity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>`;
-        // Append each offer row
-        if (request.offers && request.offers.length > 0) {
-    request.offers.forEach(function(offer) {
-        cardHtml += `<tr data-offer-id="${offer.id}" data-supplier-id = "${offer.supplier_id}" >
-            <td contenteditable="false"><a href= "/supplier_detail/${offer.supplier_id}">${offer.supplier}</a></td>
-            <td contenteditable="false">${offer.supplier_price}</td>
-            <td contenteditable="false">${offer.payment_terms}</td>
-            <td contenteditable="false">${offer.incoterms}</td>
-            <td contenteditable="false">${offer.specs}</td>
-            <td contenteditable="false">${offer.size}</td>
-            <td contenteditable="false">${offer.packaging}</td>
-            <td contenteditable="false">${offer.validity}</td>
-        </tr>`;
-    });
-} 
-        cardHtml += `</tbody></table></div></div></div>`;
-        return cardHtml;
-    }
+   // Function to generate HTML for supplier offers card
+function generateSupplierOffersCardHtml(request, cardTitle) {
+    var cardHtml = 
+    `<div class="card">
+        <div class="card-header">
+            <h3 class="card-title">${request.product} - Offers received from suppliers</h3>
+            <div class="card-options">
+                <button type="button" class="btn btn-sm btn-primary btn-edit-offers" data-target="offers-${request.id}">
+                    <span class="fe fe-edit edit-offer"></span> Edit All
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary btn-add-offer" style="display:none;" data-target="offers-${request.id}">
+                    <span class="fe fe-plus-circle"></span> Add new offer
+                </button>
+                <button type="button" class="btn btn-sm btn-success btn-save-offers" style="display:none;" data-target="offers-${request.id}">
+                    <span class="fe fe-save save-offer"></span> Save All
+                </button>
+                <button type="button" class="btn btn-sm btn-info btn-add-checkboxes" data-table-id="offers-${request.id}">
+                    <span class="fe fe-check-square"></span> Send emails
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary btn-cancel-emails" style="display:none;" data-table-id="offers-${request.id}">
+                    <span class="fe fe-x"></span> Cancel
+                </button>
+                <button type="button" class="btn btn-sm btn-success btn-confirm-emails" style="display:none;" data-table-id="offers-${request.id}">
+                    <span class="fe fe-check"></span> Confirm Send
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="offers-${request.id}" class="table table-bordered border text-nowrap mb-0">
+                    <thead>
+                        <tr>
+                            <th>Supplier</th>
+                            <th>Price</th>
+                            <th>Payment Terms</th>
+                            <th>Incoterm</th>
+                            <th>Specs</th>
+                            <th>Size</th>
+                            <th>Packaging</th>
+                            <th>Validity</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+    // Append each offer row
+    if (request.offers && request.offers.length > 0) {
+        request.offers.forEach(function(offer) {
+            var emailStatusHtml = '';
+            console.log(request.emails)
+            var relatedEmails = request.emails.filter(email => email.supplier_id === offer.supplier_id);
+
+            if (relatedEmails.length > 0) {
+               
+
+                relatedEmails.forEach(function(email) {
+                        var status = email.status.toLowerCase();
+                        if (status === 'draft' || status === 'failed') {
+                            emailStatusHtml = '&#x1F4E7; &#x274C;';
+                        } else if (status === 'sent') {
+                            emailStatusHtml = '&#x1F4E7; &#x2705;';
+                        }
+});
+            }
+
+            cardHtml += `<tr data-offer-id="${offer.id}" data-supplier-id="${offer.supplier_id}">
+                <td contenteditable="false"><a href="/supplier_detail/${offer.supplier_id}">${offer.supplier}</a><div class="supplier-email-status">${emailStatusHtml}</div></td>
+                <td contenteditable="false">${offer.supplier_price}</td>
+                <td contenteditable="false">${offer.payment_terms}</td>
+                <td contenteditable="false">${offer.incoterms}</td>
+                <td contenteditable="false">${offer.specs}</td>
+                <td contenteditable="false">${offer.size}</td>
+                <td contenteditable="false">${offer.packaging}</td>
+                <td contenteditable="false">${offer.validity}</td>
+            </tr>`;
+        });
+    } 
+    cardHtml += `</tbody></table></div></div></div>`;
+    return cardHtml;
+}
 
     // Function to generate HTML for offers sent to clients card
     function generateClientOffersCardHtml(request, cardTitle) {
@@ -1237,7 +1253,7 @@ $(document).ready(function() {
         var offerData = {
             id: offerId,
             request_id: requestId,
-            supplier: $row.find('td:eq(0)').text(),
+            supplier: $row.find('td:eq(0)').clone().children('.supplier-email-status').remove().end().text(),
             supplier_price: $row.find('td:eq(1)').text(),
             payment_terms: $row.find('td:eq(2)').text(),
             incoterms: $row.find('td:eq(3)').text(),
@@ -1527,6 +1543,12 @@ $(document).ready(function() {
     });
     </script>
     
+    <style>
+        .supplier-email-status {
+    display: inline-block;
+    margin-left: 5px; /* Adjust this value to control the spacing between the supplier name and the emojis */
+}
+    </style>
 </body>
 
 </html>

@@ -5,9 +5,13 @@ from django.core.files.storage import FileSystemStorage
 
 
     
-   
+class Division(models.Model):
+    name = models.TextField(blank=True, null=True)
+    group_mail = models.TextField(blank=True, null=True)
+
 class Manager(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,default=1)
+    divisions = models.ManyToManyField(Division, related_name='managers')
     name = models.TextField(blank=True, null=True)
     title = models.TextField(blank=True, null=True)
     division = models.TextField(blank=True, null=True)
@@ -78,8 +82,7 @@ class Offer_Client(models.Model):
     customer_feedback = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
 
-class Division(models.Model):
-    name = models.TextField(blank=True, null=True)
+
 
 class Email(models.Model):
     # A unique identifier for each email, using UUID
@@ -89,6 +92,7 @@ class Email(models.Model):
     request = models.ForeignKey(Request, on_delete=models.CASCADE)
     # Foreign key linking to the Supplier model since emails are sent to suppliers
     supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True,related_name='emails')
+    recipient = models.TextField()
     subject = models.TextField()
     message = models.TextField()
     sent_at = models.DateTimeField(auto_now_add=True)
@@ -98,7 +102,7 @@ class Email(models.Model):
         ('SENT', 'Sent'),
         ('FAILED', 'Failed'),
         ('DRAFT', 'Draft')
-    ], default='Draft')
+    ], default='DRAFT')
     # Optional: Track responses or follow-up emails
     response_received = models.BooleanField(default=False)
     response_details = models.TextField(blank=True, null=True)

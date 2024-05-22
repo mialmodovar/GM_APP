@@ -4,6 +4,7 @@ import pprint
 import re
 import requests
 import time
+import base64
 from datetime import datetime, timedelta
 
 from django.conf import settings
@@ -169,7 +170,7 @@ def refresh_access_token(manager):
     access_token = token_json.get('access_token')
     refresh_token = token_json.get('refresh_token')
     expires_in = token_json.get('expires_in')
-    expiry_date = timezone.now() + datetime.timedelta(seconds=expires_in)
+    expiry_date = timezone.now() + timedelta(seconds=expires_in)
 
     # Update the user profile with new tokens and expiry date
     manager.access_token = access_token
@@ -195,14 +196,18 @@ def index(request):
 
     # Fetch all supplier names
     suppliers = Supplier.objects.all().order_by('name').values_list('name', flat=True)
+
+    manager = Manager.objects.filter(user=request.user).first()
+
     
     # Prepare context to be passed to the template
     context = {
+        'manager' : manager,
         'clients': list(clients),
         'products': list(products),
         'suppliers': list(suppliers)
     }
-
+    print(manager)
     return render(request, 'app/new_enquiry.html', context)
 
 def enquiry(request,pk):
@@ -311,11 +316,14 @@ def requests_offers_for_enquiry(request, enquiry_id):
             'payment_terms_requested': req.payment_terms_requested or "",
             'notes': req.notes or "",
             'offers': [],
-            'offers_client': []
+            'offers_client': [],
+            'emails': []
         }
 
         offers = req.offers.all()
         offers_client = req.offers_client.all()
+        emails = Email.objects.filter(request=req)
+        
         
         for offer in offers:
             supplier_name = offer.supplier.name if offer.supplier and offer.supplier.name else "Not available"
@@ -323,7 +331,7 @@ def requests_offers_for_enquiry(request, enquiry_id):
             offer_dict = {
                 'id': offer.id,
                 'supplier': supplier_name,
-                'supplier_id' : offer.supplier.id,
+                'supplier_id': offer.supplier.id,
                 'supplier_price': offer.supplier_price or "",
                 'incoterms': offer.incoterms or "",
                 'specs': offer.specs or "",
@@ -349,9 +357,28 @@ def requests_offers_for_enquiry(request, enquiry_id):
             }
             req_dict['offers_client'].append(offer_client_dict)
 
+        for email in emails:
+            email_dict = {
+                'uuid': email.uuid,
+                'manager': email.manager.name if email.manager else "Not available",
+                'supplier_id': email.supplier.id if email.supplier else None,
+                'recipient': email.recipient,
+                'subject': email.subject,
+                'message': email.message,
+                'sent_at': email.sent_at.strftime("%Y-%m-%d %H:%M") if email.sent_at else "DD/MM/YYYY HH:MM",
+                'read_at': email.read_at.strftime("%Y-%m-%d %H:%M") if email.read_at else "DD/MM/YYYY HH:MM",
+                'status': email.status,
+                'response_received': email.response_received,
+                'response_details': email.response_details or "",
+                }
+            print(email_dict)
+            req_dict['emails'].append(email_dict)
+        
         data.append(req_dict)
 
     return JsonResponse(data, safe=False)
+
+
 
 
 @csrf_exempt
@@ -679,20 +706,7 @@ def draft_email_display(request):
 
     return render(request, 'app/draft-email.html', context)
 
-#def upload_attachment(request):
-    if request.method == 'POST' and request.FILES.get('file'):
-        file = request.FILES['file']
-        email_id = request.POST.get('email_id')
 
-        try:
-            email = Email.objects.get(id=email_id)
-        except Email.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'Email not found'})
-
-        attachment = Attachment.objects.create(email=email, request=email.request, file=file)
-        print(f"Attachment created: {attachment.file.path}")
-        return JsonResponse({'success': True, 'attachment_id': attachment.id})
-    return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 def upload_attachment(request):
     if request.method == 'POST' and request.FILES.getlist('files[]'):
@@ -727,3 +741,85 @@ def remove_attachment(request):
             return JsonResponse({'success': False, 'error': 'Attachment not found'})
     
     return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+
+
+@csrf_exempt
+@login_required
+def send_email_ajax(request):
+    if request.method == 'POST':
+        email_id = request.POST.get('email_id')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        recipient = request.POST.get('recipient')
+        print(recipient)
+        
+        # Extract email object from database
+        email = get_object_or_404(Email, id=email_id)
+        
+        # Process recipient(s)
+        recipients = [email.strip() for email in recipient.split(';') if email.strip()]
+        
+        # Update email object with new information
+        email.subject = subject
+        email.message = message
+        email.recipient = recipient
+        email.save()
+
+        # Get the supplier associated with the email object
+        supplier = email.supplier
+        stripped_supplier_email = supplier.email.strip() if supplier.email else ""
+        stripped_recipient = recipient.strip()
+        
+        if supplier and stripped_supplier_email != stripped_recipient:
+            supplier.email = stripped_recipient
+            supplier.save()
+
+        # Get the access token
+        token = get_access_token(request)
+        if not token:
+            return JsonResponse({'error': 'Authentication token is missing or invalid'}, status=403)
+
+        # Prepare attachments
+        attachments = []
+        for attachment in email.attachments.all():
+            with open(attachment.file.path, 'rb') as f:
+                content = f.read()
+                attachments.append({
+                    "@odata.type": "#microsoft.graph.fileAttachment",
+                    "name": attachment.file.name,
+                    "contentBytes": base64.b64encode(content).decode('utf-8')
+                })
+
+        # Construct the email message payload
+        to_recipients = [{"emailAddress": {"address": email}} for email in recipients]
+        email_payload = {
+            "message": {
+                "subject": subject,
+                "body": {
+                    "contentType": "Text",
+                    "content": message
+                },
+                "toRecipients": to_recipients,
+                "attachments": attachments
+            },
+            "saveToSentItems": "true"
+        }
+
+        # Send the email using Microsoft Graph API
+        email_url = 'https://graph.microsoft.com/v1.0/me/sendMail'
+        headers = {
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        }
+        response = requests.post(email_url, headers=headers, json=email_payload)
+        
+        if response.status_code == 202:
+            email.status = 'SENT'  # Assuming you want to update the status to SENT after sending
+            email.save()
+            return JsonResponse({'message': 'Email sent successfully'}, status=202)
+        else:
+            email.status = 'FAILED'  # Assuming you want to update the status to SENT after sending
+            email.save()
+            return JsonResponse({'error': 'Failed to send email', 'details': response.json()}, status=response.status_code)
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
