@@ -275,21 +275,31 @@ def create_enquiry_ajax(request):
                 size=product_detail.get('size', ''),
                 quantity=product_detail.get('quantity', ''),
                 packaging=product_detail.get('packaging', ''),
-                incoterms = data.get('incoterm_wanted'),
-                discharge_port = data.get('port_of_discharge')
-
-                # Add other fields as necessary
+                incoterms=data.get('incoterm_wanted'),
+                discharge_port=data.get('port_of_discharge')
             )
+
+            # Check if there's a file to attach
+            file = product_detail.get('file')
+            if file:
+                print("veen here")
+                # Save the file
+                attachment = Attachment.objects.create(
+                    email=enquiry.email,  # Assuming `enquiry` has a related `email` field
+                    request=request,
+                    file=file
+                )
+                # Update specs to reference the attachment
+                request.specs = f"attach://{attachment.id}"
+                request.save()
 
             # Process suppliers for this product
             for supplier_name in product_detail.get('suppliers', []):
                 supplier, _ = Supplier.objects.get_or_create(name=supplier_name)
-                # Here, you might want to create an offer or a similar relation between the supplier and the request
-                # This is an example; adjust according to your needs
+                # Create an offer or a similar relation between the supplier and the request
                 Offer.objects.create(
                     request=request,
                     supplier=supplier,
-                    
                 )
         
         return JsonResponse({'success': True, 'message': 'Enquiry and related data successfully processed.', 'pk': enquiry.id})

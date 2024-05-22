@@ -220,7 +220,7 @@
                                                 <div class="tabs-menu">
                                                     <ul class="nav panel-tabs" role="tablist">
                                                         {% for email_with_attachments in emails_with_attachments %}
-                                                            <li>
+                                                            <li class="{% if email_with_attachments.email.status|lower == 'sent' %}tab-highlighted{% endif %}">
                                                                 <a href="#tab{{ forloop.counter }}" class="{% if forloop.first %}active{% endif %}" data-bs-toggle="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" role="tab" data-email_id="attach-{{ email_with_attachments.email.id }}">Mail to {{ email_with_attachments.email.supplier.name }}</a>
                                                             </li>
                                                         {% endfor %}
@@ -1134,7 +1134,7 @@ Thank you,
 
 
 </script>
-
+<!--
 <script>
     $(document).ready(function() {
         $('.send-email-button').on('click', function(event) {
@@ -1175,8 +1175,69 @@ Thank you,
         });
     });
 </script>
+-->
+<style>
+    .tab-highlighted {
+    background-color: #d4edda;
+    border-color: #45d747;
+}
+</style>
 
+<script>
+$(document).ready(function() {
+    $('.send-email-button').on('click', function(event) {
+        event.preventDefault();
 
+        let emailId = $(this).data('email_id');
+        let subject = $(`#subject-${emailId}`).val();
+        let message = $(`#message-${emailId}`).val();
+        let recipient = $(`#recipient-${emailId}`).val();
+        console.log(emailId);
+        console.log(subject);
+        console.log(message);
+        console.log(recipient);
+        $.ajax({
+            url: "{% url 'send_email_ajax' %}",
+            type: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            data: {
+                email_id: emailId,
+                subject: subject,
+                message: message,
+                recipient: recipient
+            },
+            success: function(response) {
+                if (response.message) {
+                    alert('Email sent successfully!');
+                    
+                    // Highlight the tab where the message was sent
+                    let currentTab = $(`.nav.panel-tabs a[data-email_id="attach-${emailId}"]`);
+                    currentTab.closest('li').addClass('tab-highlighted');
+
+                    // Get the next tab
+                    let nextTab = currentTab.closest('li').next().find('a');
+                    
+                    // If there is a next tab, activate it
+                    if (nextTab.length) {
+                        nextTab.tab('show');
+                    } else {
+                        var enquiryUrl = "{% url 'enquiry' enquiry.id %}";
+                        window.location.href = enquiryUrl;
+                    }
+                } else {
+                    alert('Error: ' + response.error);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('An error occurred while sending the email.');
+            }
+        });
+    });
+});
+</script>
 </body>
 
 </html>

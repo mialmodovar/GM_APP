@@ -1165,7 +1165,7 @@
     <!-- Script to add the fields as the user adds products in step 2 of the wizard-->>
 
     <script>
-       $(document).ready(function() {
+$(document).ready(function() {
     $('#product_selector .select2').select2({
         width: '100%',
         tags: true,
@@ -1189,6 +1189,10 @@
                               '<div class="form-group">' +
                               '<label class="form-label">' + productName + ' Specs</label>' +
                               '<textarea class="form-control product-specs" placeholder="Enter specs for ' + productName + '" rows="4" style="height: 100px;"></textarea>' +
+                              '<div style="display: flex; align-items: center; margin-top: 10px;">' +
+                              '<input type="file" class="form-control-file" />' + // Add file input
+                              '<span class="remove-file-text" style="display: none; margin-left: 10px; color: red; cursor: pointer;">Remove</span>' + // Add clickable text to remove file
+                              '</div>' +
                               '</div>' +
                               '<div class="form-group">' +
                               '<label class="form-label">' + productName + ' Quantity</label>' +
@@ -1201,11 +1205,35 @@
 
             $sizeSelectorsContainer.append(elementHtml);
         });
+    });
 
-   
-        
+    // Event delegation for dynamically added elements
+    $(document).on('change', '.form-control-file', function() {
+        var $fileInput = $(this);
+        var $textarea = $fileInput.closest('.form-group').find('.product-specs');
+        var $removeText = $fileInput.closest('.form-group').find('.remove-file-text');
+
+        if ($fileInput.val()) {
+            $textarea.val('Attached Specs').prop('readonly', true);
+            $removeText.show();
+        } else {
+            $textarea.val('').prop('readonly', false);
+            $removeText.hide();
+        }
+    });
+
+    // Event delegation for dynamically added remove file text
+    $(document).on('click', '.remove-file-text', function() {
+        var $removeText = $(this);
+        var $fileInput = $removeText.closest('.form-group').find('.form-control-file');
+        var $textarea = $removeText.closest('.form-group').find('.product-specs');
+
+        $fileInput.val(''); // Clear the file input
+        $textarea.val('').prop('readonly', false); // Reset the textarea
+        $removeText.hide(); // Hide the remove text
     });
 });
+
 
     </script>
     
@@ -1344,17 +1372,21 @@
 
         };
         console.log(data)
-            // Iterate over each product details section to collect product info and associated suppliers
-            $('#size-selectors-container').children('.product-detail').each(function() {
+        // Iterate over each product details section to collect product info and associated suppliers
+        $('#size-selectors-container').children('.product-detail').each(function() {
             var $this = $(this);
             var productName = $this.data('product-name'); // Use data-product-name attribute for productName
 
+            var fileInput = $this.find('input[type="file"]')[0]; // Get the file input
+            var file = fileInput.files.length > 0 ? fileInput.files[0] : null; // Get the file if it exists
+            
             var productDetails = {
                 'product_name': productName,
                 'size': $this.find('input[type="text"]').eq(0).val(), // Size is the first input
                 'specs': $this.find('.product-specs').val(), // Textarea for specs
                 'quantity': $this.find('input[type="text"]').eq(1).val(), // Quantity is the second input
                 'packaging': $this.find('input[type="text"]').eq(2).val(), // Packaging is the third input
+                'file': file, // Capture the file
                 'suppliers': [] // Preparing to collect associated suppliers
             };
 
@@ -1366,6 +1398,7 @@
 
             data.products_details.push(productDetails);
         });
+
         // Send AJAX request with product details and their corresponding suppliers
         $.ajax({
             type: "POST",

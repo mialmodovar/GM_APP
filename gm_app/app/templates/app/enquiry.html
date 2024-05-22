@@ -958,7 +958,25 @@
    <!-- Switcher js -->
    <script src="{% static '/assets/switcher/js/switcher.js' %} "></script>
 
-
+<!-- Modal -->
+<div class="modal fade" id="scrollingmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Specifications</h5>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalSpecsBody">
+                <!-- enquiry specs will be injected here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Function to build requests/offers table -->
    <script>
 $(document).ready(function() {
@@ -1141,55 +1159,63 @@ cardHtml += `</tbody></table></div></div></div>`; // This line closes the table 
     }
 
     function generateRequestsOverviewTable(data) {
-        var tableHtml = `
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Requests Overview</h3>
-                    <div class="card-options">
-                                            <button type="button" class="btn btn-sm btn-primary btn-edit-requests">
-                                                <span class="fe fe-edit edit-offer"></span> Edit All
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-success btn-save-requests" style="display:none;">
-                                                <span class="fe fe-save save-offer"></span> Save All
-                                            </button>
-        </div>
+    var tableHtml = `
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Requests Overview</h3>
+                <div class="card-options">
+                    <button type="button" class="btn btn-sm btn-primary btn-edit-requests">
+                        <span class="fe fe-edit edit-offer"></span> Edit All
+                    </button>
+                    <button type="button" class="btn btn-sm btn-success btn-save-requests" style="display:none;">
+                        <span class="fe fe-save save-offer"></span> Save All
+                    </button>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered border text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Specs</th>
-                                    <th>Size</th>
-                                    <th>Payment Terms Requested</th>
-                                    <th>Incoterms</th>
-                                    <th>Discharge Port</th>
-                                    <th>Packaging</th>
-                                    <th>Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody>`;
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered border text-nowrap">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Specs</th>
+                                <th>Size</th>
+                                <th>Payment Terms Requested</th>
+                                <th>Incoterms</th>
+                                <th>Discharge Port</th>
+                                <th>Packaging</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
 
-        data.forEach(function(request) {
-            var productName = request.product || "Not Specified";
-            tableHtml += `<tr data-request-id="${request.id}">
-                <td>${productName}</td>
-                <td>${request.quantity}</td>
-                <td>${request.specs}</td>
-                <td>${request.size}</td>
-                <td>${request.payment_terms_requested}</td>
-                <td>${request.incoterms}</td>
-                <td>${request.discharge_port}</td>
-                <td>${request.packaging}</td>
-                <td>${request.notes}</td>
-            </tr>`;
-        });
+    data.forEach(function(request) {
+        var productName = request.product || "Not Specified";
+        tableHtml += `<tr data-request-id="${request.id}">
+            <td>${productName}</td>
+            <td>${request.quantity}</td>
+            <td><a href="#" class="specs-link" data-specs="${request.specs}" data-bs-toggle="modal" data-bs-target="#scrollingmodal">View Specs</a></td>
+            <td>${request.size}</td>
+            <td>${request.payment_terms_requested}</td>
+            <td>${request.incoterms}</td>
+            <td>${request.discharge_port}</td>
+            <td>${request.packaging}</td>
+            <td>${request.notes}</td>
+        </tr>`;
+    });
 
-        tableHtml += `</tbody></table></div></div></div>`;
-        return tableHtml;
+    tableHtml += `</tbody></table></div></div></div>`;
+    return tableHtml;
+}
+
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('specs-link')) {
+        event.preventDefault();
+        var specs = event.target.getAttribute('data-specs');
+        document.getElementById('modalSpecsBody').innerHTML = specs;
     }
+});
 });
 
 
