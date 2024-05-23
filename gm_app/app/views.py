@@ -1,3 +1,8 @@
+from django.db.models import Avg, Count
+from django.db.models import Prefetch
+from .models import Supplier, Offer
+from django.shortcuts import render, get_object_or_404
+from .models import Supplier
 import json
 import os
 import pprint
@@ -28,7 +33,10 @@ from django.views.generic import TemplateView
 
 from dotenv import load_dotenv
 
-from .models import (Client, Email, Enquiry, Manager, Offer, Offer_Client, Product, Request, Supplier,Attachment)
+from .models import (Client, Email, Enquiry, Manager, Offer,
+                     Offer_Client, Product, Request, Supplier, Attachment)
+
+
 def microsoft_login(request):
     # Step 1: Redirect user to Microsoft's OAuth 2.0 authorization endpoint
     scope = 'openid profile email User.Read Mail.Read Mail.Read.Shared Mail.ReadBasic Mail.ReadBasic.Shared Mail.ReadWrite Mail.ReadWrite.Shared Mail.Send Mail.Send.Shared MailboxSettings.Read MailboxSettings.ReadWrite offline_access'
@@ -41,6 +49,7 @@ def microsoft_login(request):
         f"&scope={scope}"
         f"&state=12345"
     )
+
 
 def microsoft_callback(request):
     # Step 2: Get the authorization code from the callback
@@ -57,18 +66,17 @@ def microsoft_callback(request):
     }
     token_response = requests.post(token_url, data=token_data)
     token_json = token_response.json()
-    
+
     print(token_json)
     access_token = token_json.get('access_token')
     refresh_token = token_json.get('refresh_token')
     expires_in = token_json.get('expires_in')
-    
-        # Handle the case where expires_in is None
+
+    # Handle the case where expires_in is None
     if expires_in is not None:
         expiry_date = datetime.now() + timedelta(seconds=expires_in)
     else:
         expiry_date = datetime.now() + timedelta(days=1)  # Default to 1 day
-
 
     # Step 4: Use the access token to get user info
     user_info_url = 'https://graph.microsoft.com/v1.0/me'
@@ -81,9 +89,11 @@ def microsoft_callback(request):
     email = user_info.get('mail') or user_info.get('userPrincipalName')
 
     # Step 5: Check if the user exists, create if not
-    user, created = User.objects.get_or_create(username=email, defaults={'email': email})
+    user, created = User.objects.get_or_create(
+        username=email, defaults={'email': email})
     if created:
-        user.set_unusable_password()  # Since this is an OAuth login, the user won't have a usable password
+        # Since this is an OAuth login, the user won't have a usable password
+        user.set_unusable_password()
         user.save()
 
     # Step 6: Create or update the user profile
@@ -99,16 +109,19 @@ def microsoft_callback(request):
     # Redirect to the default login redirect URL
     return redirect(settings.LOGIN_REDIRECT_URL)
 
+
+@login_required
 def ms_logout(request):
     logout(request)
     # Redirect to a success page or homepage
     return redirect('/')
 
-def login_view(request): 
-    # Check if the user is already authenticated 
-    if request.user.is_authenticated: 
-        return redirect('/')  
-    # Redirect to the dashboard or appropriate page 
+
+def login_view(request):
+    # Check if the user is already authenticated
+    if request.user.is_authenticated:
+        return redirect('/')
+    # Redirect to the dashboard or appropriate page
     return render(request, 'app/login.html')
 
 
@@ -155,6 +168,7 @@ def send_email(request):
     else:
         return JsonResponse({'error': 'Failed to send email', 'details': response.json()}, status=response.status_code)
 
+
 def refresh_access_token(manager):
     token_url = f"https://login.microsoftonline.com/{settings.MICROSOFT_AUTH_TENANT_ID}/oauth2/v2.0/token"
     token_data = {
@@ -180,6 +194,7 @@ def refresh_access_token(manager):
 
     return access_token
 
+
 def get_access_token(request):
     manager = Manager.objects.get(user=request.user)
     if manager.expiry_token and manager.expiry_token > timezone.now():
@@ -187,22 +202,25 @@ def get_access_token(request):
     else:
         return refresh_access_token(manager)
 
+
+@login_required
 def index(request):
     # Fetch all client names
     clients = Client.objects.all().order_by('name').values_list('name', flat=True)
 
     # Fetch all product names
-    products = Product.objects.all().order_by('name').values_list('name', flat=True)
+    products = Product.objects.all().order_by(
+        'name').values_list('name', flat=True)
 
     # Fetch all supplier names
-    suppliers = Supplier.objects.all().order_by('name').values_list('name', flat=True)
+    suppliers = Supplier.objects.all().order_by(
+        'name').values_list('name', flat=True)
 
     manager = Manager.objects.filter(user=request.user).first()
 
-    
     # Prepare context to be passed to the template
     context = {
-        'manager' : manager,
+        'manager': manager,
         'clients': list(clients),
         'products': list(products),
         'suppliers': list(suppliers)
@@ -210,16 +228,20 @@ def index(request):
     print(manager)
     return render(request, 'app/new_enquiry.html', context)
 
-def enquiry(request,pk):
+
+@login_required
+def enquiry(request, pk):
     enquiry = get_object_or_404(Enquiry, pk=pk)
     # Fetch all client names
     clients = Client.objects.all().order_by('name').values_list('name', flat=True)
 
     # Fetch all product names
-    products = Product.objects.all().order_by('name').values_list('name', flat=True)
+    products = Product.objects.all().order_by(
+        'name').values_list('name', flat=True)
 
     # Fetch all supplier names
-    suppliers = Supplier.objects.all().order_by('name').values_list('name', flat=True)
+    suppliers = Supplier.objects.all().order_by(
+        'name').values_list('name', flat=True)
     print(enquiry)
     # Prepare context to be passed to the template
     context = {
@@ -241,7 +263,7 @@ def create_enquiry_ajax(request):
         client_name = data.get('client')
         if not client_name:
             return JsonResponse({'success': False, 'message': 'Client name is required.'}, status=400)
-        
+
         client, _ = Client.objects.get_or_create(name=client_name)
         manager = Manager.objects.filter(user=request.user).first()
         if not manager:
@@ -249,8 +271,10 @@ def create_enquiry_ajax(request):
 
         # Assuming data contains the necessary date information
         try:
-            received_date = datetime.strptime(data.get('inquiry_received_date'), '%d/%m/%Y').date() if data.get('inquiry_received_date') else None
-            deadline_date = datetime.strptime(data.get('inquiry_deadline_date'), '%d/%m/%Y').date() if data.get('inquiry_deadline_date') else None
+            received_date = datetime.strptime(data.get(
+                'inquiry_received_date'), '%d/%m/%Y').date() if data.get('inquiry_received_date') else None
+            deadline_date = datetime.strptime(data.get(
+                'inquiry_deadline_date'), '%d/%m/%Y').date() if data.get('inquiry_deadline_date') else None
         except ValueError:
             return JsonResponse({'success': False, 'message': 'Invalid date format.'}, status=400)
 
@@ -262,7 +286,7 @@ def create_enquiry_ajax(request):
             status='ACTIVE'
         )
 
-                # Process each product detail
+        # Process each product detail
         for product_detail in data.get('products_details', []):
             product_name = product_detail.get('product_name')
             product, _ = Product.objects.get_or_create(name=product_name)
@@ -295,25 +319,29 @@ def create_enquiry_ajax(request):
 
             # Process suppliers for this product
             for supplier_name in product_detail.get('suppliers', []):
-                supplier, _ = Supplier.objects.get_or_create(name=supplier_name)
+                supplier, _ = Supplier.objects.get_or_create(
+                    name=supplier_name)
                 # Create an offer or a similar relation between the supplier and the request
                 Offer.objects.create(
                     request=request,
                     supplier=supplier,
                 )
-        
+
         return JsonResponse({'success': True, 'message': 'Enquiry and related data successfully processed.', 'pk': enquiry.id})
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
 
+
 @csrf_exempt
+@login_required
 def requests_offers_for_enquiry(request, enquiry_id):
-    requests = Request.objects.filter(enquiry_id=enquiry_id).prefetch_related('offers', 'offers__supplier')
-    
+    requests = Request.objects.filter(
+        enquiry_id=enquiry_id).prefetch_related('offers', 'offers__supplier')
+
     data = []
     for req in requests:
         product_name = req.product.name if req.product and req.product.name else "Not available"
-        
+
         req_dict = {
             'product': product_name,
             'id': req.id,
@@ -333,8 +361,7 @@ def requests_offers_for_enquiry(request, enquiry_id):
         offers = req.offers.all()
         offers_client = req.offers_client.all()
         emails = Email.objects.filter(request=req)
-        
-        
+
         for offer in offers:
             supplier_name = offer.supplier.name if offer.supplier and offer.supplier.name else "Not available"
 
@@ -380,18 +407,17 @@ def requests_offers_for_enquiry(request, enquiry_id):
                 'status': email.status,
                 'response_received': email.response_received,
                 'response_details': email.response_details or "",
-                }
+            }
             print(email_dict)
             req_dict['emails'].append(email_dict)
-        
+
         data.append(req_dict)
 
     return JsonResponse(data, safe=False)
 
 
-
-
 @csrf_exempt
+@login_required
 def update_offers(request):
     if request.method == 'POST':
         try:
@@ -400,20 +426,23 @@ def update_offers(request):
             offers = data.get('offers', [])
             for offer_data in offers:
                 supplier_name = offer_data.get('supplier')
-                supplier, created = Supplier.objects.get_or_create(name=supplier_name)
+                supplier, created = Supplier.objects.get_or_create(
+                    name=supplier_name)
 
                 # Convert validity string to date object, set to None if invalid or not provided
                 validity_str = offer_data.get('validity')
                 validity_date = None
                 if validity_str:
                     try:
-                        validity_date = datetime.strptime(validity_str, "%Y-%m-%d").date()
+                        validity_date = datetime.strptime(
+                            validity_str, "%Y-%m-%d").date()
                     except ValueError:
                         # Invalid date format, keep validity_date as None
                         pass
 
                 if 'id' not in offer_data or not offer_data['id']:
-                    request_instance = Request.objects.get(id=offer_data.get('request_id'))
+                    request_instance = Request.objects.get(
+                        id=offer_data.get('request_id'))
                     Offer.objects.create(
                         request=request_instance,
                         supplier=supplier,
@@ -429,12 +458,16 @@ def update_offers(request):
                 else:
                     offer = Offer.objects.get(id=offer_data['id'])
                     offer.supplier = supplier
-                    offer.supplier_price = offer_data.get('supplier_price', offer.supplier_price)
-                    offer.payment_terms = offer_data.get('payment_terms', offer.payment_terms)
-                    offer.incoterms = offer_data.get('incoterms', offer.incoterms)
+                    offer.supplier_price = offer_data.get(
+                        'supplier_price', offer.supplier_price)
+                    offer.payment_terms = offer_data.get(
+                        'payment_terms', offer.payment_terms)
+                    offer.incoterms = offer_data.get(
+                        'incoterms', offer.incoterms)
                     offer.specs = offer_data.get('specs', offer.specs)
                     offer.size = offer_data.get('size', offer.size)
-                    offer.packaging = offer_data.get('packaging', offer.packaging)
+                    offer.packaging = offer_data.get(
+                        'packaging', offer.packaging)
                     offer.validity = validity_date
                     offer.notes = offer_data.get('notes', offer.notes)
                     offer.save()
@@ -444,9 +477,10 @@ def update_offers(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
-    
+
 
 @csrf_exempt
+@login_required
 def update_client_offers(request):
     if request.method == 'POST':
         try:
@@ -454,14 +488,16 @@ def update_client_offers(request):
             client_offers = data.get('offers', [])
             for offer_data in client_offers:
                 supplier_name = offer_data.get('supplier')
-                supplier, created = Supplier.objects.get_or_create(name=supplier_name)
+                supplier, created = Supplier.objects.get_or_create(
+                    name=supplier_name)
 
                 # Assume validity_offered is a string that needs to be converted to a date object, or None if not provided
                 validity_str = offer_data.get('validity_offered')
                 validity_date = None
                 if validity_str:
                     try:
-                        validity_date = datetime.strptime(validity_str, "%Y-%m-%d").date()
+                        validity_date = datetime.strptime(
+                            validity_str, "%Y-%m-%d").date()
                     except ValueError:
                         # Invalid date format, keep validity_date as None
                         pass
@@ -470,25 +506,33 @@ def update_client_offers(request):
                 if 'id' not in offer_data or not offer_data['id']:
                     print("been here")
                     # Assuming 'request_id' is part of offer_data when creating a new offer
-                    request_instance = Request.objects.get(id=offer_data.get('request_id'))
+                    request_instance = Request.objects.get(
+                        id=offer_data.get('request_id'))
                     Offer_Client.objects.create(
                         request=request_instance,
                         supplier=supplier,
                         price_offered=offer_data.get('price_offered'),
-                        payment_term_offered=offer_data.get('payment_term_offered'),
-                        validity_offered=validity_date,  # Assuming this should be a DateField, adjust if it's a TextField
+                        payment_term_offered=offer_data.get(
+                            'payment_term_offered'),
+                        # Assuming this should be a DateField, adjust if it's a TextField
+                        validity_offered=validity_date,
                         customer_feedback=offer_data.get('customer_feedback'),
                         notes=offer_data.get('notes'),
                     )
                 else:
                     # For updating existing client offers
-                    client_offer = Offer_Client.objects.get(id=offer_data['id'])
+                    client_offer = Offer_Client.objects.get(
+                        id=offer_data['id'])
                     client_offer.supplier = supplier
-                    client_offer.price_offered = offer_data.get('price_offered', client_offer.price_offered)
-                    client_offer.payment_term_offered = offer_data.get('payment_term_offered', client_offer.payment_term_offered)
+                    client_offer.price_offered = offer_data.get(
+                        'price_offered', client_offer.price_offered)
+                    client_offer.payment_term_offered = offer_data.get(
+                        'payment_term_offered', client_offer.payment_term_offered)
                     client_offer.validity_offered = validity_date
-                    client_offer.customer_feedback = offer_data.get('customer_feedback', client_offer.customer_feedback)
-                    client_offer.notes = offer_data.get('notes', client_offer.notes)
+                    client_offer.customer_feedback = offer_data.get(
+                        'customer_feedback', client_offer.customer_feedback)
+                    client_offer.notes = offer_data.get(
+                        'notes', client_offer.notes)
                     client_offer.save()
 
             return JsonResponse({'status': 'success', 'message': 'Client offers updated successfully.'})
@@ -497,7 +541,9 @@ def update_client_offers(request):
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
 
+
 @csrf_exempt
+@login_required
 def update_requests(request):
     if request.method == 'POST':
         try:
@@ -508,9 +554,11 @@ def update_requests(request):
                 req.quantity = req_data.get('quantity', req.quantity)
                 req.specs = req_data.get('specs', req.specs)
                 req.size = req_data.get('size', req.size)
-                req.payment_terms_requested = req_data.get('payment_terms_requested', req.payment_terms_requested)
+                req.payment_terms_requested = req_data.get(
+                    'payment_terms_requested', req.payment_terms_requested)
                 req.incoterms = req_data.get('incoterms', req.incoterms)
-                req.discharge_port = req_data.get('discharge_port', req.discharge_port)
+                req.discharge_port = req_data.get(
+                    'discharge_port', req.discharge_port)
                 req.packaging = req_data.get('packaging', req.packaging)
                 req.notes = req_data.get('notes', req.notes)
                 req.save()
@@ -522,16 +570,19 @@ def update_requests(request):
 
 
 @csrf_exempt
+@login_required
 def update_enquiry_details(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            enquiry_id = data.get('enquiry_id')  # Retrieve the enquiry ID from the data
+            # Retrieve the enquiry ID from the data
+            enquiry_id = data.get('enquiry_id')
             enquiry = get_object_or_404(Enquiry, pk=enquiry_id)
             print(data.items())
             # Update the fields based on data keys
             for key, value in data.items():
-                if hasattr(enquiry, key) and key != 'enquiry_id':  # Exclude 'enquiry_id' from being treated as a field
+                # Exclude 'enquiry_id' from being treated as a field
+                if hasattr(enquiry, key) and key != 'enquiry_id':
                     # Special handling for date fields
                     if 'date' in key and value:
                         try:
@@ -542,25 +593,27 @@ def update_enquiry_details(request):
             try:
                 enquiry.save()
             except Exception as e:
-                print(f"Failed to set attribute {key} to {value} on enquiry: {e}")
+                print(
+                    f"Failed to set attribute {key} to {value} on enquiry: {e}")
                 return JsonResponse({'error': str(e)}, status=500)
             return JsonResponse({'success': True, 'message': 'Enquiry updated successfully'})
-        
+
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 
+# def enquiry_list(request):
+    # return render(request, 'app/enquiry_list.html')
 
-#def enquiry_list(request):
-    #return render(request, 'app/enquiry_list.html')
-
-#VARUN's CODE Below: 
+# VARUN's CODE Below:
+@login_required
 def enquiry_list(request):
     # Fetch enquiries with prefetch_related for optimized queries on related objects
     enquiries = Enquiry.objects.prefetch_related(
-        Prefetch('enquiry_requests', queryset=Request.objects.select_related('product'))
+        Prefetch('enquiry_requests',
+                 queryset=Request.objects.select_related('product'))
     ).select_related('manager', 'client').all()
 
     context = {
@@ -569,17 +622,19 @@ def enquiry_list(request):
     return render(request, 'app/enquiry_list.html', context)
 
 
-
+@login_required
 def get_enquiries(request):
     enquiries_list = []
-    enquiries = Enquiry.objects.prefetch_related('enquiry_requests__product').select_related('client').all()
-    
+    enquiries = Enquiry.objects.prefetch_related(
+        'enquiry_requests__product').select_related('client').all()
+
     for enquiry in enquiries:
         # Fetch manager's name if available
         manager_name = None
         if enquiry.manager:
             try:
-                manager = Manager.objects.get(name=enquiry.manager)  # Usinas identifier
+                manager = Manager.objects.get(
+                    name=enquiry.manager)  # Usinas identifier
                 manager_name = manager.name
             except Manager.DoesNotExist:
                 manager_name = None
@@ -610,36 +665,34 @@ def get_enquiries(request):
                 'product_name': product_name,  # Ensure you get the product name correctly
                 # Add other relevant fields from Request as needed
             }
-            
+
             enquiry_dict['enquiry_requests'].append(request_dict)
 
         enquiries_list.append(enquiry_dict)
-    
+
     return JsonResponse(enquiries_list, safe=False)
 
-#SUPPLIER PAGE-----------------------------------------------------------------------------------------------------------------------
+# SUPPLIER PAGE-----------------------------------------------------------------------------------------------------------------------
 
+
+@login_required
 def supplier_list(request):
     return render(request, 'app/supplier_list.html')
 
-from django.http import JsonResponse
-from .models import Supplier
 
-
+@login_required
 def suppliers_api(request):
-    suppliers = list(Supplier.objects.values('id','name', 'contact_person', 'email'))
+    suppliers = list(Supplier.objects.values(
+        'id', 'name', 'contact_person', 'email'))
     return JsonResponse({'suppliers': suppliers}, safe=False)
 
 
-from django.shortcuts import render, get_object_or_404
-from .models import Supplier, Offer
-from django.db.models import Prefetch
-from django.db.models import Avg, Count
-
+@login_required
 def supplier_detail(request, id):
     supplier = get_object_or_404(Supplier, id=id)
     # Fetch recent offers related to this supplier
-    offers = Offer.objects.filter(supplier=supplier).prefetch_related(Prefetch('request', queryset=Request.objects.select_related('product'))).order_by('-validity')[:5]
+    offers = Offer.objects.filter(supplier=supplier).prefetch_related(Prefetch(
+        'request', queryset=Request.objects.select_related('product'))).order_by('-validity')[:5]
     product_stats = (
         Offer.objects.filter(supplier=supplier)
         .values('request__product__name')  # Group by product name
@@ -651,7 +704,7 @@ def supplier_detail(request, id):
     return render(request, 'app/supplier_detail.html', {'supplier': supplier, 'offers': offers, 'product_stats': product_stats})
 
 
-
+@login_required
 def draft_email_display(request):
     supplier_ids = request.GET.getlist('supplier_ids[]')
     print("Supplier IDs (string):", supplier_ids)
@@ -692,10 +745,13 @@ def draft_email_display(request):
     emails = []
     # Retrieve or create Email objects for each supplier
     for supplier in suppliers:
-        email = Email.objects.filter(supplier=supplier, request=request_obj).first()
+        email = Email.objects.filter(
+            supplier=supplier, request=request_obj).first()
         if not email:
-            email = Email.objects.create(supplier=supplier, request=request_obj, manager=manager)
-            print(f"Created new Email instance for supplier {supplier.id}, request {request_obj.id}, and manager {manager.id}")
+            email = Email.objects.create(
+                supplier=supplier, request=request_obj, manager=manager)
+            print(
+                f"Created new Email instance for supplier {supplier.id}, request {request_obj.id}, and manager {manager.id}")
         emails.append(email)
 
     # Prepare the context with the email objects and their attachments
@@ -717,7 +773,7 @@ def draft_email_display(request):
     return render(request, 'app/draft-email.html', context)
 
 
-
+@login_required
 def upload_attachment(request):
     if request.method == 'POST' and request.FILES.getlist('files[]'):
         files = request.FILES.getlist('files[]')
@@ -733,13 +789,16 @@ def upload_attachment(request):
                 return JsonResponse({'success': False, 'error': f'Email with id {email_id} not found'})
 
             for file in files:
-                attachment = Attachment.objects.create(email=email, request=email.request, file=file)
+                attachment = Attachment.objects.create(
+                    email=email, request=email.request, file=file)
                 print(f"Attachment created: {attachment.file.path}")
 
         return JsonResponse({'success': True})
-    
+
     return JsonResponse({'success': False, 'error': 'Invalid request'})
 
+
+@login_required
 def remove_attachment(request):
     if request.method == 'POST':
         attachment_id = request.POST.get('attachment_id')
@@ -749,9 +808,8 @@ def remove_attachment(request):
             return JsonResponse({'success': True})
         except Attachment.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'Attachment not found'})
-    
-    return JsonResponse({'success': False, 'error': 'Invalid request'})
 
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 
 @csrf_exempt
@@ -763,13 +821,14 @@ def send_email_ajax(request):
         message = request.POST.get('message')
         recipient = request.POST.get('recipient')
         print(recipient)
-        
+
         # Extract email object from database
         email = get_object_or_404(Email, id=email_id)
-        
+
         # Process recipient(s)
-        recipients = [email.strip() for email in recipient.split(';') if email.strip()]
-        
+        recipients = [email.strip()
+                      for email in recipient.split(';') if email.strip()]
+
         # Update email object with new information
         email.subject = subject
         email.message = message
@@ -780,7 +839,7 @@ def send_email_ajax(request):
         supplier = email.supplier
         stripped_supplier_email = supplier.email.strip() if supplier.email else ""
         stripped_recipient = recipient.strip()
-        
+
         if supplier and stripped_supplier_email != stripped_recipient:
             supplier.email = stripped_recipient
             supplier.save()
@@ -802,7 +861,8 @@ def send_email_ajax(request):
                 })
 
         # Construct the email message payload
-        to_recipients = [{"emailAddress": {"address": email}} for email in recipients]
+        to_recipients = [{"emailAddress": {"address": email}}
+                         for email in recipients]
         email_payload = {
             "message": {
                 "subject": subject,
@@ -822,8 +882,9 @@ def send_email_ajax(request):
             'Authorization': f'Bearer {token}',
             'Content-Type': 'application/json'
         }
-        response = requests.post(email_url, headers=headers, json=email_payload)
-        
+        response = requests.post(
+            email_url, headers=headers, json=email_payload)
+
         if response.status_code == 202:
             email.status = 'SENT'  # Assuming you want to update the status to SENT after sending
             email.save()
