@@ -243,6 +243,7 @@ def enquiry(request, pk):
     suppliers = Supplier.objects.all().order_by(
         'name').values_list('name', flat=True)
     print(enquiry)
+
     # Prepare context to be passed to the template
     context = {
         'enquiry': enquiry,
@@ -255,10 +256,12 @@ def enquiry(request, pk):
 
 @csrf_exempt
 @login_required
+@csrf_exempt
+@login_required
 def create_enquiry_ajax(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-
+        data = json.loads(request.POST.get('data'))
+        print(data)
         # Ensure client name is provided
         client_name = data.get('client')
         if not client_name:
@@ -287,12 +290,12 @@ def create_enquiry_ajax(request):
         )
 
         # Process each product detail
-        for product_detail in data.get('products_details', []):
+        for index, product_detail in enumerate(data.get('products_details', [])):
             product_name = product_detail.get('product_name')
             product, _ = Product.objects.get_or_create(name=product_name)
 
             # Create request for each product in the enquiry
-            request = Request.objects.create(
+            request_instance = Request.objects.create(
                 enquiry=enquiry,
                 product=product,
                 specs=product_detail.get('specs', ''),
@@ -304,26 +307,24 @@ def create_enquiry_ajax(request):
             )
 
             # Check if there's a file to attach
-            file = product_detail.get('file')
-            if file:
-                print("veen here")
+            file_key = f'files[{index}]'
+            if file_key in request.FILES:
+                file = request.FILES[file_key]
                 # Save the file
                 attachment = Attachment.objects.create(
-                    email=enquiry.email,  # Assuming `enquiry` has a related `email` field
-                    request=request,
+                    request=request_instance,
                     file=file
                 )
                 # Update specs to reference the attachment
-                request.specs = f"attach://{attachment.id}"
-                request.save()
+                request_instance.specs = f"//attach:{attachment.id}"
+                request_instance.save()
 
             # Process suppliers for this product
             for supplier_name in product_detail.get('suppliers', []):
-                supplier, _ = Supplier.objects.get_or_create(
-                    name=supplier_name)
+                supplier, _ = Supplier.objects.get_or_create(name=supplier_name)
                 # Create an offer or a similar relation between the supplier and the request
                 Offer.objects.create(
-                    request=request,
+                    request=request_instance,
                     supplier=supplier,
                 )
 
@@ -342,10 +343,19 @@ def requests_offers_for_enquiry(request, enquiry_id):
     for req in requests:
         product_name = req.product.name if req.product and req.product.name else "Not available"
 
+        specs = req.specs or ""
+        if specs.startswith("//attach:"):
+            try:
+                attachment_id = int(specs.split(":")[1])
+                attachment = Attachment.objects.get(id=attachment_id)
+                specs = request.build_absolute_uri(attachment.file.url)
+            except (Attachment.DoesNotExist, ValueError):
+                specs = "Attachment not found"
+
         req_dict = {
             'product': product_name,
             'id': req.id,
-            'specs': req.specs or "",
+            'specs': specs,
             'size': req.size or "",
             'quantity': req.quantity or "",
             'incoterms': req.incoterms or "",
@@ -415,14 +425,12 @@ def requests_offers_for_enquiry(request, enquiry_id):
 
     return JsonResponse(data, safe=False)
 
-
 @csrf_exempt
 @login_required
 def update_offers(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            print(data)
             offers = data.get('offers', [])
             for offer_data in offers:
                 supplier_name = offer_data.get('supplier')
@@ -432,6 +440,7 @@ def update_offers(request):
                 # Convert validity string to date object, set to None if invalid or not provided
                 validity_str = offer_data.get('validity')
                 validity_date = None
+
                 if validity_str:
                     try:
                         validity_date = datetime.strptime(
@@ -587,6 +596,7 @@ def update_enquiry_details(request):
                     if 'date' in key and value:
                         try:
                             value = datetime.strptime(value, '%d/%m/%Y').date()
+
                         except ValueError:
                             return JsonResponse({'error': 'Invalid date format'}, status=400)
                     setattr(enquiry, key, value)

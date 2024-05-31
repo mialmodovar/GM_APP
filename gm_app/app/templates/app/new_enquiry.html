@@ -911,6 +911,12 @@
     <!-- JQUERY JS -->
     <script src=" {% static '/assets/js/jquery.min.js' %} "></script>
 
+    <!-- Toastr CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     <!-- BOOTSTRAP JS -->
     <script src=" {% static '/assets/plugins/bootstrap/js/popper.min.js' %} "></script>
     <script src=" {% static '/assets/plugins/bootstrap/js/bootstrap.min.js' %} "></script>
@@ -1173,7 +1179,6 @@ $(document).ready(function() {
         placeholder: "Choose Product",
     }).on('select2:select select2:unselect', function(e) {
         var selectedProducts = $(this).val() || []; // Get selected values, ensure array
-
         // Container where additional form groups will be dynamically added or removed
         var $sizeSelectorsContainer = $('#size-selectors-container');
         $sizeSelectorsContainer.empty(); // Clear previous entries
@@ -1232,9 +1237,8 @@ $(document).ready(function() {
         $textarea.val('').prop('readonly', false); // Reset the textarea
         $removeText.hide(); // Hide the remove text
     });
+
 });
-
-
     </script>
     
         <!-- Script to add the fields as the user adds products in step 3 of the wizard-->>
@@ -1309,124 +1313,130 @@ $(document).ready(function() {
         <!-- Script to  send the ajax request !-->
 
     <script>
-     $(document).ready(function() {
+        $(document).ready(function() {
 
-              // Function to show the step based on index
-              function showStep(index) {
-        // Hide all sections and remove 'current' class from all h3 titles and 'current' from steps
-        $('.wizard .content section').hide().attr('aria-hidden', 'true');
-        $('.wizard .content .title').removeClass('current');
-        $('.wizard .steps ul li').removeClass('current').attr('aria-selected', 'false');
+// Function to show the step based on index
+function showStep(index) {
+    // Hide all sections and remove 'current' class from all h3 titles and 'current' from steps
+    $('.wizard .content section').hide().attr('aria-hidden', 'true');
+    $('.wizard .content .title').removeClass('current');
+    $('.wizard .steps ul li').removeClass('current').attr('aria-selected', 'false');
 
-        // Show the current section, add 'current' class to its title and step
-        $('.wizard .content section').eq(index).show().attr('aria-hidden', 'false');
-        $('#wizard3-h-' + index).addClass('current');
-        $('.wizard .steps ul li').eq(index).addClass('current').attr('aria-selected', 'true');
+    // Show the current section, add 'current' class to its title and step
+    $('.wizard .content section').eq(index).show().attr('aria-hidden', 'false');
+    $('#wizard3-h-' + index).addClass('current');
+    $('.wizard .steps ul li').eq(index).addClass('current').attr('aria-selected', 'true');
 
-        // Update steps status
-        $('.wizard .steps ul li').removeClass('done');
-        $('.wizard .steps ul li:lt(' + index + ')').addClass('done');
+    // Update steps status
+    $('.wizard .steps ul li').removeClass('done');
+    $('.wizard .steps ul li:lt(' + index + ')').addClass('done');
+}
 
-      
+$('#submit-button-id').click(function(e) {  // Ensure this ID matches your submit button
+    e.preventDefault();
+
+    // Validate date fields first
+    var receivedDate = $('#inquiryReceivedDate').val();
+    var deadlineDate = $('#inquiryDeadlineDate').val();
+    var dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/(19|20)\d\d$/; // DD/MM/YYYY format
+
+    // Reset previous validations
+    $('#inquiryReceivedDate, #inquiryDeadlineDate').css('border', ''); // Clear previous red borders
+
+    // Check if the dates are empty or in the correct format
+    if ((receivedDate && !dateRegex.test(receivedDate)) || (deadlineDate && !dateRegex.test(deadlineDate))) {
+        showStep(0); // Assuming showStep(0) navigates the user back to the step with the form
+        // Highlight the fields with incorrect formats
+        if (receivedDate && !dateRegex.test(receivedDate)) {
+            $('#inquiryReceivedDate').css('border', '2px solid red');
+        }
+        if (deadlineDate && !dateRegex.test(deadlineDate)) {
+            $('#inquiryDeadlineDate').css('border', '2px solid red');
+        }
+        toastr.error('Please make sure the dates are in the correct format (DD/MM/YYYY) or empty', "Error");
+        return; // Stop the function execution here
     }
-    $('#submit-button-id').click(function(e) {  // Ensure this ID matches your submit button
-        e.preventDefault();
 
-       // Validate date fields first
-       var receivedDate = $('#inquiryReceivedDate').val();
-        var deadlineDate = $('#inquiryDeadlineDate').val();
-        var dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/(19|20)\d\d$/; // DD/MM/YYYY format
+    // Proceed if dates are correct
+    $('#inquiryReceivedDate, #inquiryDeadlineDate').css('border', ''); // Reset any previous red borders
 
-        // Reset previous validations
-        $('#inquiryReceivedDate, #inquiryDeadlineDate').css('border', ''); // Clear previous red borders
+    // Show the loader
+    var loaderHtml = '<div class="dimmer active"><div class="spinner"></div></div>';
+    $('body').append(loaderHtml); // Append the loader to the body or a specific div as per your layout
 
-        // Check if the dates are empty or in the correct format
-        if ((receivedDate && !dateRegex.test(receivedDate)) || (deadlineDate && !dateRegex.test(deadlineDate))) {
-            showStep(0); // Assuming showStep(0) navigates the user back to the step with the form
-            // Highlight the fields with incorrect formats
-            if (receivedDate && !dateRegex.test(receivedDate)) {
-                $('#inquiryReceivedDate').css('border', '2px solid red');
-            }
-            if (deadlineDate && !dateRegex.test(deadlineDate)) {
-                $('#inquiryDeadlineDate').css('border', '2px solid red');
-            }
-            alert("Please make sure the dates are in the correct format (DD/MM/YYYY) or empty")
-            return; // Stop the function execution here
+    var data = {
+        'manager': $('#managerName').val(), // Ensure IDs are set for input fields
+        'client': $('.select2-show-search option:selected').val(),
+        'customer_contact': $('#customerContact').val(), // Collecting the contact person's name
+        'inquiry_received_date': $('#inquiryReceivedDate').val(),
+        'inquiry_deadline_date': $('#inquiryDeadlineDate').val(),
+        'incoterm_wanted': $('#incotermWanted').val(), // Collecting the desired incoterm
+        'port_of_discharge': $('#portOfDischarge').val(), // Collecting the port of discharge
+        'products_details': []
+    };
+
+    // Use FormData to send the data, including files
+    var formData = new FormData();
+
+    // Iterate over each product details section to collect product info and associated suppliers
+    $('#size-selectors-container').children('.product-detail').each(function(index) {
+        var $this = $(this);
+        var productName = $this.data('product-name'); // Use data-product-name attribute for productName
+
+        var fileInput = $this.find('input[type="file"]')[0]; // Get the file input
+        var file = fileInput.files.length > 0 ? fileInput.files[0] : null; // Get the file if it exists
+        
+        var productDetails = {
+            'product_name': productName,
+            'size': $this.find('input[type="text"]').eq(0).val(), // Size is the first input
+            'specs': $this.find('.product-specs').val(), // Textarea for specs
+            'quantity': $this.find('input[type="text"]').eq(1).val(), // Quantity is the second input
+            'packaging': $this.find('input[type="text"]').eq(2).val(), // Packaging is the third input
+            'suppliers': [] // Preparing to collect associated suppliers
+        };
+
+        if (file) {
+            formData.append(`files[${index}]`, file);
         }
 
-        // Proceed if dates are correct
-        $('#inquiryReceivedDate, #inquiryDeadlineDate').css('border', ''); // Reset any previous red borders
-        // Show the loader
-        var loaderHtml = '<div class="dimmer active"><div class="spinner"></div></div>';
-        $('body').append(loaderHtml); // Append the loader to the body or a specific div as per your layout
-        console.log($('#inquiryReceivedDate').val())
-        var data = {
-            'manager': $('#managerName').val(), // Ensure IDs are set for input fields
-            'client': $('.select2-show-search option:selected').val(),
-            'customer_contact': $('#customerContact').val(), // Collecting the contact person's name
-            'inquiry_received_date': $('#inquiryReceivedDate').val(),
-            'inquiry_deadline_date': $('#inquiryDeadlineDate').val(),
-            'incoterm_wanted': $('#incotermWanted').val(), // Collecting the desired incoterm
-            'port_of_discharge': $('#portOfDischarge').val(), // Collecting the port of discharge
-            'products_details': []
+        // Find the suppliers section that corresponds to this product
+        var suppliersSelection = $('#wizard3-p-2').find(`.form-group[data-product-name="${productName}"]`).find('.select2-suppliers').val();
+        if (suppliersSelection) {
+            productDetails.suppliers = suppliersSelection;
+        }
 
-        };
-        console.log(data)
-        // Iterate over each product details section to collect product info and associated suppliers
-        $('#size-selectors-container').children('.product-detail').each(function() {
-            var $this = $(this);
-            var productName = $this.data('product-name'); // Use data-product-name attribute for productName
-
-            var fileInput = $this.find('input[type="file"]')[0]; // Get the file input
-            var file = fileInput.files.length > 0 ? fileInput.files[0] : null; // Get the file if it exists
-            
-            var productDetails = {
-                'product_name': productName,
-                'size': $this.find('input[type="text"]').eq(0).val(), // Size is the first input
-                'specs': $this.find('.product-specs').val(), // Textarea for specs
-                'quantity': $this.find('input[type="text"]').eq(1).val(), // Quantity is the second input
-                'packaging': $this.find('input[type="text"]').eq(2).val(), // Packaging is the third input
-                'file': file, // Capture the file
-                'suppliers': [] // Preparing to collect associated suppliers
-            };
-
-            // Find the suppliers section that corresponds to this product
-            var suppliersSelection = $('#wizard3-p-2').find(`.form-group[data-product-name="${productName}"]`).find('.select2-suppliers').val();
-            if (suppliersSelection) {
-                productDetails.suppliers = suppliersSelection;
-            }
-
-            data.products_details.push(productDetails);
-        });
-
-        // Send AJAX request with product details and their corresponding suppliers
-        $.ajax({
-            type: "POST",
-            url: "/create_enquiry_ajax", // Adjust URL as needed
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function(response) {
-                console.log(response);
-                // Handle success - remove the loader
-                $('.dimmer').remove();
-                
-                // Redirect to the new enquiry page using the pk from the response
-                if(response && response.pk) {
-                    window.location.href = '/enquiry/' + response.pk;
-                } else {
-                    // Handle cases where pk is not returned or response is not as expected
-                    console.error("Server did not return the expected response.");
-                }
-            },
-            error: function(response) {
-                console.log(response);
-                // Handle error - remove the loader
-                $('.dimmer').remove();
-                alert("There was an error processing your request. Please try again.");
-            }
-        });
+        data.products_details.push(productDetails);
     });
+
+    formData.append('data', JSON.stringify(data));
+
+    $.ajax({
+        type: "POST",
+        url: "/create_enquiry_ajax", // Adjust URL as needed
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            console.log(response);
+            // Handle success - remove the loader
+            $('.dimmer').remove();
+            
+            // Redirect to the new enquiry page using the pk from the response
+            if(response && response.pk) {
+                window.location.href = '/enquiry/' + response.pk;
+            } else {
+                // Handle cases where pk is not returned or response is not as expected
+                console.error("Server did not return the expected response.");
+            }
+        },
+        error: function(response) {
+            console.log(response);
+            // Handle error - remove the loader
+            $('.dimmer').remove();
+            toastr.error('An error as occurred', "Error");
+        }
+    });
+});
 });
 
     </script> 

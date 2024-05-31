@@ -43,7 +43,9 @@ class Supplier(models.Model):
     contact_person = models.TextField(blank=True, null=True)
     email = models.TextField(blank=True, null=True)
 
-    
+    def __str__(self):
+        return f"{self.name}"
+
 class Client(models.Model):
     name = models.TextField(blank=True, null=True)
     country = models.TextField(blank=True, null=True)
@@ -111,7 +113,7 @@ class Email(models.Model):
         return f"Email from {self.manager.name} to {self.supplier.name} on {self.sent_at.strftime('%Y-%m-%d %H:%M')}"
 
 class Attachment(models.Model):
-    email = models.ForeignKey(Email, on_delete=models.CASCADE, related_name='attachments')
+    email = models.ForeignKey(Email, on_delete=models.CASCADE, related_name='attachments',null=True)
     request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='request')
     file = models.FileField(upload_to='email_attachments/%Y/%m/%d/')
     uploaded_at = models.DateTimeField(auto_now_add=True)

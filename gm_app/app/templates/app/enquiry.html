@@ -240,7 +240,7 @@
                                 <div class="row mb-4">
                                     <div class="col-md-12">
                                         <label>Manager</label>
-                                        <input type="text" class="form-control"  id = "manage" value="{{ enquiry.manager.name }}" readonly>
+                                        <input type="text" class="form-control"  id = "manager" value="{{ enquiry.manager.name }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -897,6 +897,11 @@
    <!-- JQUERY JS -->
    <script src=" {% static '/assets/js/jquery.min.js' %} "></script>
 
+           <!-- Toastr CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
    <!-- BOOTSTRAP JS -->
@@ -979,7 +984,7 @@
 </div>
 <!-- Function to build requests/offers table -->
    <script>
-$(document).ready(function() {
+
     var enquiryId = '{{ enquiry.id }}'; // Ensure enquiryId is dynamically set
 
     $.ajax({
@@ -1006,6 +1011,7 @@ $(document).ready(function() {
                 // Generate HTML for supplier offers card
                 var supplierOffersCardHtml = generateSupplierOffersCardHtml(request, `${requestCardTitle} - Supplier Offers`);
 
+
                 // Generate HTML for offers sent to clients card
                 var clientOffersCardHtml = generateClientOffersCardHtml(request, `${requestCardTitle} - Offers Sent to Clients`);
 
@@ -1014,6 +1020,22 @@ $(document).ready(function() {
 
                 // Append the combined parent card to the tables-container div
                 $('#tables-container').append(parentCardHtml);
+
+                    // Call mergeTableCells after the content is appended
+                    var supplierTable = document.getElementById(`offers-${request.id}`);
+                    if (supplierTable) {
+                        mergeTableCells(supplierTable);
+                    }
+                    // Call mergeTableCells after the content is appended
+                    var supplierTable = document.getElementById(`offers-${request.id}`);
+                    if (supplierTable) {
+                        mergeTableCells(supplierTable);
+                    }
+
+                    var clientTable = document.getElementById(`offers_clients-${request.id}`);
+                    if (clientTable) {
+                        mergeTableCells(clientTable);
+                    }
             });
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -1022,15 +1044,12 @@ $(document).ready(function() {
     });
 
    // Function to generate HTML for supplier offers card
-function generateSupplierOffersCardHtml(request, cardTitle) {
+   function generateSupplierOffersCardHtml(request, cardTitle) {
     var cardHtml = 
     `<div class="card">
         <div class="card-header">
             <h3 class="card-title">${request.product} - Offers received from suppliers</h3>
             <div class="card-options">
-                <button type="button" class="btn btn-sm btn-primary btn-edit-offers" data-target="offers-${request.id}">
-                    <span class="fe fe-edit edit-offer"></span> Edit All
-                </button>
                 <button type="button" class="btn btn-sm btn-secondary btn-add-offer" style="display:none;" data-target="offers-${request.id}">
                     <span class="fe fe-plus-circle"></span> Add new offer
                 </button>
@@ -1040,7 +1059,10 @@ function generateSupplierOffersCardHtml(request, cardTitle) {
                 <button type="button" class="btn btn-sm btn-info btn-add-checkboxes" data-table-id="offers-${request.id}">
                     <span class="fe fe-check-square"></span> Send emails
                 </button>
-                <button type="button" class="btn btn-sm btn-secondary btn-cancel-emails" style="display:none;" data-table-id="offers-${request.id}">
+                <button type="button" class="btn btn-sm btn-primary btn-edit-offers" data-target="offers-${request.id}">
+                    <span class="fe fe-edit edit-offer"></span> Edit All
+                </button>
+                <button type="button" class="btn btn-sm btn-danger btn-cancel-emails" style="display:none;" data-table-id="offers-${request.id}">
                     <span class="fe fe-x"></span> Cancel
                 </button>
                 <button type="button" class="btn btn-sm btn-success btn-confirm-emails" style="display:none;" data-table-id="offers-${request.id}">
@@ -1174,7 +1196,7 @@ cardHtml += `</tbody></table></div></div></div>`; // This line closes the table 
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered border text-nowrap">
+                    <table id="requests" class="table table-bordered border text-nowrap">
                         <thead>
                             <tr>
                                 <th>Product</th>
@@ -1192,10 +1214,15 @@ cardHtml += `</tbody></table></div></div></div>`; // This line closes the table 
 
     data.forEach(function(request) {
         var productName = request.product || "Not Specified";
+        var specs = request.specs || "";
+        var specsLink = specs.startsWith("http") ? 
+            `<a href="${specs}" target="_blank" class="specs-link">View Specs</a>` : 
+            `<a href="#" class="specs-link" data-specs="${specs.replace(/\n/g, '<br>')}" data-bs-toggle="modal" data-bs-target="#scrollingmodal">View Specs</a>`;
+        
         tableHtml += `<tr data-request-id="${request.id}">
             <td>${productName}</td>
             <td>${request.quantity}</td>
-            <td><a href="#" class="specs-link" data-specs="${request.specs}" data-bs-toggle="modal" data-bs-target="#scrollingmodal">View Specs</a></td>
+            <td>${specsLink}</td>
             <td>${request.size}</td>
             <td>${request.payment_terms_requested}</td>
             <td>${request.incoterms}</td>
@@ -1209,28 +1236,76 @@ cardHtml += `</tbody></table></div></div></div>`; // This line closes the table 
     return tableHtml;
 }
 
+// Event delegation for dynamically added elements
 document.addEventListener('click', function(event) {
     if (event.target.classList.contains('specs-link')) {
         event.preventDefault();
-        var specs = event.target.getAttribute('data-specs');
-        document.getElementById('modalSpecsBody').innerHTML = specs;
+        var specs = event.target.getAttribute('href') || event.target.getAttribute('data-specs') || "";
+        if (specs.startsWith("http")) {
+            window.open(specs, '_blank');
+        } else {
+            document.getElementById('modalSpecsBody').innerHTML = specs;
+        }
     }
 });
-});
 
 
-    </script>
 
-    <!-- Function to make offers tables editable-->
+// Function to merge table cells in the first column only
+function mergeTableCells(table) {
+    var colIndex = 0; // Only apply to the first column
+    var prevCell = null;
+    var spanCount = 1;
+    for (var rowIndex = 0; rowIndex < table.rows.length; rowIndex++) {
+        var cell = table.rows[rowIndex].cells[colIndex];
+        if (prevCell && cell.innerText === prevCell.innerText) {
+            spanCount++;
+            prevCell.rowSpan = spanCount;
+            cell.style.display = 'none';
+            prevCell.classList.add('centered-cell'); // Add the class to center the text
+        } else {
+            prevCell = cell;
+            spanCount = 1;
+        }
+    }
+}
 
-    <script>
+
+       // Function to unmerge table cells
+function unmergeTableCells(table) {
+    for (var rowIndex = 0; rowIndex < table.rows.length; rowIndex++) {
+        var row = table.rows[rowIndex];
+        for (var colIndex = 0; colIndex < row.cells.length; colIndex++) {
+            var cell = row.cells[colIndex];
+            if (cell.rowSpan > 1) {
+                // Reset rowSpan
+                cell.rowSpan = 1;
+                cell.classList.remove('centered-cell'); // Remove the centered class
+            }
+        }
+    }
+    
+    // Make all hidden cells visible again
+    for (var rowIndex = 0; rowIndex < table.rows.length; rowIndex++) {
+        var row = table.rows[rowIndex];
+        for (var colIndex = 0; colIndex < row.cells.length; colIndex++) {
+            var cell = row.cells[colIndex];
+            cell.style.display = ''; // Make the cell visible
+        }
+    }
+}
+
+    
+
+    
+            <!-- Function to make offers tables editable-->
 $(document).ready(function() {
     // Make all fields in the specified table editable
     $(document).on('click', '.btn-edit-offers', function() {
         var targetTableId = $(this).data('target');
         var $table = $('#' + targetTableId);
         var $card = $table.closest('.card');
-
+        unmergeTableCells($table[0]);
         $table.find('td').attr('contenteditable', 'true');
         $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').show();
         $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').show();
@@ -1272,7 +1347,7 @@ $(document).ready(function() {
         // Check if validity is either in the correct format, empty, or the default placeholder
         if ((validity !== "" && validity !== "DD/MM/YYYY" && !dateRegex.test(validity))) {
             allValid = false;
-            alert("Date should be entered in correct DD/MM/YYYY format, be left empty, or be 'DD/MM/YYYY' as a placeholder.");
+            ("Date should be entered in correct DD/MM/YYYY format, be left empty, or be 'DD/MM/YYYY' as a placeholder.");
             return false;  // Break the each loop
         }
 
@@ -1298,14 +1373,16 @@ $(document).ready(function() {
             contentType: 'application/json',
             data: JSON.stringify({offers: offersToUpdate}),
             success: function(response) {
-                // Handle success
+                toastr.success('Data updated succesfully!', 'Success');
+                mergeTableCells($table[0]);
                 $table.find('td').attr('contenteditable', 'false');
                 $card.find('.btn-edit-offers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
                 $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').hide(); // Hide the save button
                 $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').hide(); // Hide the save button
             },
             error: function(error) {
-                // Handle errors
+                mergeTableCells($table[0]);
+                toastr.error('An error occurred. Changes not saved');
                 console.log(error);
             }
         });
@@ -1313,10 +1390,9 @@ $(document).ready(function() {
 });
 
    
-    </script>
+    
 
-<!-- Function to make request tables editables-->
-    <script>
+//To make requests table editable    
 
 $(document).ready(function() {
     // Make request fields editable
@@ -1324,6 +1400,7 @@ $(document).ready(function() {
         $('#requests-table').find('td').attr('contenteditable', 'true');
         $('.btn-save-requests').show(); // Show the save button for requests
         $(this).hide(); // Hide the edit button for requests
+        
     });
 
     // Handle the save action for requests
@@ -1393,6 +1470,7 @@ $(document).ready(function() {
     $btnSave.show();
     $btnAdd.show();
     $(this).hide();
+    unmergeTableCells($table[0]);
 });
 
     // Add a new editable row for client offers when "Add New Offer" is clicked
@@ -1440,23 +1518,26 @@ $(document).ready(function() {
             contentType: 'application/json',
             data: JSON.stringify({offers: offersToUpdate}),
             success: function(response) {
-                console.log(offersToUpdate)
+                toastr.success('Data updated succesfully!', 'Success');
                 $table.find('td').attr('contenteditable', 'false');
                 $card.find('.btn-edit-clientoffers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
                 $card.find('.btn-save-clientoffers[data-target="' + targetTableId + '"]').hide(); // Hide the save button
                 $card.find('.btn-add-clientoffers[data-target="' + targetTableId + '"]').hide(); // Hide the add new offer button
+                mergeTableCells($table[0]);
             },
             error: function(error) {
                 console.log(error);
+                toastr.error('Data was not saved', 'Error');
+                mergeTableCells($table[0]);
             }
         });
     });
 });
 
 
-</script>
 
-<script>
+
+
 $(document).ready(function() {
     // Selector for all inputs and selects to be monitored for changes
     $('.col-md-2 input, .col-md-2 select').change(function() {
@@ -1470,7 +1551,7 @@ $(document).ready(function() {
         if ($input.hasClass('fc-datepicker')) {
             var dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/(19|20)\d\d$/;
             if (value && !dateRegex.test(value) && value.toLowerCase() !== 'null') {
-                alert('Please enter the date in DD/MM/YYYY format or leave it blank.');
+                ('Please enter the date in DD/MM/YYYY format or leave it blank.');
                 return; // Stop the function if the date format is incorrect
             }
         }
@@ -1484,18 +1565,20 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 console.log(data, response);
+                toastr.success('Data updated succesfully!', 'Success');
             },
             error: function(error) {
                 console.error('Update failed:', error);
-                alert('Failed to update the information. Please try again.');
+                toastr.error('Failed to update the information. Please try again.');
             }
         });
     });
 });
-</script>
 
 
-<script>
+
+//handles logic to send emails
+
     $(document).ready(function() {
         // Handle showing checkboxes and buttons
         $('body').on('click', '.btn-add-checkboxes', function() {
@@ -1543,7 +1626,7 @@ $(document).ready(function() {
                 console.log('/display-draft-email/?' + $.param(params));
                 window.location.href = '/display-draft-email/?' + $.param(params);
             } else {
-                alert('No suppliers selected.');
+                toastr.error('No suppliers selected.');
             }
         });
     
@@ -1573,6 +1656,11 @@ $(document).ready(function() {
         .supplier-email-status {
     display: inline-block;
     margin-left: 5px; /* Adjust this value to control the spacing between the supplier name and the emojis */
+}
+.centered-cell {
+    
+    vertical-align: middle;
+    
 }
     </style>
 </body>
