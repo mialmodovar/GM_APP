@@ -259,7 +259,7 @@
                                                                                 <div class="row align-items-center">
                                                                                     <label class="col-xl-2 form-label">Subject</label>
                                                                                     <div class="col-xl-10">
-                                                                                        <input type="text" id="subject-{{ email_with_attachments.email.id }}" class="form-control" value="[{{ enquiry.id }}] Enquiry for {{ request_obj.product.name }}">
+                                                                                        <input type="text" id="subject-{{ email_with_attachments.email.id }}" class="form-control" value="Enquiry ID:{{ enquiry.id }} - {{ request_obj.product.name }}">
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -268,9 +268,9 @@
                                                                                     <label class="col-xl-2 form-label">Message</label>
                                                                                     <div class="col-xl-10">
                                                                                         <textarea rows="10" id="message-{{ email_with_attachments.email.id }}" class="form-control">
-Dear {{ supplier.name }},
+Dear {{ email_with_attachments.supplier.name }},
 
-We are reaching out to you regarding our recent enquiry with ID: {{ enquiry.id }} and subject: {{ enquiry.subject }}. 
+I hope this message finds you well. We are reaching out to you regarding our recent enquiry with ID: {{ enquiry.id }}. 
 
 Below are the details of the request associated with this enquiry:
 

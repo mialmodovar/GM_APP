@@ -42,6 +42,8 @@ class Supplier(models.Model):
     country = models.TextField(blank=True, null=True)
     contact_person = models.TextField(blank=True, null=True)
     email = models.TextField(blank=True, null=True)
+    products = models.ManyToManyField(Product, related_name='suppliers')
+    division = models.ForeignKey(Division, on_delete=models.SET_NULL, null=True, blank=True)  # Add this line
 
     def __str__(self):
         return f"{self.name}"

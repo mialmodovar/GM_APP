@@ -237,50 +237,138 @@
                     <h3 class="card-title">Ongoing Enquiries</h3>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <div id="basic-datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-                            <div class="row"><div class="col-sm-12 col-md-6">
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-sm-12 col-md-6 d-flex align-items-center">
+                                <button id="openFiltersButton" class="btn btn-secondary btn-sm">Filters</button>
                             </div>
-                            <div class="col-sm-12 col-md-6"><div id="basic-datatable_filter" class="dataTables_filter"><label><input type="search" id="tableSearch" class="form-control" placeholder="Search..." aria-controls="basic-datatable"></label></div></div></div><div class="row"><div class="col-sm-12">
-                            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer" id="basic-datatable" role="grid" aria-describedby="basic-datatable_info" id="basic-datatable">
-                            <thead>
-                                <tr role="row"><th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 120.113px;">Status</th>
-                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 111.887px;">Manager</th>
-                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 111.887px;">Customer</th>
-                                    <th class="wd-20p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 217.938px;">Products</th>
-                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 116.588px;">Enquiry Receive Date</th>
-                                    <th class="wd-10p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 87.3375px;">Quantity (MT)</th></tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div></div>
-                    <div class="row">
-                        
-                            <div class="dataTables_info" id="basic-datatable_info" role="status" aria-live="polite">Showing 1 to 10 of 50 entries</div></div>
-                            <br>
-                            <div class="row">
-                            <div class="col-sm-6 col-md-6"><div class="dataTables_length" id="basic-datatable_length">
-                                <label>Show 
-                                    <select name="basic-datatable_length" aria-controls="basic-datatable" class="form-select form-select">
-                                      <option value="10">5</option> 
-                                      <option value="10">10</option>
-                                      <option value="25">25</option>
-                                      <option value="50">50</option>
-                                      <option value="100">100</option>
-                                    </select> entries
-                                  </label>
+                            <div class="col-sm-12 col-md-6 d-flex justify-content-end">
+                                <div id="basic-datatable_filter" class="dataTables_filter">
+                                    <label><input type="search" id="tableSearch" class="form-control" placeholder="Search..." aria-controls="basic-datatable"></label>
+                                </div>
                             </div>
+                        </div>
+                        <div class="table-responsive">
+                            <div id="basic-datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered text-nowrap border-bottom dataTable no-footer" id="basic-datatable" role="grid" aria-describedby="basic-datatable_info">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 120.113px;">Status</th>
+                                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 111.887px;">Manager</th>
+                                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 111.887px;">Customer</th>
+                                                    <th class="wd-20p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 217.938px;">Products</th>
+                                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 116.588px;">Enquiry Receive Date</th>
+                                                    <th class="wd-10p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 87.3375px;">Quantity (MT)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="dataTables_info" id="basic-datatable_info" role="status" aria-live="polite">Showing 1 to 10 of 50 entries</div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="dataTables_length" id="basic-datatable_length">
+                                            <label>Show 
+                                                <select name="basic-datatable_length" aria-controls="basic-datatable" class="form-select form-select">
+                                                    <option value="10">5</option>
+                                                    <option value="10">10</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select> entries
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="dataTables_paginate paging_simple_numbers" id="basic-datatable_paginate">
+                                            <ul class="pagination">
+                                                <li class="paginate_button page-item previous disabled" id="basic-datatable_previous">
+                                                    <a href="#" aria-controls="basic-datatable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                                </li>
+                                                <li class="paginate_button page-item active">
+                                                    <a href="#" aria-controls="basic-datatable" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                                                </li>
+                                                <li class="paginate_button page-item">
+                                                    <a href="#" aria-controls="basic-datatable" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+                                                </li>
+                                                <li class="paginate_button page-item">
+                                                    <a href="#" aria-controls="basic-datatable" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+                                                </li>
+                                                <li class="paginate_button page-item">
+                                                    <a href="#" aria-controls="basic-datatable" data-dt-idx="4" tabindex="0" class="page-link">4</a>
+                                                </li>
+                                                <li class="paginate_button page-item">
+                                                    <a href="#" aria-controls="basic-datatable" data-dt-idx="5" tabindex="0" class="page-link">5</a>
+                                                </li>
+                                                <li class="paginate_button page-item next" id="basic-datatable_next">
+                                                    <a href="#" aria-controls="basic-datatable" data-dt-idx="6" tabindex="0" class="page-link">Next</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="dataTables_paginate paging_simple_numbers" id="basic-datatable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="basic-datatable_previous"><a href="#" aria-controls="basic-datatable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="basic-datatable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item next" id="basic-datatable_next"><a href="#" aria-controls="basic-datatable" data-dt-idx="6" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
-                    </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
+        <!-- Filter Modal -->
+        <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Filters</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <select id="statusFilter" class="form-control form-control-sm">
+                                    <option value="">All Statuses</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <select id="managerFilter" class="form-control form-control-sm">
+                                    <option value="">All Managers</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <select id="clientFilter" class="form-control form-control-sm">
+                                    <option value="">All Clients</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <select id="productFilter" class="form-control form-control-sm">
+                                    <option value="">All Products</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="date" id="receivedDateFromFilter" class="form-control form-control-sm" placeholder="Date From">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="date" id="receivedDateToFilter" class="form-control form-control-sm" placeholder="Date To">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="applyFiltersButton">Apply Filters</button>
+                        <button type="button" class="btn btn-secondary" id="clearFiltersButton">Clear Filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 <!-- Sidebar-right -->
 <div class="sidebar sidebar-right sidebar-animate">
     <div class="panel panel-primary card mb-0 shadow-none border-0">
@@ -919,77 +1007,172 @@
    <!-- Switcher js -->
    <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
 
-   <!--code for python table>
-   <!--<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const rows = document.querySelectorAll('table#basic-datatable tbody tr');
-        rows.forEach(row => {
-            row.addEventListener('click', function() {
-                const enquiryId = this.getAttribute('data-enquiry-id');
-                window.location.href = `/enquiry/${enquiryId}`;
-            });
-        });
-    });
-    </script>-->
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            function fetchEnquiries() {
-                fetch('/api/enquiries/')
-                    .then(response => response.json())
-                    .then(data => {
-                        populateTable(data); // Assuming 'data' is the array of enquiries
-                    })
-                    .catch(error => console.error('Error fetching enquiries:', error));
-            }
-        
-            function populateTable(enquiries) {
-            const tableBody = document.querySelector('#basic-datatable tbody');
-            tableBody.innerHTML = ''; // Clear existing rows
+    function fetchEnquiries() {
+        fetch('/api/enquiries/')
+            .then(response => response.json())
+            .then(data => {
+                populateTable(data);
+                populateFilters(data);
+            })
+            .catch(error => console.error('Error fetching enquiries:', error));
+    }
 
-            enquiries.forEach(enquiry => {
+    function populateTable(enquiries) {
+        const tableBody = document.querySelector('#basic-datatable tbody');
+        tableBody.innerHTML = '';
+
+        enquiries.forEach(enquiry => {
             const row = tableBody.insertRow();
             row.setAttribute('data-enquiry-id', enquiry.id);
 
-        // Processed product names
             const productsText = enquiry.enquiry_requests.map(request => {
-            return request.product_name ? request.product_name : 'Unknown Product';
+                return request.product_name ? request.product_name : 'Unknown Product';
             }).join(', ');
-            
-        const cellsData = [
-            enquiry.status || 'N/A',
-            enquiry.manager ? enquiry.manager : 'N/A',
-            enquiry.client ? enquiry.client.name : 'N/A',
-            productsText, // Ensure this correctly inserts into the table cell
-            enquiry.received_date || 'N/A',
-            enquiry.enquiry_requests.map(request => request.quantity).join(', ')
-        ];
 
-        cellsData.forEach(text => {
-            const cell = row.insertCell();
-            cell.textContent = text;
+            const cellsData = [
+                enquiry.status || 'N/A',
+                enquiry.manager || 'N/A',
+                enquiry.client ? enquiry.client.name : 'N/A',
+                productsText,
+                enquiry.received_date || 'N/A',
+                enquiry.enquiry_requests.map(request => request.quantity).join(', ')
+            ];
+
+            cellsData.forEach(text => {
+                const cell = row.insertCell();
+                cell.textContent = text;
+            });
+
+            row.addEventListener('click', function() {
+                window.location.href = `/enquiry/${enquiry.id}`;
+            });
+        });
+    }
+
+    function populateFilters(enquiries) {
+        const statusFilter = $('#statusFilter');
+        const managerFilter = $('#managerFilter');
+        const clientFilter = $('#clientFilter');
+        const productFilter = $('#productFilter');
+
+        const statuses = new Set();
+        const managers = new Set();
+        const clients = new Set();
+        const products = new Set();
+
+        enquiries.forEach(enquiry => {
+            statuses.add(enquiry.status || 'N/A');
+            managers.add(enquiry.manager || 'N/A');
+            clients.add(enquiry.client ? enquiry.client.name : 'N/A');
+            enquiry.enquiry_requests.forEach(request => {
+                products.add(request.product_name ? request.product_name : 'Unknown Product');
+            });
         });
 
-        row.addEventListener('click', function() {
-            window.location.href = `/enquiry/${enquiry.id}`;
+        statuses.forEach(status => {
+            statusFilter.append(new Option(status, status));
         });
+
+        managers.forEach(manager => {
+            managerFilter.append(new Option(manager, manager));
+        });
+
+        clients.forEach(client => {
+            clientFilter.append(new Option(client, client));
+        });
+
+        products.forEach(product => {
+            productFilter.append(new Option(product, product));
+        });
+    }
+
+    function applyFilters() {
+        const statusFilter = $('#statusFilter').val().toLowerCase();
+        const managerFilter = $('#managerFilter').val().toLowerCase();
+        const clientFilter = $('#clientFilter').val().toLowerCase();
+        const productFilter = $('#productFilter').val().toLowerCase();
+        const receivedDateFromFilter = $('#receivedDateFromFilter').val();
+        const receivedDateToFilter = $('#receivedDateToFilter').val();
+
+        $('#basic-datatable tbody tr').each(function() {
+            const statusText = $(this).find('td').eq(0).text().toLowerCase();
+            const managerText = $(this).find('td').eq(1).text().toLowerCase();
+            const clientText = $(this).find('td').eq(2).text().toLowerCase();
+            const productText = $(this).find('td').eq(3).text().toLowerCase();
+            const receivedDateText = $(this).find('td').eq(4).text();
+
+            let matchesFilters = true;
+
+            if (statusFilter && statusFilter !== statusText) {
+                matchesFilters = false;
+            }
+            if (managerFilter && managerFilter !== managerText) {
+                matchesFilters = false;
+            }
+            if (clientFilter && clientFilter !== clientText) {
+                matchesFilters = false;
+            }
+            if (productFilter && !productText.includes(productFilter)) {
+                matchesFilters = false;
+            }
+            if (receivedDateFromFilter && receivedDateToFilter) {
+                const receivedDate = new Date(receivedDateText);
+                const fromDate = new Date(receivedDateFromFilter);
+                const toDate = new Date(receivedDateToFilter);
+                if (receivedDate < fromDate || receivedDate > toDate) {
+                    matchesFilters = false;
+                }
+            } else if (receivedDateFromFilter) {
+                const receivedDate = new Date(receivedDateText);
+                const fromDate = new Date(receivedDateFromFilter);
+                if (receivedDate < fromDate) {
+                    matchesFilters = false;
+                }
+            } else if (receivedDateToFilter) {
+                const receivedDate = new Date(receivedDateText);
+                const toDate = new Date(receivedDateToFilter);
+                if (receivedDate > toDate) {
+                    matchesFilters = false;
+                }
+            }
+
+            $(this).toggle(matchesFilters);
+        });
+    }
+
+    function clearFilters() {
+        $('#statusFilter').val('');
+        $('#managerFilter').val('');
+        $('#clientFilter').val('');
+        $('#productFilter').val('');
+        $('#receivedDateFromFilter').val('');
+        $('#receivedDateToFilter').val('');
+        applyFilters();
+    }
+
+    $('#filterButton').on('click', function() {
+        applyFilters();
     });
-}
 
-fetchEnquiries();
-        });
-        </script>
-        
-
-<script>
-    $(document).ready(function(){
-        $("#tableSearch").on("keyup", function() {
-        var value = $(this).val().toLowerCase().replace(/\s+/g, '');
-        $("#basic-datatable tbody tr").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().replace(/\s+/g, '').indexOf(value) > -1)
-        });
-        });
+    $('#applyFiltersButton').on('click', function() {
+        applyFilters();
+        $('#filterModal').modal('hide');
     });
+
+    $('#clearFiltersButton').on('click', function() {
+        clearFilters();
+    });
+
+    $('#openFiltersButton').on('click', function() {
+        $('#filterModal').modal('show');
+    });
+
+    // Fetch all enquiries on initial load
+    fetchEnquiries();
+});
     </script>
 
 <script>
@@ -997,22 +1180,34 @@ fetchEnquiries();
         // Function to show only the selected number of rows
         function updateTableDisplay(tableId, numRows) {
             const tableBody = document.querySelector(tableId + ' tbody');
+            if (!tableBody) {
+                console.error(`Table body not found for table ID: ${tableId}`);
+                return;
+            }
             const rows = tableBody.querySelectorAll('tr');
             rows.forEach((row, index) => {
                 row.style.display = index < numRows ? '' : 'none';
             });
         }
-    
-        // Event listener for the supplier table dropdown
-        document.querySelector('#basic-datatable_length select').addEventListener('change', function() {
-            updateTableDisplay('#basic-datatable', parseInt(this.value));
-        });
-    
-        // Optionally, add a similar listener for the enquiries table if it has a different ID
-        // Assuming the enquiries table has an ID of 'enquiries-datatable'
-        document.querySelector('#enquiries-datatable_length select').addEventListener('change', function() {
-            updateTableDisplay('#enquiries-datatable', parseInt(this.value));
-        });
+
+        // Function to initialize the row display based on the selected number of rows
+        function initializeTableDisplay(tableId, selectId) {
+            const selectElement = document.querySelector(selectId);
+            if (!selectElement) {
+                console.error(`Select element not found for select ID: ${selectId}`);
+                return;
+            }
+            updateTableDisplay(tableId, parseInt(selectElement.value));
+            selectElement.addEventListener('change', function() {
+                updateTableDisplay(tableId, parseInt(this.value));
+            });
+        }
+
+        // Initialize display for the supplier table
+        initializeTableDisplay('#basic-datatable', '#basic-datatable_length select');
+
+        // Initialize display for the enquiries table
+        initializeTableDisplay('#enquiries-datatable', '#enquiries-datatable_length select');
     });
     </script>
     

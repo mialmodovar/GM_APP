@@ -201,117 +201,189 @@
         <div class="main-container container-fluid">
 
             <!-- PAGE-HEADER -->
-           <div class="page-header">
-    <h1 class="page-title">Supplier Information</h1>
-    <!-- Breadcrumb and other header content -->
-</div>
-<!-- PAGE-HEADER END -->
-
-<!-- Supplier Details Section -->
-<div class="row d-flex">
-    <div class="col-lg-6 d-flex">
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">Supplier Details</div>
+            <div class="page-header">
+                <h1 class="page-title">Supplier Information</h1>
+                <!-- Breadcrumb and other header content -->
             </div>
-            <div class="card-body">
-                <!-- Single row for all details to ensure even spacing -->
+            <!-- PAGE-HEADER END -->
+
+            <!-- Supplier Details Section -->
+            <div class="row d-flex">
+                <div class="col-lg-12 d-flex">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="card-title">Supplier Details</div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Single row for all details to ensure even spacing -->
+                            <form id="supplierForm">
+                                <div class="row">
+                                    <!-- Supplier Name -->
+                                    <div class="col-md-3 mb-2">
+                                        <label for="supplierName">Supplier Name</label>
+                                        <input type="text" class="form-control" id="supplierName" name="name"  value="{{supplier.name}}">
+                                    </div>
+                                    <!-- Supplier Contact Person -->
+                                    <div class="col-md-3 mb-2">
+                                        <label for="supplierContactPerson">Supplier Contact Person</label>
+                                        <input type="text" class="form-control" id="supplierContactPerson" name="contact_person" value="{{supplier.contact_person}}">
+                                    </div>
+                                    <!-- Supplier Email -->
+                                    <div class="col-md-3 mb-2">
+                                        <label for="supplierEmail">Supplier Email</label>
+                                        <input type="text" class="form-control" id="supplierEmail" name="email" value="{{supplier.email}}">
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <label for="supplierDivision">Supplier Division</label>
+                                        <select class="form-control form-select select2" id="supplierDivision" name="division">
+                                            {% for division in divisions %}
+                                                <option value="{{ division.id }}" {% if supplier.division.id == division.id %}selected{% endif %}>{{ division.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
-                    <!-- Supplier Name -->
-                    <div class="col-md-4 mb-4">
-                        <label for="exampleInputEmail1">Supplier Name</label>
-                        <input type="text" class="form-control" readonly value="{{supplier.name}}">
-                    </div>
-                    <!-- Supplier Contact Person -->
-                    <div class="col-md-4 mb-4">
-                        <label for="exampleInputEmail1">Supplier Contact Person</label>
-                        <input type="text" class="form-control" readonly value="{{supplier.contact_person}}">
-                    </div>
-                    <!-- Supplier Email -->
-                    <div class="col-md-4 mb-4">
-                        <label for="exampleInputEmail1">Supplier Email</label>
-                        <input type="text" class="form-control" readonly value="{{supplier.email}}">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Supplier Information</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="panel panel-primary">
+                                    <div class="tab-menu-heading">
+                                        <div class="tabs-menu">
+                                            <ul class="nav panel-tabs" role="tablist">
+                                                <li class="nav-item">
+                                                    <a href="#recentOffer" class="nav-link active" data-bs-toggle="tab" role="tab" aria-selected="true">Recent Offer</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#summaryStats" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">Summary Stats</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#productsSupplied" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">Products Supplied</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#meetinghistory" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">Meetings History</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body tabs-menu-body">
+                                        <div class="tab-content">
+                                            <!-- Recent Offer Tab -->
+                                            <div class="tab-pane active" id="recentOffer" role="tabpanel">
+                                                <div class="col-xl-12">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Recent Offer</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div>
+                                                                <input type="text" class="form-control d-inline-block mr-2" style="width: 200px;" placeholder="Search offers...">
+                                                                <button class="btn btn-primary btn-export-csv">Export as CSV</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            {% if offers %}
+                                                            <table class="table table-striped">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Supplier Price</th>
+                                                                        <th>Product</th>
+                                                                        <th>Incoterms</th>
+                                                                        <th>Specs</th>
+                                                                        <th>Size</th>
+                                                                        <!-- Add other headers -->
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% for offer in offers %}
+                                                                    <tr>
+                                                                        <td>{{ offer.supplier_price }}</td>
+                                                                        <td>{{ offer.request.product.name }}</td>
+                                                                        <td>{{ offer.incoterms }}</td>
+                                                                        <td>{{ offer.specs }}</td>
+                                                                        <td>{{ offer.size }}</td>
+                                                                    </tr>
+                                                                    {% endfor %}
+                                                                </tbody>
+                                                            </table>
+                                                            {% else %}
+                                                            <p>No recent offers found.</p>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Summary Stats Tab -->
+                                            <div class="tab-pane" id="summaryStats" role="tabpanel">
+                                                <div class="col-xl-12">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Summary Stats</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            {% for stat in product_stats %}
+                                                            <div class="row">
+                                                                <!-- Supplier Name -->
+                                                                <div class="col-md-4 mb-4">
+                                                                    <label for="exampleInputEmail1">{{ stat.request__product__name }}</label>
+                                                                </div>
+                                                                <!-- Supplier Contact Person -->
+                                                                <div class="col-md-4 mb-4">
+                                                                    <label for="exampleInputEmail1">Average Price: {{ stat.average_price }}</label>
+                                                                </div>
+                                                                <!-- Supplier Email -->
+                                                                <div class="col-md-4 mb-4">
+                                                                    <label for="exampleInputEmail1">Total Offers: {{ stat.total_offers }}</label>
+                                                                </div>
+                                                            </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Products Supplied Tab -->
+                                            <div class="tab-pane" id="productsSupplied" role="tabpanel">
+                                                <div class="col-xl-12">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Products Supplied</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <ul>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <div class="tab-pane" id="meetinghistory" role="tabpanel">
+                                                    <div class="col-xl-12">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h3 class="card-title">Meeting History</h3>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <ul>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                                
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="col-lg-6 d-flex">
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">Supplier Summary Stats</div>
-            </div>
-            <div class="card-body">
-                <!-- Single row for all details to ensure even spacing -->
-                {% for stat in product_stats %}
-                <div class="row">
-                    <!-- Supplier Name -->
-                    <div class="col-md-4 mb-4">
-                        <label for="exampleInputEmail1">{{ stat.request__product__name }}</label>
-                    </div>
-                    <!-- Supplier Contact Person -->
-                    <div class="col-md-4 mb-4">
-                        <label for="exampleInputEmail1">Average Price: {{ stat.average_price }}</label>
-                    </div>
-                    <!-- Supplier Email -->
-                    <div class="col-md-4 mb-4">
-                        <label for="exampleInputEmail1">Total Offers: {{ stat.total_offers }}</label>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>  
-</div>
-
-<!-- Recent Offers Section -->
-<!-- Recent Offers Section -->
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card mt-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="card-title">Recent Offers from {{ supplier.name }}</h3>
-                <div>
-                    <input type="text" class="form-control d-inline-block mr-2" style="width: 200px;" placeholder="Search offers...">
-                    <button class="btn btn-primary">Export as CSV</button>
-                </div>
-            </div>
-            <div class="card-body">
-                {% if offers %}
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Supplier Price</th>
-                            <th>Product</th>
-                            <th>Incoterms</th>
-                            <th>Specs</th>
-                            <th>Size</th>
-                            <!-- Add other headers -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for offer in offers %}
-                        <tr>
-                            <td>{{ offer.supplier_price }}</td>
-                            <td>{{ offer.request.product.name }}</td>
-                            <td>{{ offer.incoterms }}</td>
-                            <td>{{ offer.specs }}</td>
-                            <td>{{ offer.size }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <p>No recent offers found.</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--app-content closed-->
-</div>
 
  <!-- Sidebar-right -->
  <div class="sidebar sidebar-right sidebar-animate">
@@ -1291,8 +1363,7 @@ $(document).ready(function() {
         });
     });
 });
-
-    </script>
+</script>
 
 <script>
     $(document).ready(function() {
@@ -1303,9 +1374,9 @@ $(document).ready(function() {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
             });
         });
-    
+
         // Export to CSV functionality
-        $('.btn-primary').on('click', function() {
+        $('.btn-export-csv').on('click', function() {
             var csv = [];
             var rows = document.querySelectorAll('table tr');
             
@@ -1317,7 +1388,7 @@ $(document).ready(function() {
                 
                 csv.push(row.join(','));        
             }
-    
+
             // Download CSV
             var csvFile = new Blob([csv.join('\n')], {type: 'text/csv'});
             var downloadLink = document.createElement('a');
@@ -1328,7 +1399,8 @@ $(document).ready(function() {
             downloadLink.click();
         });
     });
-    </script>
+</script>
+
     
 </body>
 

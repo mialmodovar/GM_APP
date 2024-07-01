@@ -34,7 +34,7 @@ from django.views.generic import TemplateView
 from dotenv import load_dotenv
 
 from .models import (Client, Email, Enquiry, Manager, Offer,
-                     Offer_Client, Product, Request, Supplier, Attachment)
+                     Offer_Client, Product, Request, Supplier, Attachment, Division)
 
 
 def microsoft_login(request):
@@ -321,7 +321,8 @@ def create_enquiry_ajax(request):
 
             # Process suppliers for this product
             for supplier_name in product_detail.get('suppliers', []):
-                supplier, _ = Supplier.objects.get_or_create(name=supplier_name)
+                supplier, _ = Supplier.objects.get_or_create(
+                    name=supplier_name)
                 # Create an offer or a similar relation between the supplier and the request
                 Offer.objects.create(
                     request=request_instance,
@@ -424,6 +425,7 @@ def requests_offers_for_enquiry(request, enquiry_id):
         data.append(req_dict)
 
     return JsonResponse(data, safe=False)
+
 
 @csrf_exempt
 @login_required
@@ -687,19 +689,40 @@ def get_enquiries(request):
 
 @login_required
 def supplier_list(request):
-    return render(request, 'app/supplier_list.html')
+    divisions = Division.objects.all()
+    return render(request, 'app/supplier_list.html', {'divisions': divisions})
 
 
 @login_required
 def suppliers_api(request):
-    suppliers = list(Supplier.objects.values(
-        'id', 'name', 'contact_person', 'email'))
-    return JsonResponse({'suppliers': suppliers}, safe=False)
+    divisions = Division.objects.all()
+    divisions_data = []
+
+    for division in divisions:
+        suppliers = Supplier.objects.filter(division=division)
+        suppliers_list = []
+        for supplier in suppliers:
+            products = [product.name for product in supplier.products.all()]
+            suppliers_list.append({
+                'id': supplier.id,
+                'name': supplier.name,
+                'contact_person': supplier.contact_person,
+                'email': supplier.email,
+                'products': ', '.join(products)
+            })
+        divisions_data.append({
+            'id': division.id,
+            'name': division.name,
+            'suppliers': suppliers_list
+        })
+
+    return JsonResponse({'divisions': divisions_data}, safe=False)
 
 
 @login_required
 def supplier_detail(request, id):
     supplier = get_object_or_404(Supplier, id=id)
+    divisions = Division.objects.all()
     # Fetch recent offers related to this supplier
     offers = Offer.objects.filter(supplier=supplier).prefetch_related(Prefetch(
         'request', queryset=Request.objects.select_related('product'))).order_by('-validity')[:5]
@@ -711,7 +734,7 @@ def supplier_detail(request, id):
             total_offers=Count('id')
         )
     )
-    return render(request, 'app/supplier_detail.html', {'supplier': supplier, 'offers': offers, 'product_stats': product_stats})
+    return render(request, 'app/supplier_detail.html', {'supplier': supplier, 'offers': offers, 'product_stats': product_stats, 'divisions': divisions})
 
 
 @login_required
