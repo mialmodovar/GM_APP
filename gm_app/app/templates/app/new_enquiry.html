@@ -807,88 +807,8 @@
         </div>
         <!--/Sidebar-right-->
 
-        <!-- Country-selector modal-->
-        <div class="modal fade" id="country-selector">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content country-select-modal">
-                    <div class="modal-header">
-                        <h6 class="modal-title">Choose Country</h6><button aria-label="Close" class="btn-close"
-                            data-bs-dismiss="modal" type="button"><span aria-hidden="true">×</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <ul class="row p-3">
-                            <li class="col-lg-6 mb-2">
-                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block active">
-                                    <span class="country-selector"><img alt="" src=" {% static '/assets/images/flags-img/us_flag.jpg' %} "
-                                            class="me-3 language"></span>USA
-                                </a>
-                            </li>
-                            <li class="col-lg-6 mb-2">
-                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
-                                    <span class="country-selector"><img alt=""
-                                        src=" {% static '/assets/images/flags-img/italy_flag.jpg' %} "
-                                        class="me-3 language"></span>Italy
-                                </a>
-                            </li>
-                            <li class="col-lg-6 mb-2">
-                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
-                                    <span class="country-selector"><img alt=""
-                                        src=" {% static '/assets/images/flags-img/spain_flag.jpg' %} "
-                                        class="me-3 language"></span>Spain
-                                </a>
-                            </li>
-                            <li class="col-lg-6 mb-2">
-                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
-                                    <span class="country-selector"><img alt=""
-                                        src=" {% static '/assets/images/flags-img/india_flag.jpg' %} "
-                                        class="me-3 language"></span>India
-                                </a>
-                            </li>
-                            <li class="col-lg-6 mb-2">
-                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
-                                    <span class="country-selector"><img alt=""
-                                        src=" {% static '/assets/images/flags-img/french_flag.jpg' %} "
-                                        class="me-3 language"></span>French
-                                </a>
-                            </li>
-                            <li class="col-lg-6 mb-2">
-                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
-                                    <span class="country-selector"><img alt=""
-                                        src=" {% static '/assets/images/flags-img/russia_flag.jpg' %} "
-                                        class="me-3 language"></span>Russia
-                                </a>
-                            </li>
-                            <li class="col-lg-6 mb-2">
-                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
-                                    <span class="country-selector"><img alt=""
-                                        src=" {% static '/assets/images/flags-img/germany_flag.jpg' %} "
-                                        class="me-3 language"></span>Germany
-                                </a>
-                            </li>
-                            <li class="col-lg-6 mb-2">
-                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
-                                    <span class="country-selector"><img alt=""
-                                        src=" {% static '/assets/images/flags-img/argentina.jpg' %} "
-                                        class="me-3 language"></span>Argentina
-                                </a>
-                            </li>
-                            <li class="col-lg-6 mb-2">
-                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
-                                    <span class="country-selector"><img alt="" src=" {% static '/assets/images/flags-img/malaysia.jpg' %} "
-                                        class="me-3 language"></span>Malaysia
-                                </a>
-                            </li>
-                            <li class="col-lg-6 mb-2">
-                                <a href=" {% static 'javascript:void(0)' %} " class="btn btn-country btn-lg btn-block">
-                                    <span class="country-selector"><img alt="" src=" {% static '/assets/images/flags-img/turkey.jpg' %} "
-                                        class="me-3 language"></span>Turkey
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+
         <!-- Country-selector modal-->
 
         <!-- FOOTER -->
@@ -904,6 +824,49 @@
         <!-- FOOTER CLOSED -->
     </div>
 
+    <!-- Include this part in your HTML to define the modal -->
+    <!-- Include this part in your HTML to define the modal -->
+<!-- Include this part in your HTML to define the modal -->
+<!-- Include this part in your HTML to define the modal -->
+<div class="modal fade" id="multipleDeliveriesModal" tabindex="-1" role="dialog" aria-labelledby="multipleDeliveriesModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="multipleDeliveriesModalLabel">Multiple Deliveries</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Table for multiple deliveries -->
+          <div id="multipleDeliveriesTableContainer" class="table-responsive">
+            <table class="table border text-nowrap text-md-nowrap table-sm mb-0">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Date</th>
+                  <th>Quantity</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="multipleDeliveriesTableBody">
+                <tr>
+                  <td>1</td>
+                  <td><input type="date" class="form-control"></td>
+                  <td><input type="number" class="form-control delivery-quantity" placeholder="Enter quantity"></td>
+                  <td><button type="button" class="btn btn-danger btn-sm remove-row">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="button" id="addRowButton" class="btn btn-primary btn-sm mt-2">Add Row</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="saveChangesButton" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
     <!-- BACK-TO-TOP -->
     <a href=" {% static '#top' %} " id="back-to-top"><i class="fa fa-angle-up"></i></a>
 
@@ -1170,8 +1133,11 @@
     
     <!-- Script to add the fields as the user adds products in step 2 of the wizard-->>
 
+
     <script>
 $(document).ready(function() {
+    var multipleDeliveriesData = [];
+
     $('#product_selector .select2').select2({
         width: '100%',
         tags: true,
@@ -1179,42 +1145,67 @@ $(document).ready(function() {
         placeholder: "Choose Product",
     }).on('select2:select select2:unselect', function(e) {
         var selectedProducts = $(this).val() || []; // Get selected values, ensure array
-        // Container where additional form groups will be dynamically added or removed
         var $sizeSelectorsContainer = $('#size-selectors-container');
         $sizeSelectorsContainer.empty(); // Clear previous entries
 
         selectedProducts.forEach(function(product) {
             var productName = $('#product_selector .select2 option[value="' + product + '"]').text();
             var elementHtml = '<hr><div class="form-group product-detail" data-product-name="' + productName + '">' + // Include the data-product-name attribute
-                              '<input type="hidden" class="product-name" value="' + productName + '">' + // Hidden input to store the product name
-                              '<div class="form-group">' +
-                              '<label class="form-label">' + productName + ' Size Selection</label>' +
-                              '<input type="text" class="form-control required" placeholder="Enter sizes for ' + productName + '" />' +
-                              '</div>' +
-                              '<div class="form-group">' +
-                              '<label class="form-label">' + productName + ' Specs</label>' +
-                              '<textarea class="form-control product-specs" placeholder="Enter specs for ' + productName + '" rows="4" style="height: 100px;"></textarea>' +
-                              '<div style="display: flex; align-items: center; margin-top: 10px;">' +
-                              '<input type="file" class="form-control-file" />' + // Add file input
-                              '<span class="remove-file-text" style="display: none; margin-left: 10px; color: red; cursor: pointer;">Remove</span>' + // Add clickable text to remove file
-                              '</div>' +
-                              '</div>' +
-                              '<div class="form-group">' +
-                              '<label class="form-label">' + productName + ' Quantity</label>' +
-                              '<input type="text" class="form-control required" placeholder="Quantity (specify if MTS or KGS)" />' +
-                              '</div>' +
-                              '<div class="form-group">' +
-                              '<label class="form-label">' + productName + ' Packaging per inquiry</label>' +
-                              '<input type="text" class="form-control required" placeholder="Packaging details" />' +
-                              '</div>';
+                      '<input type="hidden" class="product-name" value="' + productName + '">' + // Hidden input to store the product name
+                      '<div class="form-group">' +
+                      '<label class="form-label">' + productName + ' Size Selection</label>' +
+                      '<input type="text" class="form-control required" placeholder="Enter sizes for ' + productName + '" />' +
+                      '</div>' +
+                      '<div class="form-group">' +
+                      '<label class="form-label">' + productName + ' Specs</label>' +
+                      '<textarea class="form-control product-specs" placeholder="Enter specs for ' + productName + '" rows="4" style="height: 100px;"></textarea>' +
+                      '<div style="display: flex; align-items: center; margin-top: 10px;">' +
+                      '<input type="file" class="form-control-file" />' + // Add file input
+                      '<span class="remove-file-text" style="display: none; margin-left: 10px; color: red; cursor: pointer;">Remove</span>' + // Add clickable text to remove file
+                      '</div>' +
+                      '</div>' +
+                      '<div class="form-group">' +
+                      '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+                      '<label class="form-label">' + productName + ' Quantity</label>' +
+                      '</div>' +
+                      '<div class="input-group">' +
+                      '<input type="text" class="form-control required quantity-field" readonly placeholder="Quantity (specify if MTS, KGS, or PCS)" aria-label="Quantity input with dropdown button" data-product-name="' + productName + '">' +
+                      '<button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Select Unit</button>' +
+                      '<ul class="dropdown-menu">' +
+                      '<li><a class="dropdown-item" href="javascript:void(0)">MTS</a></li>' +
+                      '<li><a class="dropdown-item" href="javascript:void(0)">KGS</a></li>' +
+                      '<li><a class="dropdown-item" href="javascript:void(0)">PCS</a></li>' +
+                      '</ul>' +
+                      '</div>' +
+                      '</div>' +
+                      '<div class="form-group">' +
+                      '<label class="form-label">' + productName + ' Packaging per inquiry</label>' +
+                      '<input type="text" class="form-control required" placeholder="Packaging details" />' +
+                      '</div>';
 
             $sizeSelectorsContainer.append(elementHtml);
         });
     });
 
+    // Script to update the dropdown button text
+    $(document).on('click', '.dropdown-item', function() {
+        var selectedText = $(this).text();
+        var $dropdownButton = $(this).closest('.input-group').find('.dropdown-toggle');
+        $dropdownButton.text(selectedText);
+    });
+
     // Event delegation for dynamically added elements
     $(document).on('change', '.form-control-file', function() {
         var $fileInput = $(this);
+        var file = $fileInput[0].files[0];
+        var maxSize = 10 * 1024 * 1024; // 10 MB
+
+        if (file && file.size > maxSize) {
+            alert('File size exceeds the 10 MB limit.');
+            $fileInput.val(''); // Clear the file input
+            return;
+        }
+
         var $textarea = $fileInput.closest('.form-group').find('.product-specs');
         var $removeText = $fileInput.closest('.form-group').find('.remove-file-text');
 
@@ -1238,9 +1229,69 @@ $(document).ready(function() {
         $removeText.hide(); // Hide the remove text
     });
 
+    // Event delegation for dynamically added quantity field to show the modal
+    $(document).on('focus', '.quantity-field', function() {
+        var productName = $(this).data('product-name');
+        $('#multipleDeliveriesModalLabel').text('Delivery Schedule for ' + productName); // Set the modal title
+        $('#multipleDeliveriesModal').modal('show'); // Show the modal
+        updateQuantityField(); // Update the quantity field when the modal is shown
+    });
+
+    // Function to update the quantity field
+    function updateQuantityField() {
+        var totalQuantity = 0;
+        $('#multipleDeliveriesTableBody .delivery-quantity').each(function() {
+            var quantity = parseFloat($(this).val());
+            if (!isNaN(quantity)) {
+                totalQuantity += quantity;
+            }
+        });
+        $('.quantity-field').val(totalQuantity);
+    }
+
+    // Add new row to the multiple deliveries table
+    $('#addRowButton').click(function() {
+        var rowCount = $('#multipleDeliveriesTableBody tr').length + 1;
+        var newRow = `<tr>
+                        <td>${rowCount}</td>
+                        <td><input type="date" class="form-control"></td>
+                        <td><input type="number" class="form-control delivery-quantity" placeholder="Enter quantity"></td>
+                        <td><button type="button" class="btn btn-danger btn-sm remove-row">Remove</button></td>
+                      </tr>`;
+        $('#multipleDeliveriesTableBody').append(newRow);
+    });
+
+    // Remove row from the multiple deliveries table
+    $(document).on('click', '.remove-row', function() {
+        $(this).closest('tr').remove();
+        // Re-index the rows
+        $('#multipleDeliveriesTableBody tr').each(function(index) {
+            $(this).find('td:first').text(index + 1);
+        });
+        updateQuantityField(); // Update the quantity field when a row is removed
+    });
+
+    // Update quantity field when quantity inputs change
+    $(document).on('input', '.delivery-quantity', function() {
+        updateQuantityField();
+    });
+
+    // Save changes button click event
+    $('#saveChangesButton').click(function() {
+        multipleDeliveriesData = [];
+        $('#multipleDeliveriesTableBody tr').each(function() {
+            var row = {
+                id: $(this).find('td').eq(0).text(),
+                date: $(this).find('td').eq(1).find('input').val(),
+                quantity: $(this).find('td').eq(2).find('input').val()
+            };
+            multipleDeliveriesData.push(row);
+        });
+        console.log(JSON.stringify(multipleDeliveriesData)); // Print JSON data to console
+        $('#multipleDeliveriesModal').modal('hide'); // Hide the modal
+    });
 });
-    </script>
-    
+        </script>
         <!-- Script to add the fields as the user adds products in step 3 of the wizard-->>
 
         <script>

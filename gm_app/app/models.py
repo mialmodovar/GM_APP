@@ -19,8 +19,6 @@ class Manager(models.Model):
     refresh_token = models.TextField(blank=True, null=True)
     expiry_token = models.DateTimeField(blank=True, null=True)
 
-
-
 class Enquiry(models.Model):
     manager = models.TextField(blank=True, null=True)
     client = models.ForeignKey('Client', on_delete=models.SET_NULL, null=True, blank=True)
@@ -56,12 +54,14 @@ class Request(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
     specs = models.TextField(blank=True, null=True)
     size = models.TextField(blank=True, null=True)
-    quantity = models.TextField(blank=True, null=True)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Changed to numerical field
     incoterms = models.TextField(blank=True, null=True)
     packaging = models.TextField(blank=True, null=True)
-    discharge_port = models.TextField(blank=True, null=True)
     payment_terms_requested = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
+    delivery_schedule = models.JSONField(blank=True, null=True)  # New field to store delivery schedule in JSON format
+    target_price = models.TextField(blank=True, null=True)  # New text field for target price
+
 
 class Offer(models.Model):
     request = models.ForeignKey(Request, related_name='offers', on_delete=models.SET_NULL, null=True, blank=True)
@@ -83,8 +83,6 @@ class Offer_Client(models.Model):
     validity_offered = models.TextField(blank=True, null=True)
     customer_feedback = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
-
-
 
 class Email(models.Model):
     # A unique identifier for each email, using UUID

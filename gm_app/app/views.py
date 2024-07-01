@@ -558,24 +558,46 @@ def update_requests(request):
         try:
             data = json.loads(request.body).get('requests', [])
             for req_data in data:
-                req = Request.objects.get(id=req_data['id'])
-                # Update request fields
-                req.quantity = req_data.get('quantity', req.quantity)
-                req.specs = req_data.get('specs', req.specs)
-                req.size = req_data.get('size', req.size)
-                req.payment_terms_requested = req_data.get(
-                    'payment_terms_requested', req.payment_terms_requested)
-                req.incoterms = req_data.get('incoterms', req.incoterms)
-                req.discharge_port = req_data.get(
-                    'discharge_port', req.discharge_port)
-                req.packaging = req_data.get('packaging', req.packaging)
-                req.notes = req_data.get('notes', req.notes)
-                req.save()
+                product_name = req_data.get('product')
+                product = None
+                if product_name:
+                    product, created = Product.objects.get_or_create(name=product_name)
+                
+                if 'id' not in req_data or not req_data['id']:
+                    # Assuming 'enquiry_id' is part of req_data when creating a new request
+                    enquiry_instance = Enquiry.objects.get(id=req_data.get('enquiry_id'))
+                    Request.objects.create(
+                        enquiry=enquiry_instance,
+                        product=product,
+                        quantity=req_data.get('quantity'),
+                        specs=req_data.get('specs'),
+                        size=req_data.get('size'),
+                        payment_terms_requested=req_data.get('payment_terms_requested'),
+                        incoterms=req_data.get('incoterms'),
+                        discharge_port=req_data.get('discharge_port'),
+                        packaging=req_data.get('packaging'),
+                        notes=req_data.get('notes'),
+                    )
+                else:
+                    req = Request.objects.get(id=req_data['id'])
+                    if product:
+                        req.product = product
+                    # Update request fields
+                    req.quantity = req_data.get('quantity', req.quantity)
+                    req.specs = req_data.get('specs', req.specs)
+                    req.size = req_data.get('size', req.size)
+                    req.payment_terms_requested = req_data.get('payment_terms_requested', req.payment_terms_requested)
+                    req.incoterms = req_data.get('incoterms', req.incoterms)
+                    req.discharge_port = req_data.get('discharge_port', req.discharge_port)
+                    req.packaging = req_data.get('packaging', req.packaging)
+                    req.notes = req_data.get('notes', req.notes)
+                    req.save()
             return JsonResponse({'status': 'success', 'message': 'Requests updated successfully.'})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
+
 
 
 @csrf_exempt
