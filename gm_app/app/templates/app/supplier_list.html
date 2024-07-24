@@ -11,15 +11,28 @@
     <meta name="author" content="Spruko Technologies Private Limited">
     <meta name="keywords" content="admin,admin dashboard,admin panel,admin template,bootstrap,clean,dashboard,flat,jquery,modern,responsive,premium admin templates,responsive admin,ui,ui kit.">
     <style>
-        table#basic-datatable tbody tr {
+        .dataTable tbody tr {
             cursor: pointer;
         }
-
-        table#basic-datatable tbody tr:hover {
-            background-color:rgb( 28,103,147 );
+    
+        .dataTable tbody tr:hover {
+            background-color: rgb(28, 103, 147);
             color: #ffffff;
         }
     </style>
+
+<style>
+    .table {
+        table-layout: fixed; /* Ensures the table layout is fixed */
+        width: 100%; /* Makes sure the table takes full width */
+    }
+    .table th, .table td {
+        white-space: nowrap; /* Prevents text from wrapping */
+        text-overflow: ellipsis; /* Adds ellipsis (...) for overflowing text */
+        overflow: hidden; /* Ensures the overflow is hidden */
+        max-width: 200px; /* Sets a max width for cells */
+    }
+</style>
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href=" {% static '/assets/images/brand/favicon.ico' %} ">
 
@@ -55,7 +68,7 @@
 
     <!-- GLOBAL-LOADER -->
     <div id="global-loader">
-        <img src=" {% static '/assets/images/loader.svg' %} " class="loader-img" alt="Loader">
+        <img src=" {% static '/assets/images/loader.gif' %} " class="loader-img" alt="Loader">
     </div>
     <!-- /GLOBAL-LOADER -->
 
@@ -210,23 +223,20 @@
             </div>
             <!--/APP-SIDEBAR-->
 <!--app-content open-->
+
+Copy code
 <div class="main-content app-content mt-0">
     <div class="side-app">
-
-        <!-- CONTAINER -->
         <div class="main-container container-fluid">
-
-            <!-- PAGE-HEADER -->
             <div class="page-header">
                 <h1 class="page-title">Supplier Management</h1>
+
                 <div>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href=" {% static 'javascript:void(0)' %} ">Pages</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Empty</li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Pages</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Supplier Management</li>
                     </ol>
                 </div>
-            </div>
-            <!-- PAGE-HEADER END VARUN's CODE STARTS HERE -->
             </div>
         </div>
         <div class="col-lg-12">
@@ -235,32 +245,27 @@
                     <h3 class="card-title">Supplier Database</h3>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <div id="basic-datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-                            <div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="basic-datatable_length">
-                                <label>Show 
-                                    <select name="basic-datatable_length" aria-controls="basic-datatable" class="form-select form-select-sm">
-                                        <option value="5">5</option>
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select>
-                                  </label>
-                                </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <div class="d-flex justify-content-between align-items-right mb-3">
+                                <button class="btn btn-secondary btn-sm" id="openFiltersButton">Filters</button>
+                                <label><input type="search" class="form-control search-input" placeholder="Search..." aria-controls="supplier-table"></label>
+                            </div>
+                            <table id="supplier-table" class="table table-bordered text-nowrap border-bottom dataTable no-footer">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="wd-15p border-bottom-0">Supplier Name</th>
+                                        <th class="wd-15p border-bottom-0">Contact Person(s)</th>
+                                        <th class="wd-15p border-bottom-0">Contact Email</th>
+                                        <th class="wd-15p border-bottom-0">Products</th>
+                                        <th class="wd-15p border-bottom-0">Division</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Rows will be generated by JavaScript -->
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="col-sm-12 col-md-6"><div id="basic-datatable_filter" class="dataTables_filter"><label><input type="search" id="tableSearch" class="form-control" placeholder="Search..." aria-controls="basic-datatable"></label></div></div></div><div class="row"><div class="col-sm-12">
-                            <table class="table table-bordered text-nowrap border-bottom dataTable no-footer" id="basic-datatable" role="grid" aria-describedby="basic-datatable_info" id="basic-datatable">
-                            <thead>
-                                <tr role="row"><th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 120.113px;">Supplier Name</th>
-                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 111.887px;">Contact Person(s)</th>
-                                    <th class="wd-15p border-bottom-0 sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" style="width: 111.887px;">Contact Email</th>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div></div>
-                    <div class="row"><div class="col-sm-12 col-md-12"><div class="dataTables_info" id="basic-datatable_info" role="status" aria-live="polite">Showing 1 to 10 of 50 entries</div></div><div class="col-sm-12 col-md-12"><div class="dataTables_paginate paging_simple_numbers" id="basic-datatable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="basic-datatable_previous"><a href="#" aria-controls="basic-datatable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="basic-datatable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="basic-datatable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item next" id="basic-datatable_next"><a href="#" aria-controls="basic-datatable" data-dt-idx="6" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
                     </div>
                 </div>
             </div>
@@ -268,6 +273,54 @@
     </div>
 </div>
 
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel">Filters</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <select id="supplierNameFilter" class="form-control form-control-sm">
+                            <option value="">All Supplier Names</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <select id="contactPersonFilter" class="form-control form-control-sm">
+                            <option value="">All Contact Persons</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <select id="contactEmailFilter" class="form-control form-control-sm">
+                            <option value="">All Contact Emails</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <select id="productFilter" class="form-control form-control-sm">
+                            <option value="">All Products</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <select id="divisionFilter" class="form-control form-control-sm">
+                            <option value="">All Divisions</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="applyFiltersButton">Apply Filters</button>
+                <button type="button" class="btn btn-secondary" id="clearFiltersButton">Clear Filters</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Sidebar-right -->
 <div class="sidebar sidebar-right sidebar-animate">
     <div class="panel panel-primary card mb-0 shadow-none border-0">
@@ -906,75 +959,7 @@
    <!-- Switcher js -->
    <script src=" {% static '/assets/switcher/js/switcher.js' %} "></script>
 
-   <!--code for python table>
-   <!--<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const rows = document.querySelectorAll('table#basic-datatable tbody tr');
-        rows.forEach(row => {
-            row.addEventListener('click', function() {
-                const enquiryId = this.getAttribute('data-enquiry-id');
-                window.location.href = `/enquiry/${enquiryId}`;
-            });
-        });
-    });
-    </script>-->
-
-    <!--<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            function fetchEnquiries() {
-                fetch('/api/enquiries/')
-                    .then(response => response.json())
-                    .then(data => {
-                        populateTable(data); // Assuming 'data' is the array of enquiries
-                    })
-                    .catch(error => console.error('Error fetching enquiries:', error));
-            }
-        
-            function populateTable(enquiries) {
-            const tableBody = document.querySelector('#basic-datatable tbody');
-            tableBody.innerHTML = ''; // Clear existing rows
-
-            enquiries.forEach(enquiry => {
-            const row = tableBody.insertRow();
-            row.setAttribute('data-enquiry-id', enquiry.id);
-
-        // Processed product names
-            const productsText = enquiry.enquiry_requests.map(request => {
-            return request.product_name ? request.product_name : 'Unknown Product';
-            }).join(', ');
-
-        const cellsData = [
-            enquiry.status || 'N/A',
-            enquiry.manager ? enquiry.manager.name : 'N/A',
-            enquiry.client ? enquiry.client.name : 'N/A',
-        ];
-
-        cellsData.forEach(text => {
-            const cell = row.insertCell();
-            cell.textContent = text;
-        });
-
-        row.addEventListener('click', function() {
-            window.location.href = `/enquiry/${enquiry.id}`;
-        });
-    });
-}
-
-fetchEnquiries();
-        });
-        </script>-->
-        
 <!--Function to search in table-->
-<script>
-    $(document).ready(function(){
-        $("#tableSearch").on("keyup", function() {
-        var value = $(this).val().toLowerCase().replace(/\s+/g, '');
-        $("#basic-datatable tbody tr").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().replace(/\s+/g, '').indexOf(value) > -1)
-        });
-        });
-    });
-    </script>
 
 <!--Function to select number of rows displayed-->
 <script>
@@ -1000,46 +985,218 @@ fetchEnquiries();
         });
     });
     </script>
-
-
-<!--Function to generate table-->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const apiUrl = '/api/suppliers/';  // Adjust if your URL is different
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const suppliers = data.suppliers;
-                const tbody = document.querySelector("#basic-datatable tbody");
-                if (suppliers.length > 0) {
-                    suppliers.forEach(supplier => {
-                        const row = tbody.insertRow();
-                        row.style.cursor = 'pointer'; // Make the cursor indicate clickable rows
-                        // Setting a data attribute to hold the supplier ID
-                        row.setAttribute('data-id', supplier.id);
-    
-                        const nameCell = row.insertCell();
-                        nameCell.textContent = supplier.name;
-                        const contactPersonCell = row.insertCell();
-                        contactPersonCell.textContent = supplier.contact_person;
-                        const emailCell = row.insertCell();
-                        emailCell.textContent = supplier.email;
-    
-                        // Add an event listener to the row to redirect on click
-                        row.addEventListener('click', () => {
-                            window.location.href = `/supplier_detail/${supplier.id}`; // Update URL as needed
-                        });
+document.addEventListener('DOMContentLoaded', function() {
+    const apiUrl = '/api/suppliers/';
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const divisions = data.divisions;
+            const tableBody = document.querySelector('#supplier-table tbody');
+
+            divisions.forEach(division => {
+                division.suppliers.forEach(supplier => {
+                    const row = document.createElement('tr');
+                    row.style.cursor = 'pointer'; // Make the cursor indicate clickable rows
+                    row.setAttribute('data-id', supplier.id); // Setting a data attribute to hold the supplier ID
+
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = supplier.name;
+                    row.appendChild(nameCell);
+
+                    const contactPersonCell = document.createElement('td');
+                    contactPersonCell.textContent = supplier.contact_person;
+                    row.appendChild(contactPersonCell);
+
+                    const emailCell = document.createElement('td');
+                    emailCell.textContent = supplier.email;
+                    row.appendChild(emailCell);
+
+                    const productsCell = document.createElement('td');
+                    productsCell.textContent = supplier.products;
+                    row.appendChild(productsCell);
+
+                    const divisionCell = document.createElement('td');
+                    divisionCell.textContent = division.name;
+                    row.appendChild(divisionCell);
+
+                    // Add an event listener to the row to redirect on click
+                    row.addEventListener('click', () => {
+                        window.location.href = `/supplier_detail/${supplier.id}`; // Update URL as needed
                     });
-                } else {
-                    const row = tbody.insertRow();
-                    const cell = row.insertCell();
-                    cell.textContent = 'No suppliers found';
-                    cell.colSpan = 3;
-                    cell.style.textAlign = 'center';
-                }
-            })
-            .catch(error => console.error('Failed to fetch suppliers:', error));
-    });
+
+                    tableBody.appendChild(row);
+                });
+            });
+
+            // Apply the search functionality to the table
+            document.querySelector('.search-input').addEventListener('keyup', function() {
+                const value = this.value.toLowerCase().replace(/\s+/g, '');
+                const rows = document.querySelectorAll('#supplier-table tbody tr');
+                rows.forEach(row => {
+                    const rowText = row.textContent.toLowerCase().replace(/\s+/g, '');
+                    row.style.display = rowText.includes(value) ? '' : 'none';
+                });
+            });
+        })
+        .catch(error => console.error('Failed to fetch suppliers:', error));
+});
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const apiUrl = '/api/suppliers/';
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const divisions = data.divisions;
+            const tableBody = document.querySelector('#supplier-table tbody');
 
+            const supplierNames = new Set();
+            const contactPersons = new Set();
+            const contactEmails = new Set();
+            const products = new Set();
+            const divisionNames = new Set();
+
+            divisions.forEach(division => {
+                division.suppliers.forEach(supplier => {
+                    supplierNames.add(supplier.name);
+                    contactPersons.add(supplier.contact_person);
+                    contactEmails.add(supplier.email);
+                    products.add(supplier.products);
+                    divisionNames.add(division.name);
+
+                    const row = document.createElement('tr');
+                    row.style.cursor = 'pointer'; // Make the cursor indicate clickable rows
+                    row.setAttribute('data-id', supplier.id); // Setting a data attribute to hold the supplier ID
+
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = supplier.name;
+                    row.appendChild(nameCell);
+
+                    const contactPersonCell = document.createElement('td');
+                    contactPersonCell.textContent = supplier.contact_person;
+                    row.appendChild(contactPersonCell);
+
+                    const emailCell = document.createElement('td');
+                    emailCell.textContent = supplier.email;
+                    row.appendChild(emailCell);
+
+                    const productsCell = document.createElement('td');
+                    productsCell.textContent = supplier.products;
+                    row.appendChild(productsCell);
+
+                    const divisionCell = document.createElement('td');
+                    divisionCell.textContent = division.name;
+                    row.appendChild(divisionCell);
+
+                    // Add an event listener to the row to redirect on click
+                    row.addEventListener('click', () => {
+                        window.location.href = `/supplier_detail/${supplier.id}`; // Update URL as needed
+                    });
+
+                    tableBody.appendChild(row);
+                });
+            });
+
+            populateFilters(supplierNames, contactPersons, contactEmails, products, divisionNames);
+
+            // Apply the search functionality to the table
+            document.querySelector('.search-input').addEventListener('keyup', function() {
+                const value = this.value.toLowerCase().replace(/\s+/g, '');
+                const rows = document.querySelectorAll('#supplier-table tbody tr');
+                rows.forEach(row => {
+                    const rowText = row.textContent.toLowerCase().replace(/\s+/g, '');
+                    row.style.display = rowText.includes(value) ? '' : 'none';
+                });
+            });
+        })
+        .catch(error => console.error('Failed to fetch suppliers:', error));
+});
+
+function populateFilters(supplierNames, contactPersons, contactEmails, products, divisionNames) {
+    const supplierNameFilter = $('#supplierNameFilter');
+    const contactPersonFilter = $('#contactPersonFilter');
+    const contactEmailFilter = $('#contactEmailFilter');
+    const productFilter = $('#productFilter');
+    const divisionFilter = $('#divisionFilter');
+
+    supplierNames.forEach(name => {
+        supplierNameFilter.append(new Option(name, name));
+    });
+
+    contactPersons.forEach(person => {
+        contactPersonFilter.append(new Option(person, person));
+    });
+
+    contactEmails.forEach(email => {
+        contactEmailFilter.append(new Option(email, email));
+    });
+
+    products.forEach(product => {
+        productFilter.append(new Option(product, product));
+    });
+
+    divisionNames.forEach(division => {
+        divisionFilter.append(new Option(division, division));
+    });
+}
+
+function applyFilters() {
+    const supplierNameFilter = $('#supplierNameFilter').val().toLowerCase();
+    const contactPersonFilter = $('#contactPersonFilter').val().toLowerCase();
+    const contactEmailFilter = $('#contactEmailFilter').val().toLowerCase();
+    const productFilter = $('#productFilter').val().toLowerCase();
+    const divisionFilter = $('#divisionFilter').val().toLowerCase();
+
+    $('#supplier-table tbody tr').each(function() {
+        const supplierNameText = $(this).find('td').eq(0).text().toLowerCase();
+        const contactPersonText = $(this).find('td').eq(1).text().toLowerCase();
+        const contactEmailText = $(this).find('td').eq(2).text().toLowerCase();
+        const productText = $(this).find('td').eq(3).text().toLowerCase();
+        const divisionText = $(this).find('td').eq(4).text().toLowerCase();
+
+        let matchesFilters = true;
+
+        if (supplierNameFilter && !supplierNameText.includes(supplierNameFilter)) {
+            matchesFilters = false;
+        }
+        if (contactPersonFilter && !contactPersonText.includes(contactPersonFilter)) {
+            matchesFilters = false;
+        }
+        if (contactEmailFilter && !contactEmailText.includes(contactEmailFilter)) {
+            matchesFilters = false;
+        }
+        if (productFilter && !productText.includes(productFilter)) {
+            matchesFilters = false;
+        }
+        if (divisionFilter && !divisionText.includes(divisionFilter)) {
+            matchesFilters = false;
+        }
+
+        $(this).toggle(matchesFilters);
+    });
+}
+
+function clearFilters() {
+    $('#supplierNameFilter').val('');
+    $('#contactPersonFilter').val('');
+    $('#contactEmailFilter').val('');
+    $('#productFilter').val('');
+    $('#divisionFilter').val('');
+    applyFilters();
+}
+
+$('#applyFiltersButton').on('click', function() {
+    applyFilters();
+    $('#filterModal').modal('hide');
+});
+
+$('#clearFiltersButton').on('click', function() {
+    clearFilters();
+});
+
+$('#openFiltersButton').on('click', function() {
+    $('#filterModal').modal('show');
+});
+</script>

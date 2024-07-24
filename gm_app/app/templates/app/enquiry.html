@@ -40,7 +40,7 @@
 
     <!-- GLOBAL-LOADER -->
     <div id="global-loader">
-        <img src=" {% static '/assets/images/loader.svg' %} " class="loader-img" alt="Loader">
+        <img src=" {% static '/assets/images/loader.gif' %} " class="loader-img" alt="Loader">
     </div>
     <!-- /GLOBAL-LOADER -->
 
@@ -72,10 +72,7 @@
                             <div class="navbar navbar-collapse responsive-navbar p-0">
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
                                     <div class="d-flex order-lg-2">
-                                            <a href="{% static 'javascript:void(0)' %}" class="nav-link icon"
-                                                data-bs-toggle="dropdown" data-target="">
-                                                <i class="fa fa-sort-down"></i>
-                                            </a>
+                                            
                                             <div class="dropdown  d-flex notifications">
                                                 <a class="nav-link icon" data-bs-toggle="dropdown" aria-expanded="false"><i class="fe fe-bell"></i><span class=" pulse"></span>
                                                 </a>
@@ -218,10 +215,26 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">Enquiry Information</div>
-                        
+                        <div class="card-options">
+                            
+                                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Tender Documents
+                                        <span class="caret"></span>
+                                    </button>
+                                <ul class="dropdown-menu" style="">
+                                    {% for attachment in enquiry.attachments.all %}
+                                    <li><a href="{{ attachment.file.url }}" download>{{ attachment.file.name}}</a></li>
+                                {% endfor %}
+                              
+                                    <li class="divider"></li>
+                                    <li><a href="javascript:void(0)">Attach Item</a></li>
+                                </ul>
+                            
+                                
+                            </div>
+                        </div>
                             
                         
-                    </div>
+                    
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-2">
@@ -250,7 +263,7 @@
                                 <div class="row mb-4">
                                     <div class="col-md-12">
                                         <label>Client</label>
-                                     <input type="text" class="form-control"  value="{{ enquiry.client.name }}"> 
+                                     <input type="text" class="form-control"  value="{{ enquiry.client.name }}" readonly> 
                                     </div>
                                 </div>
                             </div>
@@ -260,7 +273,7 @@
                                     <div class="input-group-text">
                                         <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                     </div>
-                                    <input class="form-control fc-datepicker" id = 'received_date' placeholder="DD/MM/YYYY" type="text" value="{{ enquiry.received_date|date:"d/m/Y" }}" >
+                                    <input class="form-control" id = 'received_date' placeholder="YYYY/MM/DD" type="date" value="{{ enquiry.received_date|date:"Y-m-d" }}" >
                                 </div>
                             </div>
                             <div class="col-md-2 mt-2 mt-md-0">
@@ -269,7 +282,7 @@
                                     <div class="input-group-text">
                                         <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                     </div>
-                                    <input class="form-control fc-datepicker" id = 'deadline_date' placeholder="DD/MM/YYYY" type="text" value="{{ enquiry.submission_deadline|date:"d/m/Y" }}" >
+                                    <input class="form-control" id = 'submission_deadline' placeholder="YYYY/MM/DD" type="date" value="{{ enquiry.submission_deadline|date:"Y-m-d" }}" >
                                 </div>
                             </div>
                             <div class="col-md-2 mt-2 mt-md-0">
@@ -278,10 +291,11 @@
                                     <div class="input-group-text">
                                         <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                     </div>
-                                    <input class="form-control fc-datepicker" id = 'submission_date' placeholder="DD/MM/YYYY" type="text" value="{{ enquiry.submission_date|date:"m/d/Y" }}" >
+                                    <input class="form-control" id = 'submission_date' placeholder="YYYY/MM/DD" type="date" value="{{ enquiry.submission_date|date:"Y-m-d" }}" >
                                 </div>
                             </div>
                             <div id="requests-table"></div>
+                          
                         </div>
                         
                           
@@ -961,23 +975,7 @@
    <!-- Switcher js -->
    <script src="{% static '/assets/switcher/js/switcher.js' %} "></script>
 
-<!-- Modal -->
-<div class="modal fade" id="scrollingmodal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Specifications</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="modalSpecsBody">
-                <!-- enquiry specs will be injected here -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 
 <!-- Modal HTML -->
@@ -993,7 +991,8 @@
             <div class="modal-body" id="supplier-details-content">
        
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger" id="delete-row">Delete Row</button>
                 <button type="button" class="btn btn-primary" id="confirm-supplier-selection">Confirm</button>
             </div>
         </div>
@@ -1001,8 +1000,8 @@
 </div>
 
 
-<!-- Modal HTML -->
-<div class="modal fade" id="supplierDetailModalClient"  role="dialog" aria-labelledby="supplierDetailModalLabel" aria-hidden="true">
+<!-- Supplier Modal HTML -->
+<div class="modal fade" id="supplierDetailModalClient" role="dialog" aria-labelledby="supplierDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -1010,79 +1009,148 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
             </div>
             <div class="modal-body" id="supplier-client-details-content">
-               
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger" id="delete-supplier-row">Delete Row</button>
                 <button type="button" class="btn btn-primary" id="confirm-client-supplier-selection">Confirm</button>
             </div>
         </div>
     </div>
 </div>
-  
+
+<!-- Product Modal HTML -->
+<div class="modal fade" id="productDetailModal" role="dialog" aria-labelledby="productDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productDetailModalLabel">Product Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+            </div>
+            <div class="modal-body" id="product-details-content">
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger" id="delete-product-row">Delete Row</button>
+                <button type="button" class="btn btn-primary" id="confirm-product-selection">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delivery Schedule Modal HTML -->
+<div class="modal fade" id="templateModal" tabindex="-1" role="dialog" aria-labelledby="templateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="templateModalLabel">Delivery Schedule</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="multipleDeliveriesTableContainer" class="table-responsive">
+                    <table class="table border text-nowrap text-md-nowrap table-sm mb-0">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Quantity</th>
+                                <th>Sizes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="multipleDeliveriesTableBody">
+                            <!-- Rows will be populated here -->
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary btn-sm mt-2 add-row-button">Add Row</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary save-changes-button">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this row?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete-row">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
   
 <!-- Function to build requests/offers table -->
    <script>
 
-    var enquiryId = '{{ enquiry.id }}'; // Ensure enquiryId is dynamically set
+var enquiryId = '{{ enquiry.id }}'; // Ensure enquiryId is dynamically set
 
-    $.ajax({
-        url: `/enquiry/${enquiryId}/requests_offers`, // Adjust URL as needed
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            var requestsTableHtml = generateRequestsOverviewTable(data);
-            // Append the requests overview table to the "requests-table" div
-            $('#requests-table').html(requestsTableHtml);
+$.ajax({
+    url: `/enquiry/${enquiryId}/requests_offers`, // Adjust URL as needed
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+        var requestsTableHtml = generateRequestsOverviewTable(data);
+        console.log(data)
+        // Append the requests overview table to the "requests-table" div
+        $('#requests-table').html(requestsTableHtml);
 
-            data.forEach(function(request) {
-                // Dynamically set titles based on request data
-                var requestCardTitle = request.product || "Not Specified";
+        data.forEach(function(request) {
+            // Dynamically set titles based on request data
+            var requestCardTitle = request.product || "Not Specified";
 
-                // Initialize the HTML for the parent card
-                var parentCardHtml = `
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Details for ${requestCardTitle}</h3>
-                    </div>
-                    <div class="card-body">`;
+            // Initialize the HTML for the parent card
+            var parentCardHtml = `
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Details for ${requestCardTitle}</h3>
+                </div>
+                <div class="card-body">`;
 
-                // Generate HTML for supplier offers card
-                var supplierOffersCardHtml = generateSupplierOffersCardHtml(request, `${requestCardTitle} - Supplier Offers`);
+            // Generate HTML for supplier offers card
+            var supplierOffersCardHtml = generateSupplierOffersCardHtml(request, `${requestCardTitle} - Supplier Offers`);
 
+            // Generate HTML for offers sent to clients card
+            var clientOffersCardHtml = generateClientOffersCardHtml(request, `${requestCardTitle} - Offers Sent to Clients`);
 
-                // Generate HTML for offers sent to clients card
-                var clientOffersCardHtml = generateClientOffersCardHtml(request, `${requestCardTitle} - Offers Sent to Clients`);
+            // Close the parent card HTML
+            parentCardHtml += supplierOffersCardHtml + clientOffersCardHtml + `</div></div>`;
 
-                // Close the parent card HTML
-                parentCardHtml += supplierOffersCardHtml + clientOffersCardHtml + `</div></div>`;
+            // Append the combined parent card to the tables-container div
+            $('#tables-container').append(parentCardHtml);
 
-                // Append the combined parent card to the tables-container div
-                $('#tables-container').append(parentCardHtml);
+            // Call mergeTableCells after the content is appended
+            var requestsTable = document.getElementById(`requests`);
+            if (requestsTable) {
+                sortTableRows(requestsTable);
+                mergeTableCells(requestsTable);
+            }
+            // Call mergeTableCells after the content is appended
+            var supplierTable = document.getElementById(`offers-${request.id}`);
+            if (supplierTable) {
+                sortTableRows(supplierTable);
+                mergeTableCells(supplierTable);
+            }
 
-                    // Call mergeTableCells after the content is appended
-                    var requestsTable = document.getElementById(`requests`);
-                    if (requestsTable) {
-                        sortTableRows(requestsTable);
-                        mergeTableCells(requestsTable);
-                    }
-                    // Call mergeTableCells after the content is appended
-                    var supplierTable = document.getElementById(`offers-${request.id}`);
-                    if (supplierTable) {
-                        sortTableRows(supplierTable);
-                        mergeTableCells(supplierTable);
-                    }
-
-                    var clientTable = document.getElementById(`offers_clients-${request.id}`);
-                    if (clientTable) {
-                        sortTableRows(clientTable);
-                        mergeTableCells(clientTable);
-                    }
-            });
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Error fetching data:', textStatus, errorThrown);
-        }
-    });
+            var clientTable = document.getElementById(`offers_clients-${request.id}`);
+            if (clientTable) {
+                sortTableRows(clientTable);
+                mergeTableCells(clientTable);
+            }
+        });
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.error('Error fetching data:', textStatus, errorThrown);
+    }
+});
 
 // Global object to store supplier names by request ID
 var supplierNamesByRequestId = {};
@@ -1122,11 +1190,12 @@ function generateSupplierOffersCardHtml(request, cardTitle) {
                             <th>Supplier</th>
                             <th>Price</th>
                             <th>Payment Terms</th>
-                            <th>Incoterm</th>
+                            <th>Incoterms</th>
                             <th>Specs</th>
                             <th>Size</th>
                             <th>Packaging</th>
                             <th>Validity</th>
+                            <th>Notes</th>
                         </tr>
                     </thead>
                     <tbody>`;
@@ -1153,24 +1222,21 @@ function generateSupplierOffersCardHtml(request, cardTitle) {
             supplierNamesByRequestId[request.id].push(offer.supplier);
 
             cardHtml += `<tr data-offer-id="${offer.id}" data-supplier-id="${offer.supplier_id}">
-                <td class="noteditable" contenteditable="false" data-toggle="modal" data-target="#supplierDetailModal" data-supplier-id="${offer.supplier_id}"><a href="javascript:void(0);">${offer.supplier}</a><div class="supplier-email-status">${emailStatusHtml}</div></td>
+                <td class="noteditable" contenteditable="false" data-toggle="modal" data-target="#supplierDetailModal" data-supplier-id="${offer.supplier_id}"><a href="/supplier_detail/${offer.supplier_id}/">${offer.supplier}</a></td>
                 <td contenteditable="false">${offer.supplier_price}</td>
                 <td contenteditable="false">${offer.payment_terms}</td>
                 <td contenteditable="false">${offer.incoterms}</td>
                 <td contenteditable="false">${offer.specs}</td>
                 <td contenteditable="false">${offer.size}</td>
                 <td contenteditable="false">${offer.packaging}</td>
-                <td contenteditable="false">${offer.validity}</td>
+                <td class="validity-cell" contenteditable="false">${offer.validity}</td>
+                <td contenteditable="false">${offer.notes}</td>
             </tr>`;
         });
     }
     cardHtml += `</tbody></table></div></div></div>`;
     return cardHtml;
 }
-
-
-
-
 
 
 // Function to generate HTML for offers sent to clients card
@@ -1198,14 +1264,15 @@ function generateClientOffersCardHtml(request, cardTitle) {
                     <tr>
                         <th>Supplier</th>
                         <th>Price Offered</th>
+                        <th>Margin</th>
                         <th>Payment Term Offered</th>
-                        <th>Validity Offered</th>
-                        <th>Customer Feedback</th>
+                        <th>Incoterms</th>
+                        <th>Valid until</th>
+                        <th>Feedback</th>
                         <th>Notes</th>
                     </tr>
                 </thead>
-                <tbody>
-                  `;
+                <tbody>`;
 
     if (request.offers_client && request.offers_client.length > 0) {
         request.offers_client.forEach(function(offer) {
@@ -1214,8 +1281,10 @@ function generateClientOffersCardHtml(request, cardTitle) {
             <tr data-offer-client-id="${offer.id}">
                 <td class="editable-supplier" contenteditable="false" data-toggle="modal" data-target="#supplierDetailModalClient" data-supplier-id="${offer.supplier_id}"><a href="javascript:void(0);">${offer.supplier}</a></td>
                 <td contenteditable="false">${offer.price_offered}</td>
-                <td contenteditable="false>${offer.payment_term_offered}</td>
-                <td contenteditable="false">${offer.validity_offered}</td>
+                <td contenteditable="false">${offer.margin}</td>
+                <td contenteditable="false">${offer.payment_term_offered}</td>
+                <td contenteditable="false">${offer.incoterms}</td>
+                <td class="validity-cell" contenteditable="false">${offer.validity_offered}</td>
                 <td contenteditable="false">${offer.customer_feedback}</td>
                 <td contenteditable="false">${offer.notes}</td>
             </tr>`;
@@ -1225,8 +1294,7 @@ function generateClientOffersCardHtml(request, cardTitle) {
     return cardHtml;
 }
 
-
-    function generateRequestsOverviewTable(data) {
+function generateRequestsOverviewTable(data) {
     var tableHtml = `
         <div class="card">
             <div class="card-header">
@@ -1236,8 +1304,8 @@ function generateClientOffersCardHtml(request, cardTitle) {
                         <span class="fe fe-edit edit-offer"></span> Edit All
                     </button>
                     <button type="button" class="btn btn-sm btn-secondary btn-add-requests" style="display:none;">
-                <span class="fe fe-plus-circle"></span> Add new request
-            </button>
+                        <span class="fe fe-plus-circle"></span> Add new request
+                    </button>
                     <button type="button" class="btn btn-sm btn-success btn-save-requests" style="display:none;">
                         <span class="fe fe-save save-offer"></span> Save All
                     </button>
@@ -1250,54 +1318,240 @@ function generateClientOffersCardHtml(request, cardTitle) {
                             <tr>
                                 <th>Product</th>
                                 <th>Quantity</th>
+                                <th>Unit</th>
                                 <th>Specs</th>
                                 <th>Size</th>
-                                <th>Payment Terms Requested</th>
-                                <th>Incoterms</th>
-                                <th>Discharge Port</th>
                                 <th>Packaging</th>
+                                <th>Payment Terms</th>
+                                <th>Target Price</th>
+                                <th>Incoterms</th>
                                 <th>Notes</th>
                             </tr>
                         </thead>
                         <tbody>`;
 
-    data.forEach(function(request) {
-        var productName = request.product || "Not Specified";
-        var specs = request.specs || "";
-        var specsLink = specs.startsWith("http") ? 
-            `<a href="${specs}" target="_blank" class="specs-link">View Specs</a>` : 
-            `<a href="#" class="specs-link" data-specs="${specs.replace(/\n/g, '<br>')}" data-bs-toggle="modal" data-bs-target="#scrollingmodal">View Specs</a>`;
-        
-        tableHtml += `<tr data-request-id="${request.id}">
-            <td>${productName}</td>
-            <td>${request.quantity}</td>
-            <td>${specsLink}</td>
-            <td>${request.size}</td>
-            <td>${request.payment_terms_requested}</td>
-            <td>${request.incoterms}</td>
-            <td>${request.discharge_port}</td>
-            <td>${request.packaging}</td>
-            <td>${request.notes}</td>
-        </tr>`;
-    });
+                            data.forEach(function(request) {
+                                var productName = request.product || "Not Specified";
+                                var specs = request.specs || "";
+                                var specsLink = specs.startsWith("http") ? 
+                                    `<a href="${specs}" target="_blank" class="specs-link">View Specs</a>` : 
+                                    `<a href="" class="specs-link" data-specs="${specs}" data-bs-toggle="modal" data-bs-target="#scrollingmodal">View Specs</a>`;
+                                var deliveryScheduleModalId = `deliveryScheduleModal-${request.id}`;
+                                var deliveryScheduleLink = `<a href="#" class="delivery-schedule-link" data-modal-id="${deliveryScheduleModalId}" data-delivery-schedule='${JSON.stringify(request.delivery_schedule)}' data-product-name="${productName}">View Delivery Schedule</a>`;
+                                
+                                tableHtml += `<tr data-request-id="${request.id}">
+                                    <td class="product-noteditable">${productName}</td>
+                                    <td class="quantity-field noteditable" data-product-name="${productName}" data-modal-id="${deliveryScheduleModalId}" data-delivery-schedule='${JSON.stringify(request.delivery_schedule)}'>${request.quantity}</td>
+                                    <td>${request.quantity_unit}</td>
+                                    <td>${specsLink}</td>
+                                    <td>${request.size}</td>
+                                    <td>${request.packaging}</td>
+                                    <td>${request.payment_terms_requested}</td>
+                                    <td>${request.target_price}</td>
+                                    <td>${request.incoterms}</td>
+                                    <td>${request.notes}</td>
+                                </tr>`;
+                            });
 
     tableHtml += `</tbody></table></div></div></div>`;
     return tableHtml;
 }
 
-// Event delegation for dynamically added elements
+// Function to populate the modal with delivery schedule data
+function populateModal(deliverySchedule) {
+    var tableBody = '';
+    deliverySchedule.forEach(function(schedule, index) {
+        tableBody += `
+            <tr>
+                <td><input type="date" class="form-control" value="${schedule.date}"></td>
+                <td><input type="number" class="form-control delivery-quantity" value="${schedule.quantity}" placeholder="Enter quantity"></td>
+                <td><input type="text" class="form-control delivery-notes" value="${schedule.notes}" placeholder="Enter sizes"></td>
+                <td><button type="button" class="btn btn-danger btn-sm remove-row">Remove</button></td>
+            </tr>`;
+    });
+
+    $('#multipleDeliveriesTableBody').html(tableBody);
+}
+
+// Event listener for quantity field click
+$(document).on('click', '.quantity-field', function() {
+    var deliverySchedule = $(this).data('delivery-schedule');
+    var productName = $(this).data('product-name');
+
+    $('#templateModalLabel').text(`Delivery Schedule for ${productName}`);
+
+    // Populate the modal with the delivery schedule data
+    populateModal(deliverySchedule);
+
+      // Check if the table has the edit-mode-requests class
+      if (!$('#requests').hasClass('edit-mode-requests')) {
+        // Make inputs readonly and hide remove buttons
+        $('#templateModal .delivery-quantity').attr('readonly', true);
+        $('#templateModal .delivery-notes').attr('readonly', true);
+        $('#templateModal input[type="date"]').attr('readonly', true);
+        $('#templateModal .remove-row').hide();
+        $('#templateModal .add-row-button').hide();
+    } else {
+        // Make inputs editable and show remove buttons
+        $('#templateModal .delivery-quantity').attr('readonly', false);
+        $('#templateModal .delivery-notes').attr('readonly', false);
+        $('#templateModal input[type="date"]').attr('readonly', false);
+        $('#templateModal .remove-row').show();
+        $('#templateModal .add-row-button').show();
+    }
+
+    // Initialize the modal using Bootstrap's JavaScript API
+    var myModal = new bootstrap.Modal(document.getElementById('templateModal'));
+    myModal.show();
+});
+
+// Function to update quantity field
+function updateQuantityField() {
+    var totalQuantity = 0;
+    $('#multipleDeliveriesTableBody .delivery-quantity').each(function() {
+        var quantity = parseFloat($(this).val());
+        if (!isNaN(quantity)) {
+            totalQuantity += quantity;
+        }
+    });
+    return totalQuantity;
+}
+
+// Event listeners for adding/removing rows and updating quantity
+$(document).on('click', '.add-row-button', function() {
+    var rowCount = $('#multipleDeliveriesTableBody tr').length + 1;
+    var newRow = `<tr>
+                    <td><input type="date" class="form-control"></td>
+                    <td><input type="number" class="form-control delivery-quantity" placeholder="Enter quantity"></td>
+                    <td><input type="text" class="form-control delivery-notes" placeholder="Enter sizes"></td>
+                    <td><button type="button" class="btn btn-danger btn-sm remove-row">Remove</button></td>
+                  </tr>`;
+    $('#multipleDeliveriesTableBody').append(newRow);
+});
+
+$(document).on('click', '.remove-row', function() {
+    $(this).closest('tr').remove();
+  
+});
+
+$(document).on('input', '.delivery-quantity', function() {
+    updateQuantityField();
+});
+
+// Event listener for saving changes
+$(document).on('click', '.save-changes-button', function() {
+    var modal = $('#templateModal');
+    var productName = modal.find('.modal-title').text().replace('Delivery Schedule for ', '');
+    var quantityField = $(`.quantity-field[data-product-name="${productName}"]`);
+    var deliverySchedule = [];
+
+    $('#multipleDeliveriesTableBody tr').each(function() {
+        var row = {
+            date: $(this).find('td').eq(0).find('input').val(),
+            quantity: $(this).find('td').eq(1).find('input').val(),
+            notes: $(this).find('td').eq(2).find('input').val()
+        };
+        deliverySchedule.push(row);
+    });
+
+    // Update the data-delivery-schedule attribute with the new data
+    quantityField.data('delivery-schedule', deliverySchedule);
+
+    if ($('#requests').hasClass('edit-mode-requests')) {
+        // Update the quantity field
+        var totalQuantity = updateQuantityField();
+        quantityField.text(totalQuantity);
+    }
+
+    modal.modal('hide'); // Hide the modal
+});
+
+
+
+// HTML structure for scrolling modal
+$('body').append(`
+<div class="modal fade" id="scrollingmodal" tabindex="-1" aria-labelledby="scrollingmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scrollingmodalLabel">Specs Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Specs details will be inserted here -->
+                <textarea id="modalSpecsBody" class="form-control" readonly></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary save-specs-button" style="display:none;">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+`);
+
+// Handle specs link click
 document.addEventListener('click', function(event) {
     if (event.target.classList.contains('specs-link')) {
         event.preventDefault();
         var specs = event.target.getAttribute('href') || event.target.getAttribute('data-specs') || "";
-        if (specs.startsWith("http")) {
-            window.open(specs, '_blank');
+        var isLink = specs.startsWith("http://") || specs.startsWith("https://");
+        console.log(specs);
+        
+        // Ensure the URL uses HTTPS
+        if (specs.startsWith("http://")) {
+            specs = specs.replace("http://", "https://");
+        }
+
+        if (isLink) {
+            if (specs.endsWith(".pdf") || specs.endsWith(".jpeg") || specs.endsWith(".jpg") || specs.endsWith(".png")) {
+                window.open(specs, '_blank');
+            } else {
+                // Force download
+                var link = document.createElement('a');
+                link.href = specs;
+                link.download = '';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         } else {
-            document.getElementById('modalSpecsBody').innerHTML = specs;
+            var modalSpecsBody = document.getElementById('modalSpecsBody');
+            
+            // Set the specs text directly
+            modalSpecsBody.value = specs;
+
+            // Check if the table has the edit-mode-requests class
+            if ($('#requests').hasClass('edit-mode-requests')) {
+                modalSpecsBody.removeAttribute('readonly');
+                $('.save-specs-button').show();
+            } else {
+                modalSpecsBody.setAttribute('readonly', true);
+                $('.save-specs-button').hide();
+            }
+
+            // Show the modal
+            $('#scrollingmodal').modal('show');
+
+            // Save changes button click handler
+            $('.save-specs-button').off('click').on('click', function() {
+                var newSpecs = modalSpecsBody.value;
+                event.target.setAttribute('data-specs', newSpecs);
+                $('#scrollingmodal').modal('hide');
+            });
         }
     }
 });
-
+// Event listener for edit button to toggle edit mode  (TO CHECK IF IT CAN BE REMOVABLE SAFELY!!)
+$(document).on('click', '.btn-edit-requests', function() {
+    $('#requests').toggleClass('edit-mode-requests');
+    if ($('#requests').hasClass('edit-mode-requests')) {
+        $('.save-specs-button').show();
+    } else {
+        $('.save-specs-button').hide();
+        $('#modalSpecsBody').attr('readonly', true);
+    }
+});
 
 
 // Function to merge table cells in the first column only
@@ -1361,8 +1615,8 @@ function sortTableRows(table) {
 }
 
     <!-- Function to make offers tables editable -->
+
     $(document).ready(function() {
-                
     // Make all fields in the specified table editable
     $(document).on('click', '.btn-edit-offers', function() {
         var targetTableId = $(this).data('target');
@@ -1373,6 +1627,11 @@ function sortTableRows(table) {
         $table.find('td').attr('contenteditable', 'true');
         // Ensure cells with the 'noteditable' class are not editable
         $table.find('td.noteditable').attr('contenteditable', 'false');
+        // Convert validity cells to date input fields
+        $table.find('td.validity-cell').each(function() {
+            var text = $(this).text().trim();
+            $(this).html('<input type="date" class="form-control" value="' + (text === 'DD/MM/YYYY' ? '' : text) + '">');
+        });
         $table.addClass('edit-mode');  // Add edit mode class to table
         $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').show();
         $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').show();
@@ -1384,13 +1643,14 @@ function sortTableRows(table) {
         var targetTableId = $(this).data('target');
         var $table = $('#' + targetTableId);
         var newRow = `<tr>
-                        <td class="noteditable" data-toggle="modal" data-target="#supplierDetailModal"><a href="javascript:void(0);" contenteditable="false"></a><div class="supplier-email-status"></div></td>
+                        <td class="noteditable" data-toggle="modal" data-target="#supplierDetailModal"><a href="javascript:void(0);" contenteditable="false"></a></td>
                         <td contenteditable="true"></td>
                         <td contenteditable="true"></td>
                         <td contenteditable="true"></td>
                         <td contenteditable="true"></td>
                         <td contenteditable="true"></td>
                         <td contenteditable="true"></td>
+                        <td class="validity-cell"><input type="date" class="form-control"></td>
                         <td contenteditable="true"></td>
                       </tr>`;
         $table.find('tbody').append(newRow);
@@ -1401,6 +1661,7 @@ function sortTableRows(table) {
         var targetTableId = $(this).data('target'); // Get the target table ID using the updated data-target format
         var requestIdParts = targetTableId.split('-'); // Split the targetTableId by '-'
         var requestId = requestIdParts[requestIdParts.length - 1]; // Get the last part, which is the requestId
+        console.log(requestId)
         var $table = $('#' + targetTableId); // Find the table by ID
         var $card = $table.closest('.card'); // Find the closest card to this table
         var offersToUpdate = []; // Array to hold data for all offers in this table
@@ -1408,20 +1669,10 @@ function sortTableRows(table) {
         $table.find('tbody tr').each(function() {
             var $row = $(this);
             var offerId = $row.data('offer-id');
-            var validity = $row.find('td:eq(7)').text().trim();
-            // Regular expression to check if date is in DD/MM/YYYY format
-            var dateRegex = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/\d{4}$/;
-
-            // Check if validity is either in the correct format, empty, or the default placeholder
-            if ((validity !== "" && validity !== "DD/MM/YYYY" && !dateRegex.test(validity))) {
-                allValid = false;
-                alert("Date should be entered in correct DD/MM/YYYY format, be left empty, or be 'DD/MM/YYYY' as a placeholder.");
-                return false;  // Break the each loop
-            }
+            var validity = $row.find('td:eq(7) input').val().trim();
 
             var offerData = {
                 id: offerId,
-                request_id: requestId,
                 supplier: $row.find('td:eq(0)').clone().children('.supplier-email-status').remove().end().text(),
                 supplier_price: $row.find('td:eq(1)').text(),
                 payment_terms: $row.find('td:eq(2)').text(),
@@ -1429,7 +1680,8 @@ function sortTableRows(table) {
                 specs: $row.find('td:eq(4)').text(),
                 size: $row.find('td:eq(5)').text(),
                 packaging: $row.find('td:eq(6)').text(),
-                validity: (dateRegex.test(validity) ? validity : "")
+                validity: validity,
+                notes: $row.find('td:eq(8)').text(),
             };
             offersToUpdate.push(offerData);
         });
@@ -1441,16 +1693,21 @@ function sortTableRows(table) {
             url: '/update_offers/', // Update this URL to your actual endpoint
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({offers: offersToUpdate}),
+            data: JSON.stringify([{'request_id': requestId},{offers: offersToUpdate}]),
             success: function(response) {
                 toastr.success('Data updated successfully!', 'Success');
                 sortTableRows($table);
                 mergeTableCells($table[0]);
                 $table.find('td').attr('contenteditable', 'false');
+                // Convert validity cells back to plain text
+                $table.find('td.validity-cell').each(function() {
+                    var text = $(this).find('input').val().trim();
+                    $(this).text(text === '' ? 'DD/MM/YYYY' : text);
+                });
                 $table.removeClass('edit-mode');  // Remove edit mode class from table
                 $card.find('.btn-edit-offers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
                 $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').hide(); // Hide the save button
-                $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').hide(); // Hide the save button
+                $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').hide(); // Hide the add button
             },
             error: function(error) {
                 sortTableRows($table);
@@ -1538,15 +1795,21 @@ $('#confirm-supplier-selection').on('click', function() {
     }
 });
 
+// Handle the delete row button click
+$('#delete-row').on('click', function() {
+    $('#deleteConfirmationModal').modal('show');
 });
 
+// Confirm deletion of row
+$('#confirm-delete-row').on('click', function() {
+    if (currentTd) {
+        currentTd.closest('tr').remove();  // Delete the row
+        $('#deleteConfirmationModal').modal('hide');  // Hide the confirmation modal
+        $('#supplierDetailModal').modal('hide');  // Hide the supplier detail modal
+    }
+});
 
-
-
-
-
-
-    
+});
 
 //To make requests table editable    
 
@@ -1554,211 +1817,127 @@ $(document).ready(function() {
     // Make request fields editable
     $(document).on('click', '.btn-edit-requests', function() {
         $table = $('#' + "requests");
-        $('#requests-table').find('td').attr('contenteditable', 'true');
+        $table.addClass('edit-mode-requests');  // Add edit mode class to table
+        $('#requests').find('td').attr('contenteditable', 'true');
+        $('#requests').find('td.noteditable').attr('contenteditable', 'false');
         $('.btn-save-requests').show(); // Show the save button for requests
         $('.btn-add-requests').show();
         $(this).hide(); // Hide the edit button for requests
         unmergeTableCells($table[0]);
     });
 
-    // Handle adding new requests
-    $(document).on('click', '.btn-add-requests', function() {
+  // Handle adding new requests
+$(document).on('click', '.btn-add-requests', function() {
     var $table = $('#requests');
+    var deliveryScheduleModalId = `deliveryScheduleModal-new`; // Use a temporary ID for new requests
     var newRow = `<tr>
+                    <td class="product-noteditable"></td>
+                    <td class="quantity-field noteditable" data-product-name="" data-modal-id="${deliveryScheduleModalId}" data-delivery-schedule='[]'></td>
+                    <td contenteditable="true"></td>
+                    <td><a href="" class="specs-link" data-specs="" data-bs-toggle="modal" data-bs-target="#scrollingmodal">View Specs</a></td>
                     <td contenteditable="true"></td>
                     <td contenteditable="true"></td>
                     <td contenteditable="true"></td>
                     <td contenteditable="true"></td>
                     <td contenteditable="true"></td>
                     <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                  </tr>`;
+                </tr>`;
     $table.find('tbody').append(newRow);
 });
 
-    // Handle the save action for requests
-    $(document).on('click', '.btn-save-requests', function() {
-        var requestsToUpdate = [];
-        $('#requests-table tbody tr').each(function() {
-            var enquiryId = '{{ enquiry.id }}';
-            var $row = $(this);
-            // Assuming each row has a data-request-id attribute
-            var requestId = $row.data('request-id');
-            var requestData = {
+   // Handle the save action for requests
+$(document).on('click', '.btn-save-requests', function() {
+    var requestsToUpdate = [];
+    $('#requests tbody tr').each(function() {
+        var enquiryId = '{{ enquiry.id }}';
+        var $row = $(this);
+        // Assuming each row has a data-request-id attribute
+        var requestId = $row.data('request-id');
+        var deliverySchedule = $row.find('td:eq(1)').data('delivery-schedule');  // Retrieve the delivery schedule data
+
+        var requestData = {
             id: requestId,
-            enquiry_id: enquiryId,
             product: $row.find('td:eq(0)').text().trim(),
             quantity: $row.find('td:eq(1)').text().trim(),
-            specs: $row.find('td:eq(2)').text().trim(),
-            size: $row.find('td:eq(3)').text().trim(),
-            payment_terms_requested: $row.find('td:eq(4)').text().trim(),
-            incoterms: $row.find('td:eq(5)').text().trim(),
-            discharge_port: $row.find('td:eq(6)').text().trim(),
-            packaging: $row.find('td:eq(7)').text().trim(),
-            notes: $row.find('td:eq(8)').text().trim()
+            quantity_unit: $row.find('td:eq(2)').text().trim(),
+            specs: $row.find('td:eq(3)').find('a').data('specs'),
+            size: $row.find('td:eq(4)').text().trim(),
+            packaging: $row.find('td:eq(5)').text().trim(),
+            payment_terms_requested: $row.find('td:eq(6)').text().trim(),
+            target_price: $row.find('td:eq(7)').text().trim(),
+            incoterms: $row.find('td:eq(8)').text().trim(),
+            notes: $row.find('td:eq(9)').text().trim(),
+            delivery_schedule: deliverySchedule  // Use the delivery schedule data
         };
-            requestsToUpdate.push(requestData);
-        });
+        requestsToUpdate.push(requestData);
+    });
 
-        // Send AJAX request to save all updated requests
-        $.ajax({
-            url: '/update_requests/',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({requests: requestsToUpdate}),
-            success: function(response) {
-                $('#requests-table').find('td').attr('contenteditable', 'false');
-                $('.btn-edit-requests').show(); // Show the edit button for requests again
-                $('.btn-save-requests').hide(); // Hide the save button for requests
-                $('.btn-add-requests').hide();
-                mergeTableCells($table[0]);
-                sortTableRows($table);
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
+    // Log the data to be sent for verification
+    console.log(JSON.stringify({enquiry_id: enquiryId, requests: requestsToUpdate}));
+
+    // Send AJAX request to save all updated requests
+    $.ajax({
+        url: '/update_requests/',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify([{enquiry_id: enquiryId},{requests: requestsToUpdate}]),
+        success: function(response) {
+            toastr.success('Data updated successfully!', 'Success');
+            $('#requests').find('td').attr('contenteditable', 'false');
+            $table.removeClass('edit-mode-requests');  // Remove edit mode class from table
+            $('.btn-edit-requests').show(); // Show the edit button for requests again
+            $('.btn-save-requests').hide(); // Hide the save button for requests
+            $('.btn-add-requests').hide();
+            mergeTableCells($table[0]);
+            sortTableRows($table);
+        },
+        error: function(error) {
+            toastr.error('Data was not updated!', 'Error');
+            console.log(error);
+        }
     });
 });
+    var currentProductTd;
 
-    </script>
-
-
- <!-- Function to make client offers tables editable-->
-<script>
-
-$(document).ready(function() {
-    $(document).on('click', '.btn-edit-clientoffers', function() {
-    var targetTableId = $(this).data('target');
-    var $table = $('#' + targetTableId);
-    var $card = $table.closest('.card');
-
-    console.log("Edit button clicked for targetTableId:", targetTableId);
-    console.log("$table length:", $table.length);
-    console.log("$card length:", $card.length);
-
-    $table.find('td').attr('contenteditable', 'true');
-    $table.find('td.editable-supplier').attr('contenteditable', 'false');
-    
-    $table.addClass('edit-mode'); 
-
-    var $btnSave = $card.find('.btn-save-clientoffers[data-target="' + targetTableId + '"]');
-    var $btnAdd = $card.find('.btn-add-clientoffers[data-target="' + targetTableId + '"]');
-
-    console.log("$btnSave length:", $btnSave.length);
-    console.log("$btnAdd length:", $btnAdd.length);
-
-    $btnSave.show();
-    $btnAdd.show();
-    $(this).hide();
-    unmergeTableCells($table[0]);
-});
-
-    // Add a new editable row for client offers when "Add New Offer" is clicked
-    $(document).on('click', '.btn-add-clientoffers', function() {
-        var targetTableId = $(this).data('target');
-        var $table = $('#' + targetTableId);
-        var newRow = `<tr>
-                        <td class="editable-supplier" data-toggle="modal" data-target="#supplierDetailModalClient"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                      </tr>`;
-        $table.find('tbody').append(newRow);
-    });
-
-    // Handle the save action for client offers in the specified table
-    $(document).on('click', '.btn-save-clientoffers', function() {
-        var targetTableId = $(this).data('target');
-        var $table = $('#' + targetTableId);
-        var $card = $table.closest('.card');
-        var offersToUpdate = [];
-
-        $table.find('tbody tr').each(function() {
-            var $row = $(this);
-            var offerClientId = $row.data('offer-client-id');
-            var offerData = {
-                id: offerClientId, // This may be 'new' for new rows
-                request_id: targetTableId.split('-').pop(), // Extract request ID from the target table ID
-                supplier: $row.find('td:eq(0)').text(),
-                price_offered: $row.find('td:eq(1)').text(),
-                payment_term_offered: $row.find('td:eq(2)').text(),
-                validity_offered: $row.find('td:eq(3)').text(),
-                customer_feedback: $row.find('td:eq(4)').text(),
-                notes: $row.find('td:eq(5)').text(),
-            };
-            offersToUpdate.push(offerData);
-        });
-
-        // AJAX request to save/update client offers
-        $.ajax({
-            url: '/update_client_offers/', // Update this URL to your actual endpoint for client offers
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({offers: offersToUpdate}),
-            success: function(response) {
-                toastr.success('Data updated succesfully!', 'Success');
-                $table.find('td').attr('contenteditable', 'false');
-                $card.find('.btn-edit-clientoffers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
-                $card.find('.btn-save-clientoffers[data-target="' + targetTableId + '"]').hide(); // Hide the save button
-                $card.find('.btn-add-clientoffers[data-target="' + targetTableId + '"]').hide(); // Hide the add new offer button
-                sortTableRows($table);
-                mergeTableCells($table[0]);
-            },
-            error: function(error) {
-                console.log(error);
-                toastr.error('Data was not saved', 'Error');
-                sortTableRows($table);
-                mergeTableCells($table[0]);
-            }
-        });
-    });
-
-
-    let currentTd;  // Variable to store the reference to the clicked <td>
-    $(document).on('click', '.editable-supplier', function() {
-        if ($table.hasClass('edit-mode')) {
-            currentTd = $(this);  // Store the reference to the clicked <td>
-            // Inject the provided HTML content into the modal body
+    // Handle product column click
+    $(document).on('click', '.product-noteditable', function() {
+        var $table = $(this).closest('table');
+        if ($table.hasClass('edit-mode-requests')) {
+            currentProductTd = $(this);  // Store the reference to the clicked <td>
             var modalContent = `
                 <div class="form-group">
-                    <label class="form-label">Supplier</label>
-                    <select id="supplier-select" class="form-control select2-show-search form-select select2-hidden-accessible" data-placeholder="Choose one" aria-hidden="true">
+                    <label class="form-label">Product</label>
+                    <select id="product-select" class="form-control select2-show-search form-select select2-hidden-accessible" data-placeholder="Choose one" aria-hidden="true">
                     </select>
                 </div>
             `;
-            $('#supplier-client-details-content').html(modalContent);
-            $('#supplierDetailModalClient').modal('show');
+            $('#product-details-content').html(modalContent);
+            $('#productDetailModal').modal('show');
         }
-        });
+    });
 
     // Initialize select2 after the modal is shown
-    $('#supplierDetailModalClient').on('shown.bs.modal', function () {
-        // Populate the select element with supplier options
-        let $select = $('#supplier-select');
+    $('#productDetailModal').on('shown.bs.modal', function () {
+        // Populate the select element with product options
+        let $select = $('#product-select');
         $select.empty();  // Clear any existing options
-        var requestId = currentTd.closest('table').attr('id').split('-').pop();
-        var suppliers = supplierNamesByRequestId[requestId] || [];
-        suppliers.forEach(function(supplier) {
-            $select.append(new Option(supplier, supplier));
+        const products = {{ products|safe }};
+        products.forEach(function(product) {
+            $select.append(new Option(product, product));
         });
 
-        // Pre-select the current supplier
-        if (currentTd) {
-            var currentSupplier = currentTd.find('a').text();  // Fetch the current supplier from <td>
-            $select.val(currentSupplier).trigger('change');  // Pre-select the current supplier
+        // Pre-select the current product
+        if (currentProductTd) {
+            var currentProduct = currentProductTd.text().trim();  // Fetch the current product from <td>
+            $select.val(currentProduct).trigger('change');  // Pre-select the current product
         }
 
         $('.select2-show-search').select2({
-            dropdownParent: $('#supplierDetailModalClient'), // Ensure dropdown is appended to the modal
+            dropdownParent: $('#productDetailModal'), // Ensure dropdown is appended to the modal
             width: '100%',
             tags: true,
             minimumInputLength: 1,
-            placeholder: "Select suppliers",
+            placeholder: "Select product",
             createTag: function(params) {
                 var term = $.trim(params.term);
                 if (term === '') {
@@ -1780,9 +1959,185 @@ $(document).ready(function() {
         }).on('select2:select', function(e) {
             if (e.params.data.newTag) {
                 console.log("New option added:", e.params.data.text);
-                // Additional logic for new tags can be implemented here
+                // Additional logic fornew tags can be implemented here
+}
+});
+});
+
+// Handle the confirm button click for product selection
+$('#confirm-product-selection').on('click', function() {
+    var selectedProduct = $('#product-select').val();
+    if (currentProductTd) {
+        currentProductTd.text(selectedProduct);  // Update the <td> with the new product name
+        $('#productDetailModal').modal('hide');  // Hide the modal
+    }
+});
+
+// Handle the delete row button click for product modal
+$('#delete-product-row').on('click', function() {
+    $('#deleteConfirmationModal').modal('show');
+});
+
+// Confirm deletion of row
+$('#confirm-delete-row').on('click', function() {
+    if (currentProductTd) {
+        currentProductTd.closest('tr').remove();  // Delete the row
+        $('#deleteConfirmationModal').modal('hide');  // Hide the confirmation modal
+        $('.modal').modal('hide');  // Hide any open modals
+    }
+});
+
+});
+
+
+
+    </script>
+
+
+ <!-- Function to make client offers tables editable-->
+<script>
+
+$(document).ready(function() {
+    $(document).on('click', '.btn-edit-clientoffers', function() {
+        var targetTableId = $(this).data('target');
+        var $table = $('#' + targetTableId);
+        var $card = $table.closest('.card');
+
+        $table.find('td').attr('contenteditable', 'true');
+        $table.find('td.editable-supplier').attr('contenteditable', 'false');
+
+        // Convert validity cells to date input fields
+        $table.find('td.validity-cell').each(function() {
+            var text = $(this).text().trim();
+            $(this).html('<input type="date" class="form-control" value="' + (text === 'DD/MM/YYYY' ? '' : text) + '">');
+        });
+
+        $table.addClass('edit-mode'); 
+
+        $card.find('.btn-save-clientoffers[data-target="' + targetTableId + '"]').show();
+        $card.find('.btn-add-clientoffers[data-target="' + targetTableId + '"]').show();
+        $(this).hide();
+        unmergeTableCells($table[0]);
+    });
+
+    // Add a new editable row for client offers when "Add New Offer" is clicked
+    $(document).on('click', '.btn-add-clientoffers', function() {
+        var targetTableId = $(this).data('target');
+        var $table = $('#' + targetTableId);
+        var newRow = `<tr>
+                        <td class="editable-supplier" data-toggle="modal" data-target="#supplierDetailModalClient"><a href="javascript:void(0);" contenteditable="false"></a></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="validity-cell"><input type="date" class="form-control"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                      </tr>`;
+        $table.find('tbody').append(newRow);
+    });
+
+    // Handle the save action for client offers in the specified table
+    $(document).on('click', '.btn-save-clientoffers', function() {
+        var targetTableId = $(this).data('target');
+        var requestIdParts = targetTableId.split('-'); // Split the targetTableId by '-'
+        var requestId = requestIdParts[requestIdParts.length - 1]; // Get the last part, which is the requestId
+       
+        var $table = $('#' + targetTableId);
+        var $card = $table.closest('.card');
+        var offersToUpdate = [];
+
+        $table.find('tbody tr').each(function() {
+            var $row = $(this);
+            var offerClientId = $row.data('offer-client-id');
+            var validity = $row.find('td:eq(5) input').val().trim();
+            var offerData = {
+                id: offerClientId, // This may be 'new' for new rows
+                supplier: $row.find('td:eq(0)').text(),
+                price_offered: $row.find('td:eq(1)').text(),
+                margin: $row.find('td:eq(2)').text(),
+                payment_term_offered: $row.find('td:eq(3)').text(),
+                incoterms: $row.find('td:eq(4)').text(),
+                validity_offered: validity,
+                customer_feedback: $row.find('td:eq(6)').text(),
+                notes: $row.find('td:eq(7)').text(),
+            };
+            offersToUpdate.push(offerData);
+        });
+
+        // AJAX request to save/update client offers
+        $.ajax({
+            url: '/update_client_offers/', // Update this URL to your actual endpoint for client offers
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify([{'request_id': requestId},{offers: offersToUpdate}]),
+            success: function(response) {
+                toastr.success('Data updated successfully!', 'Success');
+                $table.find('td').attr('contenteditable', 'false');
+
+                // Convert validity cells back to plain text
+                $table.find('td.validity-cell').each(function() {
+                    var text = $(this).find('input').val().trim();
+                    $(this).text(text === '' ? 'DD/MM/YYYY' : text);
+                });
+
+                $card.find('.btn-edit-clientoffers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
+                $card.find('.btn-save-clientoffers[data-target="' + targetTableId + '"]').hide(); // Hide the save button
+                $card.find('.btn-add-clientoffers[data-target="' + targetTableId + '"]').hide(); // Hide the add new offer button
+                sortTableRows($table);
+                mergeTableCells($table[0]);
+            },
+            error: function(error) {
+                console.log(error);
+                toastr.error('Data was not saved', 'Error');
+                sortTableRows($table);
+                mergeTableCells($table[0]);
             }
         });
+    });
+
+    let currentTd;  // Variable to store the reference to the clicked <td>
+    $(document).on('click', '.editable-supplier', function() {
+        var $table = $(this).closest('table');
+        if ($table.hasClass('edit-mode')) {
+            currentTd = $(this);  // Store the reference to the clicked <td>
+            // Inject the provided HTML content into the modal body
+            var modalContent = `
+                <div class="form-group">
+                    <label class="form-label">Supplier</label>
+                    <select id="supplier-select" class="form-control select2 form-select select2-hidden-accessible" data-placeholder="Choose one" aria-hidden="true">
+                    </select>
+                </div>
+            `;
+            $('#supplier-client-details-content').html(modalContent);
+            $('#supplierDetailModalClient').modal('show');
+        }
+    });
+
+    // Initialize select2 after the modal is shown
+    $('#supplierDetailModalClient').on('shown.bs.modal', function () {
+        // Populate the select element with supplier options
+        let $select = $('#supplier-select');
+        $select.empty();  // Clear any existing options
+        var requestId = currentTd.closest('table').attr('id').split('-').pop();
+        var suppliers = supplierNamesByRequestId[requestId] || [];
+        suppliers.forEach(function(supplier) {
+            $select.append(new Option(supplier, supplier));
+        });
+
+        // Pre-select the current supplier
+        if (currentTd) {
+            var currentSupplier = currentTd.find('a').text();  // Fetch the current supplier from <td>
+            $select.val(currentSupplier).trigger('change');  // Pre-select the current supplier
+        }
+
+        $('.select2-hidden-accessible').select2({
+            dropdownParent: $('#supplierDetailModalClient'), // Ensure dropdown is appended to the modal
+            width: '100%',
+            tags: false,
+            minimumResultsForSearch: Infinity,
+            placeholder: "Select suppliers"
+        })
     });
 
     // Handle the confirm button click in the modal
@@ -1794,29 +2149,44 @@ $(document).ready(function() {
         }
     });
 
+        // Handle the delete row button click for supplier modal
+    $('#delete-supplier-row').on('click', function() {
+        $('#deleteConfirmationModal').modal('show');
+    });
+
+        // Confirm deletion of row
+    $('#confirm-delete-row').on('click', function() {
+        if (currentTd) {
+            currentTd.closest('tr').remove();  // Delete the row
+            $('#deleteConfirmationModal').modal('hide');  // Hide the confirmation modal
+            $('.modal').modal('hide');  // Hide any open modals
+        }
+    });
+
 });
+
 
 
 
 //monitors changes to the enquiry details
 
 $(document).ready(function() {
-    // Selector for all inputs and selects to be monitored for changes
     $('.col-md-2 input, .col-md-2 select').change(function() {
         var $input = $(this);
         var value = $input.val();
         var name = $input.attr('name') || $input.attr('id');
-        var data = {'enquiry_id' : '{{ enquiry.id }} '};
-        data[name] = value;
+        var data = {'enquiry_id' : '{{ enquiry.id }}'.trim() }; // Remove any trailing spaces
 
-        // Validate date format if it's a date input
-        if ($input.hasClass('fc-datepicker')) {
-            var dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/(19|20)\d\d$/;
-            if (value && !dateRegex.test(value) && value.toLowerCase() !== 'null') {
-                ('Please enter the date in DD/MM/YYYY format or leave it blank.');
-                return; // Stop the function if the date format is incorrect
-            }
+        // Check if it's a date input and reformat the value to DD/MM/YYYY
+        if ($input.attr('type') === 'date' && value) {
+            var date = new Date(value);
+            var day = ("0" + date.getDate()).slice(-2);
+            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+            var formattedDate = `${day}/${month}/${date.getFullYear()}`;
+            value = formattedDate;
         }
+
+        data[name] = value;
 
         // Send the AJAX request
         $.ajax({
@@ -1827,7 +2197,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 console.log(data, response);
-                toastr.success('Data updated succesfully!', 'Success');
+                toastr.success('Data updated successfully!', 'Success');
             },
             error: function(error) {
                 console.error('Update failed:', error);
@@ -1836,6 +2206,7 @@ $(document).ready(function() {
         });
     });
 });
+
 
 
 
@@ -1915,9 +2286,6 @@ $(document).ready(function() {
     </script>
     
     <!-- Script to adjust selection boxes in the form-->>
-    
-       
-    
     
     <style>
         .supplier-email-status {

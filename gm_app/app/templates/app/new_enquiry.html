@@ -40,7 +40,7 @@
 
     <!-- GLOBAL-LOADER -->
     <div id="global-loader">
-        <img src=" {% static '/assets/images/loader.svg' %} " class="loader-img" alt="Loader">
+        <img src=" {% static '/assets/images/loader.gif' %} " class="loader-img" alt="Loader">
     </div>
     <!-- /GLOBAL-LOADER -->
 
@@ -258,7 +258,7 @@
                                                         <div class="input-group-text">
                                                             <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                         </div>
-                                                        <input class="form-control " placeholder="DD/MM/YYYY" type="text" id="inquiryReceivedDate">
+                                                        <input type="date" class="form-control " placeholder="DD/MM/YYYY" type="text" id="inquiryReceivedDate">
                                                     </div>
                                                 </div>
 
@@ -269,7 +269,7 @@
                                                         <div class="input-group-text">
                                                             <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                         </div>
-                                                        <input class="form-control fc-datepicker" placeholder="DD/MM/YYYY" type="text" id="inquiryDeadlineDate">
+                                                        <input type="date" class="form-control fc-datepicker" placeholder="DD/MM/YYYY" type="text" id="inquiryDeadlineDate">
                                                     </div>
                                                 </div>
                                                 
@@ -278,12 +278,11 @@
                                                     <input type="text" class="form-control required" placeholder="CIF/CFR/FOB" id = "incotermWanted">
                                                 </div>
 
+                                                <!-- New file input field -->
                                                 <div class="form-group">
-                                                    <label class="form-label">Port of Discharge/Delivery</label>
-                                                    <input type="text" class="form-control required" placeholder="Port of discharge" id = "portOfDischarge">
+                                                    <label class="form-label">Tender/Additonal Docs</label>
+                                                    <input class="form-control file" type="file" id="formFileMultiple" multiple>
                                                 </div>
-
-                                        
 
                                             </section>
                                             <h3 id="wizard3-h-1" tabindex="-1" class="title">Details of the request</h3>
@@ -318,494 +317,7 @@
             <!--app-content closed-->
         </div>
 
-        <!-- Sidebar-right -->
-        <div class="sidebar sidebar-right sidebar-animate">
-            <div class="panel panel-primary card mb-0 shadow-none border-0">
-                <div class="tab-menu-heading border-0 d-flex p-3">
-                    <div class="card-title mb-0"><i class="fe fe-bell me-2"></i><span
-                            class=" pulse"></span>Notifications</div>
-                    <div class="card-options ms-auto">
-                        <a href=" {% static 'javascript:void(0);' %} " class="sidebar-icon text-end float-end me-3 mb-1"
-                            data-bs-toggle="sidebar-right" data-target=".sidebar-right"><i
-                                class="fe fe-x text-white"></i></a>
-                    </div>
-                </div>
-                <div class="panel-body tabs-menu-body latest-tasks p-0 border-0">
-                    <div class="tabs-menu border-bottom">
-                        <!-- Tabs -->
-                        <ul class="nav panel-tabs">
-                            <li class=""><a href=" {% static '#sidebar-side1' %} " class="active" data-bs-toggle="tab"><i
-                                        class="fe fe-settings me-1"></i>Feeds</a></li>
-                            <li><a href=" {% static '#sidebar-side2' %} " data-bs-toggle="tab"><i class="fe fe-message-circle me-1"></i> Chat</a></li>
-                            <li><a href=" {% static '#sidebar-side3' %} " data-bs-toggle="tab"><i class="fe fe-anchor me-1"></i>Timeline</a></li>
-                        </ul>
-                    </div>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="sidebar-side1">
-                            <div class="p-3 fw-semibold ps-5">Feeds</div>
-                            <div class="card-body pt-2">
-                                <div class="browser-stats">
-                                    <div class="row mb-4">
-                                        <div class="col-sm-2 mb-sm-0 mb-3">
-                                            <span class="feeds avatar-circle brround bg-primary-transparent"><i
-                                                    class="fe fe-user text-primary"></i></span>
-                                        </div>
-                                        <div class="col-sm-10 ps-sm-0">
-                                            <div class="d-flex align-items-end justify-content-between ms-2">
-                                                <h6 class="">New user registered</h6>
-                                                <div>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-sm-2 mb-sm-0 mb-3">
-                                            <span
-                                                class="feeds avatar-circle avatar-circle-secondary brround bg-secondary-transparent"><i
-                                                    class="fe fe-shopping-cart text-secondary"></i></span>
-                                        </div>
-                                        <div class="col-sm-10 ps-sm-0">
-                                            <div class="d-flex align-items-end justify-content-between ms-2">
-                                                <h6 class="">New order delivered</h6>
-                                                <div>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-sm-2 mb-sm-0 mb-3">
-                                            <span
-                                                class="feeds avatar-circle avatar-circle-danger brround bg-danger-transparent"><i
-                                                    class="fe fe-bell text-danger"></i></span>
-                                        </div>
-                                        <div class="col-sm-10 ps-sm-0">
-                                            <div class="d-flex align-items-end justify-content-between ms-2">
-                                                <h6 class="">You have pending tasks</h6>
-                                                <div>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-sm-2 mb-sm-0 mb-3">
-                                            <span
-                                                class="feeds avatar-circle avatar-circle-warning brround bg-warning-transparent"><i
-                                                    class="fe fe-gitlab text-warning"></i></span>
-                                        </div>
-                                        <div class="col-sm-10 ps-sm-0">
-                                            <div class="d-flex align-items-end justify-content-between ms-2">
-                                                <h6 class="">New version arrived</h6>
-                                                <div>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-sm-2 mb-sm-0 mb-3">
-                                            <span
-                                                class="feeds avatar-circle avatar-circle-pink brround bg-pink-transparent"><i
-                                                    class="fe fe-database text-pink"></i></span>
-                                        </div>
-                                        <div class="col-sm-10 ps-sm-0">
-                                            <div class="d-flex align-items-end justify-content-between ms-2">
-                                                <h6 class="">Server #1 overloaded</h6>
-                                                <div>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-2 mb-sm-0 mb-3">
-                                            <span
-                                                class="feeds avatar-circle avatar-circle-info brround bg-info-transparent"><i
-                                                    class="fe fe-check-circle text-info"></i></span>
-                                        </div>
-                                        <div class="col-sm-10 ps-sm-0">
-                                            <div class="d-flex align-items-end justify-content-between ms-2">
-                                                <h6 class="">New project launched</h6>
-                                                <div>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-x"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-3 fw-semibold ps-5">Settings</div>
-                            <div class="card-body pt-2">
-                                <div class="browser-stats">
-                                    <div class="row mb-4">
-                                        <div class="col-sm-2 mb-sm-0 mb-3">
-                                            <span class="feeds avatar-circle brround bg-primary-transparent"><i
-                                                    class="fe fe-settings text-primary"></i></span>
-                                        </div>
-                                        <div class="col-sm-10 ps-sm-0">
-                                            <div class="d-flex align-items-end justify-content-between ms-2">
-                                                <h6 class="">General Settings</h6>
-                                                <div>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-sm-2 mb-sm-0 mb-3">
-                                            <span
-                                                class="feeds avatar-circle avatar-circle-secondary brround bg-secondary-transparent"><i
-                                                    class="fe fe-map-pin text-secondary"></i></span>
-                                        </div>
-                                        <div class="col-sm-10 ps-sm-0">
-                                            <div class="d-flex align-items-end justify-content-between ms-2">
-                                                <h6 class="">Map Settings</h6>
-                                                <div>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-sm-2 mb-sm-0 mb-3">
-                                            <span
-                                                class="feeds avatar-circle avatar-circle-danger brround bg-danger-transparent"><i
-                                                    class="fe fe-headphones text-danger"></i></span>
-                                        </div>
-                                        <div class="col-sm-10 ps-sm-0">
-                                            <div class="d-flex align-items-end justify-content-between ms-2">
-                                                <h6 class="">Support Settings</h6>
-                                                <div>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-sm-2 mb-sm-0 mb-3">
-                                            <span
-                                                class="feeds avatar-circle avatar-circle-warning brround bg-warning-transparent"><i
-                                                    class="fe fe-credit-card text-warning"></i></span>
-                                        </div>
-                                        <div class="col-sm-10 ps-sm-0">
-                                            <div class="d-flex align-items-end justify-content-between ms-2">
-                                                <h6 class="">Payment Settings</h6>
-                                                <div>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-sm-2 mb-sm-0 mb-3">
-                                            <span
-                                                class="feeds avatar-circle avatar-circle-pink brround bg-pink-transparent"><i
-                                                    class="fe fe-bell text-pink"></i></span>
-                                        </div>
-                                        <div class="col-sm-10 ps-sm-0">
-                                            <div class="d-flex align-items-end justify-content-between ms-2">
-                                                <h6 class="">Notification Settings</h6>
-                                                <div>
-                                                    <a href=" {% static 'javascript:void(0)' %} "><i class="fe fe-settings me-1"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="sidebar-side2">
-                            <div class="list-group list-group-flush">
-                                <div class="pt-3 fw-semibold ps-5">Today</div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/2.jpg' %} "></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Addie Minstra</div>
-                                            <p class="mb-0 fs-12 text-muted"> Hey! there I' am available </p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/11.jpg' %} "><span
-                                                class="avatar-status bg-success"></span></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Rose Bush</div>
-                                            <p class="mb-0 fs-12 text-muted"> Okay.I will be waiting for you </p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/10.jpg' %} "></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Claude Strophobia</div>
-                                            <p class="mb-0 fs-12 text-muted"> Hi we can explain our new project
-                                            </p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/13.jpg' %} "></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Eileen Dover</div>
-                                            <p class="mb-0 fs-12 text-muted"> New product Launching. </p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/12.jpg' %} "><span
-                                                class="avatar-status bg-success"></span></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Willie Findit</div>
-                                            <p class="mb-0 fs-12 text-muted"> Okay.I will be waiting for you </p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/15.jpg' %} "></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Manny Jah</div>
-                                            <p class="mb-0 fs-12 text-muted"> Hi we can explain our new project
-                                            </p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/4.jpg' %} "></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Cherry Blossom</div>
-                                            <p class="mb-0 fs-12 text-muted"> Hey! there I' am available</p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="pt-3 fw-semibold ps-5">Yesterday</div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/7.jpg' %} "><span
-                                                class="avatar-status bg-success"></span></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Simon Sais</div>
-                                            <p class="mb-0 fs-12 text-muted">Schedule Realease </p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/9.jpg' %} "></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Laura Biding</div>
-                                            <p class="mb-0 fs-12 text-muted"> Hi we can explain our new project
-                                            </p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/2.jpg' %} "><span
-                                                class="avatar-status bg-success"></span></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Addie Minstra</div>
-                                            <p class="mb-0 fs-12 text-muted">Contact me for details</p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/9.jpg' %} "></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Ivan Notheridiya</div>
-                                            <p class="mb-0 fs-12 text-muted"> Hi we can explain our new project
-                                            </p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/14.jpg' %} "></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Dulcie Veeta</div>
-                                            <p class="mb-0 fs-12 text-muted"> Okay.I will be waiting for you </p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/11.jpg' %} "></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Florinda Carasco</div>
-                                            <p class="mb-0 fs-12 text-muted">New product Launching.</p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center">
-                                    <div class="me-2">
-                                        <span class="avatar avatar-md brround cover-image"
-                                            data-bs-image-src=" {% static '/assets/images/users/4.jpg' %} "><span
-                                                class="avatar-status bg-success"></span></span>
-                                    </div>
-                                    <div class="">
-                                        <a href=" {% static 'chat.html' %} ">
-                                            <div class="fw-semibold text-dark" data-bs-toggle="modal"
-                                                data-target="#chatmodel">Cherry Blossom</div>
-                                            <p class="mb-0 fs-12 text-muted">cherryblossom@gmail.com</p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="sidebar-side3">
-                            <ul class="task-list timeline-task">
-                                <li class="d-sm-flex mt-4">
-                                    <div>
-                                        <i class="task-icon1"></i>
-                                        <h6 class="fw-semibold">Task Finished<span
-                                                class="text-muted fs-11 mx-2 fw-normal">09 July 2021</span></h6>
-                                        <p class="text-muted fs-12">Adam Berry finished task on<a href=" {% static 'javascript:void(0)' %} "
-                                                class="fw-semibold"> Project Management</a></p>
-                                    </div>
-                                    <div class="ms-auto d-md-flex me-3">
-                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
-                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
-                                    </div>
-                                </li>
-                                <li class="d-sm-flex">
-                                    <div>
-                                        <i class="task-icon1"></i>
-                                        <h6 class="fw-semibold">New Comment<span
-                                                class="text-muted fs-11 mx-2 fw-normal">05 July 2021</span></h6>
-                                        <p class="text-muted fs-12">Victoria commented on Project <a href=" {% static 'javascript:void(0)' %} "
-                                                class="fw-semibold"> AngularJS Template</a></p>
-                                    </div>
-                                    <div class="ms-auto d-md-flex me-3">
-                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
-                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
-                                    </div>
-                                </li>
-                                <li class="d-sm-flex">
-                                    <div>
-                                        <i class="task-icon1"></i>
-                                        <h6 class="fw-semibold">New Comment<span
-                                                class="text-muted fs-11 mx-2 fw-normal">25 June 2021</span></h6>
-                                        <p class="text-muted fs-12">Victoria commented on Project <a href=" {% static 'javascript:void(0)' %} "
-                                                class="fw-semibold"> AngularJS Template</a></p>
-                                    </div>
-                                    <div class="ms-auto d-md-flex me-3">
-                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
-                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
-                                    </div>
-                                </li>
-                                <li class="d-sm-flex">
-                                    <div>
-                                        <i class="task-icon1"></i>
-                                        <h6 class="fw-semibold">Task Overdue<span
-                                                class="text-muted fs-11 mx-2 fw-normal">14 June 2021</span></h6>
-                                        <p class="text-muted mb-0 fs-12">Petey Cruiser finished task <a href=" {% static 'javascript:void(0)' %} "
-                                                class="fw-semibold"> Integrated management</a></p>
-                                    </div>
-                                    <div class="ms-auto d-md-flex me-3">
-                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
-                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
-                                    </div>
-                                </li>
-                                <li class="d-sm-flex">
-                                    <div>
-                                        <i class="task-icon1"></i>
-                                        <h6 class="fw-semibold">Task Overdue<span
-                                                class="text-muted fs-11 mx-2 fw-normal">29 June 2021</span></h6>
-                                        <p class="text-muted mb-0 fs-12">Petey Cruiser finished task <a href=" {% static 'javascript:void(0)' %} "
-                                                class="fw-semibold"> Integrated management</a></p>
-                                    </div>
-                                    <div class="ms-auto d-md-flex me-3">
-                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
-                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
-                                    </div>
-                                </li>
-                                <li class="d-sm-flex">
-                                    <div>
-                                        <i class="task-icon1"></i>
-                                        <h6 class="fw-semibold">Task Finished<span
-                                                class="text-muted fs-11 mx-2 fw-normal">09 July 2021</span></h6>
-                                        <p class="text-muted fs-12">Adam Berry finished task on<a href=" {% static 'javascript:void(0)' %} "
-                                                class="fw-semibold"> Project Management</a></p>
-                                    </div>
-                                    <div class="ms-auto d-md-flex me-3">
-                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted me-2"><span class="fe fe-edit"></span></a>
-                                        <a href=" {% static 'javascript:void(0)' %} " class="text-muted"><span class="fe fe-trash-2"></span></a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--/Sidebar-right-->
+        
 
 
 
@@ -823,50 +335,44 @@
         </footer>
         <!-- FOOTER CLOSED -->
     </div>
-
-    <!-- Include this part in your HTML to define the modal -->
-    <!-- Include this part in your HTML to define the modal -->
-<!-- Include this part in your HTML to define the modal -->
-<!-- Include this part in your HTML to define the modal -->
-<div class="modal fade" id="multipleDeliveriesModal" tabindex="-1" role="dialog" aria-labelledby="multipleDeliveriesModalLabel" aria-hidden="true">
+<!-- Modal template -->
+<div class="modal fade" id="modalTemplate" tabindex="-1" role="dialog" aria-labelledby="modalTemplateLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="multipleDeliveriesModalLabel">Multiple Deliveries</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTemplateLabel">Delivery Schedule for [ProductName]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="multipleDeliveriesTableContainer" class="table-responsive">
+                    <table class="table border text-nowrap text-md-nowrap table-sm mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date</th>
+                                <th>Quantity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="multipleDeliveriesTableBody-template">
+                            <tr>
+                                <td>1</td>
+                                <td><input type="date" class="form-control"></td>
+                                <td><input type="number" class="form-control delivery-quantity" placeholder="Enter quantity"></td>
+                                <td><button type="button" class="btn btn-danger btn-sm remove-row">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary btn-sm mt-2 add-row-button" data-modal-id="template">Add Row</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary save-changes-button" data-modal-id="template">Save changes</button>
+            </div>
         </div>
-        <div class="modal-body">
-          <!-- Table for multiple deliveries -->
-          <div id="multipleDeliveriesTableContainer" class="table-responsive">
-            <table class="table border text-nowrap text-md-nowrap table-sm mb-0">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Date</th>
-                  <th>Quantity</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="multipleDeliveriesTableBody">
-                <tr>
-                  <td>1</td>
-                  <td><input type="date" class="form-control"></td>
-                  <td><input type="number" class="form-control delivery-quantity" placeholder="Enter quantity"></td>
-                  <td><button type="button" class="btn btn-danger btn-sm remove-row">Remove</button></td>
-                </tr>
-              </tbody>
-            </table>
-            <button type="button" id="addRowButton" class="btn btn-primary btn-sm mt-2">Add Row</button>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="saveChangesButton" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+
     <!-- BACK-TO-TOP -->
     <a href=" {% static '#top' %} " id="back-to-top"><i class="fa fa-angle-up"></i></a>
 
@@ -979,7 +485,7 @@
 
    <!-- Script to Enable Wizard FUnctionality (lazy fix but it works) -->>
     
-<script>
+   <script>
     $(document).ready(function() {
         // Function to show the step based on index
         function showStep(index) {
@@ -1067,51 +573,43 @@
         $('#product_selector select').on('change', function() {
             updateButtons($('.wizard .steps ul li.current').index());
         });
-    });
-</script>
 
-
-
-<!-- Script to adjust selection boxes in the form-->>
-<script>
-    $(document).ready(function() {
-        // Function to initialize Select2 with specified settings
+        // Initialize Select2 with specified settings
         function initializeSelect2WithTags($elements) {
-        $elements.each(function() { // Iterate over each element individually
-            var $element = $(this); // Current Select2 element being initialized
-            $element.select2({
-                width: '100%',
-                tags: true, // Allows new options to be added
-                minimumInputLength: 1, // Only start searching when at least one character is typed
-                placeholder: "Select suppliers", // Placeholder text
-                createTag: function(params) {
-                    var term = $.trim(params.term);
-                    if (term === '') {
-                        return null;
+            $elements.each(function() { // Iterate over each element individually
+                var $element = $(this); // Current Select2 element being initialized
+                $element.select2({
+                    width: '100%',
+                    tags: true, // Allows new options to be added
+                    minimumInputLength: 1, // Only start searching when at least one character is typed
+                    placeholder: "Select suppliers", // Placeholder text
+                    createTag: function(params) {
+                        var term = $.trim(params.term);
+                        if (term === '') {
+                            return null;
+                        }
+                        var normalizedTerm = term.replace(/\s+/g, ' ').toLowerCase();
+                        // Check for existing options within the current Select2 element
+                        var exists = $element.find('option').filter(function() {
+                            return $(this).text().toLowerCase() === normalizedTerm;
+                        }).length > 0;
+                        if (exists) {
+                            return null;
+                        }
+                        return {
+                            id: term,
+                            text: term,
+                            newTag: true
+                        };
                     }
-                    var normalizedTerm = term.replace(/\s+/g, ' ').toLowerCase();
-                    // Check for existing options within the current Select2 element
-                    var exists = $element.find('option').filter(function() {
-                        return $(this).text().toLowerCase() === normalizedTerm;
-                    }).length > 0;
-                    if (exists) {
-                        return null;
+                }).on('select2:select', function(e) {
+                    if (e.params.data.newTag) {
+                        console.log("New option added:", e.params.data.text);
+                        // Additional logic for new tags can be implemented here
                     }
-                    return {
-                        id: term,
-                        text: term,
-                        newTag: true
-                    };
-                }
-            }).on('select2:select', function(e) {
-                if (e.params.data.newTag) {
-                    console.log("New option added:", e.params.data.text);
-                    // Additional logic for new tags can be implemented here
-                }
+                });
             });
-        });
-    }
-
+        }
 
         // Initialize Select2 for elements already present
         initializeSelect2WithTags($('.select2-show-search'));
@@ -1127,290 +625,292 @@
             initializeSelect2WithTags($newSelect);
         }
 
-        // You can call addAndInitializeNewSelect2Element() whenever you need to dynamically add a new Select2 element
+        function encodeId(str) {
+            return str.replace(/[^a-zA-Z0-9]/g, function(s) {
+                return '_' + s.charCodeAt(0).toString(16);
     });
-</script>
-    
-    <!-- Script to add the fields as the user adds products in step 2 of the wizard-->>
-
-
-    <script>
-$(document).ready(function() {
-    var multipleDeliveriesData = [];
-
-    $('#product_selector .select2').select2({
-        width: '100%',
-        tags: true,
-        minimumInputLength: 1,
-        placeholder: "Choose Product",
-    }).on('select2:select select2:unselect', function(e) {
-        var selectedProducts = $(this).val() || []; // Get selected values, ensure array
-        var $sizeSelectorsContainer = $('#size-selectors-container');
-        $sizeSelectorsContainer.empty(); // Clear previous entries
-
-        selectedProducts.forEach(function(product) {
-            var productName = $('#product_selector .select2 option[value="' + product + '"]').text();
-            var elementHtml = '<hr><div class="form-group product-detail" data-product-name="' + productName + '">' + // Include the data-product-name attribute
-                      '<input type="hidden" class="product-name" value="' + productName + '">' + // Hidden input to store the product name
-                      '<div class="form-group">' +
-                      '<label class="form-label">' + productName + ' Size Selection</label>' +
-                      '<input type="text" class="form-control required" placeholder="Enter sizes for ' + productName + '" />' +
-                      '</div>' +
-                      '<div class="form-group">' +
-                      '<label class="form-label">' + productName + ' Specs</label>' +
-                      '<textarea class="form-control product-specs" placeholder="Enter specs for ' + productName + '" rows="4" style="height: 100px;"></textarea>' +
-                      '<div style="display: flex; align-items: center; margin-top: 10px;">' +
-                      '<input type="file" class="form-control-file" />' + // Add file input
-                      '<span class="remove-file-text" style="display: none; margin-left: 10px; color: red; cursor: pointer;">Remove</span>' + // Add clickable text to remove file
-                      '</div>' +
-                      '</div>' +
-                      '<div class="form-group">' +
-                      '<div style="display: flex; justify-content: space-between; align-items: center;">' +
-                      '<label class="form-label">' + productName + ' Quantity</label>' +
-                      '</div>' +
-                      '<div class="input-group">' +
-                      '<input type="text" class="form-control required quantity-field" readonly placeholder="Quantity (specify if MTS, KGS, or PCS)" aria-label="Quantity input with dropdown button" data-product-name="' + productName + '">' +
-                      '<button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Select Unit</button>' +
-                      '<ul class="dropdown-menu">' +
-                      '<li><a class="dropdown-item" href="javascript:void(0)">MTS</a></li>' +
-                      '<li><a class="dropdown-item" href="javascript:void(0)">KGS</a></li>' +
-                      '<li><a class="dropdown-item" href="javascript:void(0)">PCS</a></li>' +
-                      '</ul>' +
-                      '</div>' +
-                      '</div>' +
-                      '<div class="form-group">' +
-                      '<label class="form-label">' + productName + ' Packaging per inquiry</label>' +
-                      '<input type="text" class="form-control required" placeholder="Packaging details" />' +
-                      '</div>';
-
-            $sizeSelectorsContainer.append(elementHtml);
-        });
-    });
-
-    // Script to update the dropdown button text
-    $(document).on('click', '.dropdown-item', function() {
-        var selectedText = $(this).text();
-        var $dropdownButton = $(this).closest('.input-group').find('.dropdown-toggle');
-        $dropdownButton.text(selectedText);
-    });
-
-    // Event delegation for dynamically added elements
-    $(document).on('change', '.form-control-file', function() {
-        var $fileInput = $(this);
-        var file = $fileInput[0].files[0];
-        var maxSize = 10 * 1024 * 1024; // 10 MB
-
-        if (file && file.size > maxSize) {
-            alert('File size exceeds the 10 MB limit.');
-            $fileInput.val(''); // Clear the file input
-            return;
-        }
-
-        var $textarea = $fileInput.closest('.form-group').find('.product-specs');
-        var $removeText = $fileInput.closest('.form-group').find('.remove-file-text');
-
-        if ($fileInput.val()) {
-            $textarea.val('Attached Specs').prop('readonly', true);
-            $removeText.show();
-        } else {
-            $textarea.val('').prop('readonly', false);
-            $removeText.hide();
-        }
-    });
-
-    // Event delegation for dynamically added remove file text
-    $(document).on('click', '.remove-file-text', function() {
-        var $removeText = $(this);
-        var $fileInput = $removeText.closest('.form-group').find('.form-control-file');
-        var $textarea = $removeText.closest('.form-group').find('.product-specs');
-
-        $fileInput.val(''); // Clear the file input
-        $textarea.val('').prop('readonly', false); // Reset the textarea
-        $removeText.hide(); // Hide the remove text
-    });
-
-    // Event delegation for dynamically added quantity field to show the modal
-    $(document).on('focus', '.quantity-field', function() {
-        var productName = $(this).data('product-name');
-        $('#multipleDeliveriesModalLabel').text('Delivery Schedule for ' + productName); // Set the modal title
-        $('#multipleDeliveriesModal').modal('show'); // Show the modal
-        updateQuantityField(); // Update the quantity field when the modal is shown
-    });
-
-    // Function to update the quantity field
-    function updateQuantityField() {
-        var totalQuantity = 0;
-        $('#multipleDeliveriesTableBody .delivery-quantity').each(function() {
-            var quantity = parseFloat($(this).val());
-            if (!isNaN(quantity)) {
-                totalQuantity += quantity;
-            }
-        });
-        $('.quantity-field').val(totalQuantity);
-    }
-
-    // Add new row to the multiple deliveries table
-    $('#addRowButton').click(function() {
-        var rowCount = $('#multipleDeliveriesTableBody tr').length + 1;
-        var newRow = `<tr>
-                        <td>${rowCount}</td>
-                        <td><input type="date" class="form-control"></td>
-                        <td><input type="number" class="form-control delivery-quantity" placeholder="Enter quantity"></td>
-                        <td><button type="button" class="btn btn-danger btn-sm remove-row">Remove</button></td>
-                      </tr>`;
-        $('#multipleDeliveriesTableBody').append(newRow);
-    });
-
-    // Remove row from the multiple deliveries table
-    $(document).on('click', '.remove-row', function() {
-        $(this).closest('tr').remove();
-        // Re-index the rows
-        $('#multipleDeliveriesTableBody tr').each(function(index) {
-            $(this).find('td:first').text(index + 1);
-        });
-        updateQuantityField(); // Update the quantity field when a row is removed
-    });
-
-    // Update quantity field when quantity inputs change
-    $(document).on('input', '.delivery-quantity', function() {
-        updateQuantityField();
-    });
-
-    // Save changes button click event
-    $('#saveChangesButton').click(function() {
-        multipleDeliveriesData = [];
-        $('#multipleDeliveriesTableBody tr').each(function() {
-            var row = {
-                id: $(this).find('td').eq(0).text(),
-                date: $(this).find('td').eq(1).find('input').val(),
-                quantity: $(this).find('td').eq(2).find('input').val()
-            };
-            multipleDeliveriesData.push(row);
-        });
-        console.log(JSON.stringify(multipleDeliveriesData)); // Print JSON data to console
-        $('#multipleDeliveriesModal').modal('hide'); // Hide the modal
-    });
-});
-        </script>
-        <!-- Script to add the fields as the user adds products in step 3 of the wizard-->>
-
-        <script>
-  $(document).ready(function() {
-    // Define the initialization function outside of any event handler
-    function initializeSelect2WithTags($element) {
-        $element.select2({
-            width: '100%',
-            tags: true, // Allows new options to be added
-            minimumInputLength: 1, // Only start searching when at least one character is typed
-            placeholder: "Select suppliers", // Placeholder text
-            createTag: function(params) {
-                var term = $.trim(params.term);
-                if (term === '') {
-                    return null;
-                }
-                var normalizedTerm = term.replace(/\s+/g, ' ').toLowerCase();
-                // Check if the normalized term already exists in this specific select's options
-                var exists = $element.find('option').filter(function() {
-                    return $(this).text().toLowerCase() === normalizedTerm;
-                }).length > 0;
-                if (exists) {
-                    return null;
-                }
-                return {
-                    id: term,
-                    text: term,
-                    newTag: true
-                };
-            }
-        }).on('select2:select', function(e) {
-            if (e.params.data.newTag) {
-                console.log("New option added:", e.params.data.text);
-            }
-        });
-    }
-
-    // Initialize for initially present .select2-show-search elements
-    $('.select2-show-search').each(function() {
-        initializeSelect2WithTags($(this));
-    });
-
-    // Function to handle new selections and unselections
-    $('#product_selector .select2').on('select2:select select2:unselect', function(e) {
-        var selectedProducts = $(this).val() || [];
-        var $stepThreeSection = $('#wizard3-p-2');
-        $stepThreeSection.empty();
-        selectedProducts.forEach(function(product) {
-            var productName = $('#product_selector .select2 option[value="' + product + '"]').text();
-            var suppliersSelectHtml = `<div class="form-group" data-product-name="${productName}">
-                                           <label class="form-label">${productName} Suppliers to be contacted</label>
-                                           <select class="form-control select2-suppliers" multiple="" tabindex="-1" aria-hidden="true">
-                                            {% for supplier in suppliers %}
-                                                        <option value="{{ supplier }}">{{ supplier }}</option>
-                                                        {% endfor %}
-                                            </select>
-                                       </div>`;
-            $stepThreeSection.append(suppliersSelectHtml);
-        });
-
-        // Re-initialize Select2 for dynamically added .select2-suppliers selects
-        $('.select2-suppliers').each(function() {
-            initializeSelect2WithTags($(this));
-        });
-    });
-});
- 
-           </script>
-
-        <!-- Script to  send the ajax request !-->
-
-    <script>
-        $(document).ready(function() {
-
-// Function to show the step based on index
-function showStep(index) {
-    // Hide all sections and remove 'current' class from all h3 titles and 'current' from steps
-    $('.wizard .content section').hide().attr('aria-hidden', 'true');
-    $('.wizard .content .title').removeClass('current');
-    $('.wizard .steps ul li').removeClass('current').attr('aria-selected', 'false');
-
-    // Show the current section, add 'current' class to its title and step
-    $('.wizard .content section').eq(index).show().attr('aria-hidden', 'false');
-    $('#wizard3-h-' + index).addClass('current');
-    $('.wizard .steps ul li').eq(index).addClass('current').attr('aria-selected', 'true');
-
-    // Update steps status
-    $('.wizard .steps ul li').removeClass('done');
-    $('.wizard .steps ul li:lt(' + index + ')').addClass('done');
 }
 
-$('#submit-button-id').click(function(e) {  // Ensure this ID matches your submit button
-    e.preventDefault();
 
-    // Validate date fields first
-    var receivedDate = $('#inquiryReceivedDate').val();
-    var deadlineDate = $('#inquiryDeadlineDate').val();
-    var dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/(19|20)\d\d$/; // DD/MM/YYYY format
+        var multipleDeliveriesData = {};
 
-    // Reset previous validations
-    $('#inquiryReceivedDate, #inquiryDeadlineDate').css('border', ''); // Clear previous red borders
+        $('#product_selector .select2').select2({
+    width: '100%',
+    tags: true,
+    minimumInputLength: 1,
+    placeholder: "Choose Product",
+}).on('select2:select select2:unselect', function(e) {
+    var selectedProducts = $(this).val() || []; // Get selected values, ensure array
+    var $sizeSelectorsContainer = $('#size-selectors-container');
+    $sizeSelectorsContainer.empty(); // Clear previous entries
 
-    // Check if the dates are empty or in the correct format
-    if ((receivedDate && !dateRegex.test(receivedDate)) || (deadlineDate && !dateRegex.test(deadlineDate))) {
-        showStep(0); // Assuming showStep(0) navigates the user back to the step with the form
-        // Highlight the fields with incorrect formats
-        if (receivedDate && !dateRegex.test(receivedDate)) {
-            $('#inquiryReceivedDate').css('border', '2px solid red');
+    selectedProducts.forEach(function(product) {
+        var productName = $('#product_selector .select2 option[value="' + product + '"]').text();
+        var modalId = encodeId('multipleDeliveriesModal-' + product);
+        var elementHtml = `
+            <hr>
+            <div class="form-group product-detail" data-product-name="${productName}" data-modal-id="${modalId}">
+                <input type="hidden" class="product-name" value="${productName}">
+                <div class="form-group">
+                    <label class="form-label">${productName} Size Selection</label>
+                    <input type="text" class="form-control required" placeholder="Enter sizes for ${productName}" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">${productName} Specs</label>
+                    <textarea class="form-control product-specs" placeholder="Enter specs for ${productName}" rows="4" style="height: 100px;"></textarea>
+                    <div style="display: flex; align-items: center; margin-top: 10px;">
+                        <input type="file" class="form-control file" />
+                        <span class="remove-file-text" style="display: none; margin-left: 10px; color: red; cursor: pointer;">Remove</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <label class="form-label">${productName} Quantity</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" class="form-control required quantity-field" placeholder="Quantity (specify if MTS, KGS, or PCS)" aria-label="Quantity input with dropdown button" data-product-name="${productName}" data-modal-id="${modalId}" step="0.01">
+                        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Select Unit</button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="javascript:void(0)" data-unit="MTS">MTS</a></li>
+                            <li><a class="dropdown-item" href="javascript:void(0)" data-unit="KGS">KGS</a></li>
+                            <li><a class="dropdown-item" href="javascript:void(0)" data-unit="PCS">PCS</a></li>
+                        </ul>
+                    </div>
+                    <input type="hidden" class="quantity-unit" value="">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">${productName} Packaging per inquiry</label>
+                    <input type="text" class="form-control required" placeholder="Packaging details" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">${productName} Target Price</label>
+                    <input type="text" class="form-control required" placeholder="Enter target price for ${productName}" />
+                </div>
+            </div>
+            ${createModalTemplate(modalId, productName)}
+        `;
+        $sizeSelectorsContainer.append(elementHtml);
+    });
+});
+
+// Function to create modal template
+function createModalTemplate(modalId, productName) {
+    return `
+        <div class="modal fade" id="${modalId}" tabindex="-1" role="dialog" aria-labelledby="${modalId}Label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="${modalId}Label">Delivery Schedule for ${productName}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="multipleDeliveriesTableContainer" class="table-responsive">
+                            <table class="table border text-nowrap text-md-nowrap table-sm mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Quantity</th>
+                                        <th>Sizes</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="multipleDeliveriesTableBody-${modalId}">
+                                    <tr>
+                                        <td><input type="date" class="form-control"></td>
+                                        <td><input type="number" class="form-control delivery-quantity" placeholder="Enter quantity"></td>
+                                        <td><input type="text" class="form-control delivery-notes" placeholder="Enter sizes"></td>
+                                        <td><button type="button" class="btn btn-danger btn-sm remove-row">Remove</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary btn-sm mt-2 add-row-button" data-modal-id="${modalId}">Add Row</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary save-changes-button" data-modal-id="${modalId}">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+      // Event delegation for dynamically added elements
+        $(document).on('click', '.dropdown-item', function() {
+            var selectedText = $(this).text();
+            var unit = $(this).data('unit');
+            var $inputGroup = $(this).closest('.input-group');
+            var $dropdownButton = $inputGroup.find('.dropdown-toggle');
+            var $quantityField = $inputGroup.find('.quantity-field');
+            var $quantityUnit = $inputGroup.siblings('.quantity-unit'); // Select the sibling hidden input
+
+            $dropdownButton.text(selectedText); // Update button text
+            $quantityField.attr('readonly', false); // Enable quantity input
+            $quantityUnit.val(unit); // Set the quantity unit
+
+            // Log the value being assigned to the hidden input and the hidden input's value
+            console.log("Assigned Unit:", unit);
+            console.log("Quantity Unit Value:", $quantityUnit.val());
+        });
+
+
+        $(document).on('change', '.form-control-file', function() {
+            var $fileInput = $(this);
+            var file = $fileInput[0].files[0];
+            var maxSize = 10 * 1024 * 1024; // 10 MB
+
+            if (file && file.size > maxSize) {
+                alert('File size exceeds the 10 MB limit.');
+                $fileInput.val(''); // Clear the file input
+                return;
+            }
+
+            var $textarea = $fileInput.closest('.form-group').find('.product-specs');
+            var $removeText = $fileInput.closest('.form-group').find('.remove-file-text');
+
+            if ($fileInput.val()) {
+                $textarea.val('Attached Specs').prop('readonly', true);
+                $removeText.show();
+            } else {
+                $textarea.val('').prop('readonly', false);
+                $removeText.hide();
+            }
+        });
+
+        $(document).on('click', '.remove-file-text', function() {
+            var $removeText = $(this);
+            var $fileInput = $removeText.closest('.form-group').find('.form-control-file');
+            var $textarea = $removeText.closest('.form-group').find('.product-specs');
+
+            $fileInput.val(''); // Clear the file input
+            $textarea.val('').prop('readonly', false); // Reset the textarea
+            $removeText.hide(); // Hide the remove text
+        });
+
+        $(document).on('focus', '.quantity-field', function() {
+            var productName = $(this).data('product-name');
+            var modalId = $(this).data('modal-id');
+            $('#' + modalId).modal('show'); // Show the specific modal
+            updateQuantityField(modalId); // Update the quantity field when the modal is shown
+        });
+
+        $(document).on('click', '.quantity-field', function() {
+            var productName = $(this).data('product-name');
+            var encodedModalId = encodeId('multipleDeliveriesModal-' + productName);
+            
+            // Create modal template if it doesn't exist
+            if (!$('#' + encodedModalId).length) {
+                var modalTemplate = createModalTemplate(encodedModalId, productName);
+                $('body').append(modalTemplate);
+            }
+            
+            // Open the modal
+            $('#' + encodedModalId).modal('show');
+});
+
+
+        function updateQuantityField(modalId) {
+            var totalQuantity = 0;
+            $('#multipleDeliveriesTableBody-' + modalId + ' .delivery-quantity').each(function() {
+                var quantity = parseFloat($(this).val());
+                if (!isNaN(quantity)) {
+                    totalQuantity += quantity;
+                }
+            });
+            $('.quantity-field[data-modal-id="' + modalId + '"]').val(totalQuantity);
         }
-        if (deadlineDate && !dateRegex.test(deadlineDate)) {
-            $('#inquiryDeadlineDate').css('border', '2px solid red');
+
+        $(document).on('click', '.add-row-button', function() {
+            var modalId = $(this).data('modal-id');
+            var rowCount = $('#multipleDeliveriesTableBody-' + modalId + ' tr').length + 1;
+            var newRow = `<tr>
+                            <td><input type="date" class="form-control"></td>
+                            <td><input type="number" class="form-control delivery-quantity" placeholder="Enter quantity"></td>
+                            <td><input type="text" class="form-control delivery-notes" placeholder="Enter sizes"></td>
+                            <td><button type="button" class="btn btn-danger btn-sm remove-row">Remove</button></td>
+                          </tr>`;
+            $('#multipleDeliveriesTableBody-' + modalId).append(newRow);
+        });
+
+        $(document).on('click', '.remove-row', function() {
+            var $row = $(this).closest('tr');
+            var modalId = $(this).closest('.modal').attr('id');
+            $row.remove();
+            $('#multipleDeliveriesTableBody-' + modalId + ' tr').each(function(index) {
+                $(this).find('td:first').text(index + 1);
+            });
+            updateQuantityField(modalId);
+        });
+
+        $(document).on('input', '.delivery-quantity', function() {
+            var modalId = $(this).closest('.modal').attr('id');
+            updateQuantityField(modalId);
+        });
+
+        $(document).on('click', '.save-changes-button', function() {
+            var modalId = $(this).data('modal-id');
+            var productName = $('#size-selectors-container').find(`[data-modal-id="${modalId}"]`).data('product-name');
+            multipleDeliveriesData[productName] = [];
+            $('#multipleDeliveriesTableBody-' + modalId + ' tr').each(function() {
+                var row = {
+                    date: $(this).find('td').eq(0).find('input').val(),
+                    quantity: $(this).find('td').eq(1).find('input').val(),
+                    notes: $(this).find('td').eq(2).find('input').val(),
+                };
+                multipleDeliveriesData[productName].push(row);
+            });
+            console.log(JSON.stringify(multipleDeliveriesData)); // Print JSON data to console
+            $('#' + modalId).modal('hide'); // Hide the modal
+        });
+
+
+    // Handle form submission
+    $('#submit-button-id').click(function(e) {  // Ensure this ID matches your submit button
+        e.preventDefault();
+        let isValid = true;
+        
+        // Validate Customer field
+        const customerField = $('select[name="customer"]');
+        if (customerField.val() === "None") {
+            customerField.css('border', '2px solid red');
+            isValid = false;
+            showStep(0);
+            toastr.error('Please select a customer');
+        } else {
+            customerField.css('border', '');
         }
-        toastr.error('Please make sure the dates are in the correct format (DD/MM/YYYY) or empty', "Error");
-        return; // Stop the function execution here
-    }
 
-    // Proceed if dates are correct
-    $('#inquiryReceivedDate, #inquiryDeadlineDate').css('border', ''); // Reset any previous red borders
+        // Validate Enquiry Received Date
+        const enquiryReceivedDateField = $('#inquiryReceivedDate');
+        if (enquiryReceivedDateField.val() === "") {
+            enquiryReceivedDateField.css('border', '2px solid red');
+            isValid = false;
+            showStep(0);
+            toastr.error('Please indicate when the enquiry was received');
+        } else {
+            enquiryReceivedDateField.css('border', '');
+        }
 
+        // Validate Quantity and Unit fields for each product
+        $('.product-detail').each(function() {
+            const quantityField = $(this).find('.quantity-field');
+            const unitField = $(this).find('.quantity-unit');
+            if (quantityField.val() === "" || unitField.val() === "") {
+                quantityField.css('border', '2px solid red');
+                unitField.css('border', '2px solid red');
+                isValid = false;
+                showStep(1);
+                toastr.error('Please make sure to indicate the quantity required and the unit')
+            } else {
+                quantityField.css('border', '');
+                unitField.css('border', '');
+            }
+        });
+
+        // If the form is valid, proceed with form submission
+        if (isValid) {
+            
+   
     // Show the loader
     var loaderHtml = '<div class="dimmer active"><div class="spinner"></div></div>';
     $('body').append(loaderHtml); // Append the loader to the body or a specific div as per your layout
@@ -1422,12 +922,17 @@ $('#submit-button-id').click(function(e) {  // Ensure this ID matches your submi
         'inquiry_received_date': $('#inquiryReceivedDate').val(),
         'inquiry_deadline_date': $('#inquiryDeadlineDate').val(),
         'incoterm_wanted': $('#incotermWanted').val(), // Collecting the desired incoterm
-        'port_of_discharge': $('#portOfDischarge').val(), // Collecting the port of discharge
         'products_details': []
     };
 
     // Use FormData to send the data, including files
     var formData = new FormData();
+
+    // Enquiry files
+    var enquiryFiles = document.getElementById('formFileMultiple').files;
+    for (var i = 0; i < enquiryFiles.length; i++) {
+        formData.append('enquiry_files[]', enquiryFiles[i]);
+    }
 
     // Iterate over each product details section to collect product info and associated suppliers
     $('#size-selectors-container').children('.product-detail').each(function(index) {
@@ -1436,18 +941,21 @@ $('#submit-button-id').click(function(e) {  // Ensure this ID matches your submi
 
         var fileInput = $this.find('input[type="file"]')[0]; // Get the file input
         var file = fileInput.files.length > 0 ? fileInput.files[0] : null; // Get the file if it exists
-        
+
         var productDetails = {
             'product_name': productName,
             'size': $this.find('input[type="text"]').eq(0).val(), // Size is the first input
             'specs': $this.find('.product-specs').val(), // Textarea for specs
-            'quantity': $this.find('input[type="text"]').eq(1).val(), // Quantity is the second input
-            'packaging': $this.find('input[type="text"]').eq(2).val(), // Packaging is the third input
+            'quantity': $this.find('input[type="number"]').eq(0).val(), // Quantity is the first number input
+            'quantity_unit': $this.find('.quantity-unit').val(), // Quantity unit is the hidden input
+            'packaging': $this.find('input[type="text"]').eq(1).val(), // Packaging is the second text input
+            'target_price': $this.find('input[type="text"]').eq(2).val(), // Target price is the third text input
+            'delivery_schedule': multipleDeliveriesData[productName] || [], // Include delivery schedule
             'suppliers': [] // Preparing to collect associated suppliers
         };
 
         if (file) {
-            formData.append(`files[${index}]`, file);
+            formData.append(`product_files[${index}]`, file);
         }
 
         // Find the suppliers section that corresponds to this product
@@ -1460,7 +968,7 @@ $('#submit-button-id').click(function(e) {  // Ensure this ID matches your submi
     });
 
     formData.append('data', JSON.stringify(data));
-
+    console.log(data);
     $.ajax({
         type: "POST",
         url: "/create_enquiry_ajax", // Adjust URL as needed
@@ -1471,7 +979,7 @@ $('#submit-button-id').click(function(e) {  // Ensure this ID matches your submi
             console.log(response);
             // Handle success - remove the loader
             $('.dimmer').remove();
-            
+
             // Redirect to the new enquiry page using the pk from the response
             if(response && response.pk) {
                 window.location.href = '/enquiry/' + response.pk;
@@ -1484,13 +992,137 @@ $('#submit-button-id').click(function(e) {  // Ensure this ID matches your submi
             console.log(response);
             // Handle error - remove the loader
             $('.dimmer').remove();
-            toastr.error('An error as occurred', "Error");
+            toastr.error('An error has occurred', "Error");
+        }
+            });
+        }
+        });
+    });
+</script>
+
+<!-- Script to adjust selection boxes in the form -->
+<script>
+    $(document).ready(function() {
+        // Function to initialize Select2 with specified settings
+        function initializeSelect2WithTags($elements) {
+            $elements.each(function() { // Iterate over each element individually
+                var $element = $(this); // Current Select2 element being initialized
+                $element.select2({
+                    width: '100%',
+                    tags: true, // Allows new options to be added
+                    minimumInputLength: 1, // Only start searching when at least one character is typed
+                    placeholder: "Select suppliers", // Placeholder text
+                    createTag: function(params) {
+                        var term = $.trim(params.term);
+                        if (term === '') {
+                            return null;
+                        }
+                        var normalizedTerm = term.replace(/\s+/g, ' ').toLowerCase();
+                        // Check for existing options within the current Select2 element
+                        var exists = $element.find('option').filter(function() {
+                            return $(this).text().toLowerCase() === normalizedTerm;
+                        }).length > 0;
+                        if (exists) {
+                            return null;
+                        }
+                        return {
+                            id: term,
+                            text: term,
+                            newTag: true
+                        };
+                    }
+                }).on('select2:select', function(e) {
+                    if (e.params.data.newTag) {
+                        console.log("New option added:", e.params.data.text);
+                        // Additional logic for new tags can be implemented here
+                    }
+                });
+            });
+        }
+
+        // Initialize Select2 for elements already present
+        initializeSelect2WithTags($('.select2-show-search'));
+
+        // Example function to dynamically add new Select2 elements and initialize them
+        function addAndInitializeNewSelect2Element() {
+            var $newSelect = $('<select class="form-control select2-show-search" multiple=""></select>');
+            // Append your new select element to the DOM as needed
+            // For demonstration, let's say it's appended to a specific div
+            $('#yourTargetDiv').append($newSelect);
+
+            // Initialize Select2 on the new element
+            initializeSelect2WithTags($newSelect);
         }
     });
-});
-});
+</script>
 
-    </script> 
+<!-- Script to add the fields as the user adds products in step 3 of the wizard -->
+<script>
+    $(document).ready(function() {
+        // Define the initialization function outside of any event handler
+        function initializeSelect2WithTags($element) {
+            $element.select2({
+                width: '100%',
+                tags: true, // Allows new options to be added
+                minimumInputLength: 1, // Only start searching when at least one character is typed
+                placeholder: "Select suppliers", // Placeholder text
+                createTag: function(params) {
+                    var term = $.trim(params.term);
+                    if (term === '') {
+                        return null;
+                    }
+                    var normalizedTerm = term.replace(/\s+/g, ' ').toLowerCase();
+                    // Check if the normalized term already exists in this specific select's options
+                    var exists = $element.find('option').filter(function() {
+                        return $(this).text().toLowerCase() === normalizedTerm;
+                    }).length > 0;
+                    if (exists) {
+                        return null;
+                    }
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true
+                    };
+                }
+            }).on('select2:select', function(e) {
+                if (e.params.data.newTag) {
+                    console.log("New option added:", e.params.data.text);
+                }
+            });
+        }
+
+        // Initialize for initially present .select2-show-search elements
+        $('.select2-show-search').each(function() {
+            initializeSelect2WithTags($(this));
+        });
+
+        // Function to handle new selections and unselections
+        $('#product_selector .select2').on('select2:select select2:unselect', function(e) {
+            var selectedProducts = $(this).val() || [];
+            var $stepThreeSection = $('#wizard3-p-2');
+            $stepThreeSection.empty();
+            selectedProducts.forEach(function(product) {
+                var productName = $('#product_selector .select2 option[value="' + product + '"]').text();
+                var suppliersSelectHtml = `<div class="form-group" data-product-name="${productName}">
+                                               <label class="form-label">${productName} Suppliers to be contacted</label>
+                                               <select class="form-control select2-suppliers" multiple="" tabindex="-1" aria-hidden="true">
+                                                {% for supplier in suppliers %}
+                                                            <option value="{{ supplier }}">{{ supplier }}</option>
+                                                {% endfor %}
+                                                </select>
+                                           </div>`;
+                $stepThreeSection.append(suppliersSelectHtml);
+            });
+
+            // Re-initialize Select2 for dynamically added .select2-suppliers selects
+            $('.select2-suppliers').each(function() {
+                initializeSelect2WithTags($(this));
+            });
+        });
+    });
+</script>
+
         
 
 <style>
@@ -1500,9 +1132,7 @@ background-color: #ccc; /* Greyed out background */
 color: #666; /* Greyed out text */
 cursor: not-allowed;
 }
-
-
-    </style>
+</style>
 
         
     
