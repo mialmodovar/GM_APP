@@ -74,7 +74,7 @@ TEMPLATES = [
 
 # Change if needed
 CSRF_TRUSTED_ORIGINS = [
-    # Add your trusted origins here, e.g., 'https://example.com'
+    *
 ]
 
 WSGI_APPLICATION = 'gm_app.wsgi.application'
@@ -151,5 +151,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Microsoft authentication settings
 MICROSOFT_AUTH_CLIENT_ID = 'de8b9866-61f5-40da-aeee-ded54c0e39e3'
 MICROSOFT_AUTH_CLIENT_SECRET = 'nyn8Q~GnMeMuX.HD9L5DRNO4GMHmjsVnMv7q5ce8'
-MICROSOFT_AUTH_REDIRECT_URI = 'https://cgk46v-6000.csb.app/login/callback/'
+MICROSOFT_AUTH_REDIRECT_URI = 'https://gmapp-production.up.railway.app/login/callback'
 MICROSOFT_AUTH_TENANT_ID = 'c55a4430-1530-4ee2-8fac-98101223700c'
