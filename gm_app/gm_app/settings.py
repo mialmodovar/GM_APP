@@ -234,12 +234,8 @@ WSGI_APPLICATION = 'gm_app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'vs-postgres',  # Replace with the name of your PostgreSQL database
-        'USER': 'varun129809',
-        'PASSWORD': 'Postgres98!',  # Replace with your actual password
-        'HOST': 'vs-postgres.postgres.database.azure.com',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # Path to your SQLite database file
     }
 }
 
