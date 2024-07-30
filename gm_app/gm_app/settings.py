@@ -73,9 +73,7 @@ TEMPLATES = [
 ]
 
 # Change if needed
-CSRF_TRUSTED_ORIGINS = [
-    *
-]
+CSRF_TRUSTED_ORIGINS = ['*']
 
 WSGI_APPLICATION = 'gm_app.wsgi.application'
 
