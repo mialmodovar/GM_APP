@@ -235,10 +235,10 @@ WSGI_APPLICATION = 'gm_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',  # Replace with the name of your PostgreSQL database
+        'NAME': 'vs-postgres',  # Replace with the name of your PostgreSQL database
         'USER': 'varun129809',
         'PASSWORD': 'Postgres98!',  # Replace with your actual password
-        'HOST': 'gm-postgres.postgres.database.azure.com',
+        'HOST': 'vs-postgres.postgres.database.azure.com',
         'PORT': '5432',
     }
 }
