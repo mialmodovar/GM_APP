@@ -55,7 +55,7 @@ MIDDLEWARE = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-   'https://gmapp-production.up.railway.app',
+   'https://gmapp-production.up.railway.app','gmapp-production.up.railway.app'
 ]
 ROOT_URLCONF = 'gm_app.urls'
 
