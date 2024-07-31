@@ -1708,6 +1708,7 @@ function sortTableRows(table) {
                 $card.find('.btn-edit-offers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
                 $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').hide(); // Hide the save button
                 $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').hide(); // Hide the add button
+                location.reload();
             },
             error: function(error) {
                 sortTableRows($table);
