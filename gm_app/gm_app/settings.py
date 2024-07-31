@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-49pz7d6inn@x0raym0ylbj3t*uul1hug408qfbm79!x(#w2z33
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://gmapp-production.up.railway.app']
+ALLOWED_HOSTS = ['https://gmapp-production.up.railway.app','gmapp-production.up.railway.app']
 
 LOGIN_URL = 'login'
 
