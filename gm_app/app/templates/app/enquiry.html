@@ -1891,6 +1891,7 @@ $(document).on('click', '.btn-save-requests', function() {
             $('.btn-add-requests').hide();
             mergeTableCells($table[0]);
             sortTableRows($table);
+            location.reload();
         },
         error: function(error) {
             toastr.error('Data was not updated!', 'Error');
@@ -2087,6 +2088,7 @@ $(document).ready(function() {
                 $card.find('.btn-add-clientoffers[data-target="' + targetTableId + '"]').hide(); // Hide the add new offer button
                 sortTableRows($table);
                 mergeTableCells($table[0]);
+                location.reload();
             },
             error: function(error) {
                 console.log(error);
