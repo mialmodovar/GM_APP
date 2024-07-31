@@ -1618,106 +1618,118 @@ function sortTableRows(table) {
 
     $(document).ready(function() {
     // Make all fields in the specified table editable
-    $(document).on('click', '.btn-edit-offers', function() {
-        var targetTableId = $(this).data('target');
-        var $table = $('#' + targetTableId);
-        var $card = $table.closest('.card');
-        unmergeTableCells($table[0]);
-        // Make all cells editable
-        $table.find('td').attr('contenteditable', 'true');
-        // Ensure cells with the 'noteditable' class are not editable
-        $table.find('td.noteditable').attr('contenteditable', 'false');
-        // Convert validity cells to date input fields
-        $table.find('td.validity-cell').each(function() {
-            var text = $(this).text().trim();
-            $(this).html('<input type="date" class="form-control" value="' + (text === 'DD/MM/YYYY' ? '' : text) + '">');
-        });
-        $table.addClass('edit-mode');  // Add edit mode class to table
-        $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').show();
-        $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').show();
-        $(this).hide();
+$(document).on('click', '.btn-edit-offers', function() {
+    var targetTableId = $(this).data('target');
+    var $table = $('#' + targetTableId);
+    var $card = $table.closest('.card');
+    unmergeTableCells($table[0]);
+
+    // Disable links by removing href attribute
+    $table.find('td a').each(function() {
+        $(this).attr('data-href', $(this).attr('href')).removeAttr('href');
     });
 
-    // Add a new editable row when "Add New Offer" is clicked
-    $(document).on('click', '.btn-add-offer', function() {
-        var targetTableId = $(this).data('target');
-        var $table = $('#' + targetTableId);
-        var newRow = `<tr>
-                        <td class="noteditable" data-toggle="modal" data-target="#supplierDetailModal"><a href="javascript:void(0);" contenteditable="false"></a></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td class="validity-cell"><input type="date" class="form-control"></td>
-                        <td contenteditable="true"></td>
-                      </tr>`;
-        $table.find('tbody').append(newRow);
+    // Make all cells editable
+    $table.find('td').attr('contenteditable', 'true');
+    // Ensure cells with the 'noteditable' class are not editable
+    $table.find('td.noteditable').attr('contenteditable', 'false');
+    // Convert validity cells to date input fields
+    $table.find('td.validity-cell').each(function() {
+        var text = $(this).text().trim();
+        $(this).html('<input type="date" class="form-control" value="' + (text === 'DD/MM/YYYY' ? '' : text) + '">');
+    });
+    $table.addClass('edit-mode');  // Add edit mode class to table
+    $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').show();
+    $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').show();
+    $(this).hide();
+});
+
+// Add a new editable row when "Add New Offer" is clicked
+$(document).on('click', '.btn-add-offer', function() {
+    var targetTableId = $(this).data('target');
+    var $table = $('#' + targetTableId);
+    var newRow = `<tr>
+                    <td class="noteditable" data-toggle="modal" data-target="#supplierDetailModal"><a href="javascript:void(0);" contenteditable="false"></a></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td class="validity-cell"><input type="date" class="form-control"></td>
+                    <td contenteditable="true"></td>
+                  </tr>`;
+    $table.find('tbody').append(newRow);
+});
+
+// Handle the save action for the specified table
+$(document).on('click', '.btn-save-offers', function() {
+    var targetTableId = $(this).data('target'); // Get the target table ID using the updated data-target format
+    var requestIdParts = targetTableId.split('-'); // Split the targetTableId by '-'
+    var requestId = requestIdParts[requestIdParts.length - 1]; // Get the last part, which is the requestId
+    console.log(requestId)
+    var $table = $('#' + targetTableId); // Find the table by ID
+    var $card = $table.closest('.card'); // Find the closest card to this table
+    var offersToUpdate = []; // Array to hold data for all offers in this table
+    var allValid = true; // Flag to track date validity
+    $table.find('tbody tr').each(function() {
+        var $row = $(this);
+        var offerId = $row.data('offer-id');
+        var validity = $row.find('td:eq(7) input').val().trim();
+
+        var offerData = {
+            id: offerId,
+            supplier: $row.find('td:eq(0)').clone().children('.supplier-email-status').remove().end().text(),
+            supplier_price: $row.find('td:eq(1)').text(),
+            payment_terms: $row.find('td:eq(2)').text(),
+            incoterms: $row.find('td:eq(3)').text(),
+            specs: $row.find('td:eq(4)').text(),
+            size: $row.find('td:eq(5)').text(),
+            packaging: $row.find('td:eq(6)').text(),
+            validity: validity,
+            notes: $row.find('td:eq(8)').text(),
+        };
+        offersToUpdate.push(offerData);
     });
 
-    // Handle the save action for the specified table
-    $(document).on('click', '.btn-save-offers', function() {
-        var targetTableId = $(this).data('target'); // Get the target table ID using the updated data-target format
-        var requestIdParts = targetTableId.split('-'); // Split the targetTableId by '-'
-        var requestId = requestIdParts[requestIdParts.length - 1]; // Get the last part, which is the requestId
-        console.log(requestId)
-        var $table = $('#' + targetTableId); // Find the table by ID
-        var $card = $table.closest('.card'); // Find the closest card to this table
-        var offersToUpdate = []; // Array to hold data for all offers in this table
-        var allValid = true; // Flag to track date validity
-        $table.find('tbody tr').each(function() {
-            var $row = $(this);
-            var offerId = $row.data('offer-id');
-            var validity = $row.find('td:eq(7) input').val().trim();
+    if (!allValid) return;
 
-            var offerData = {
-                id: offerId,
-                supplier: $row.find('td:eq(0)').clone().children('.supplier-email-status').remove().end().text(),
-                supplier_price: $row.find('td:eq(1)').text(),
-                payment_terms: $row.find('td:eq(2)').text(),
-                incoterms: $row.find('td:eq(3)').text(),
-                specs: $row.find('td:eq(4)').text(),
-                size: $row.find('td:eq(5)').text(),
-                packaging: $row.find('td:eq(6)').text(),
-                validity: validity,
-                notes: $row.find('td:eq(8)').text(),
-            };
-            offersToUpdate.push(offerData);
-        });
+    // Send AJAX request to save all updated offers for this table
+    $.ajax({
+        url: '/update_offers/', // Update this URL to your actual endpoint
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify([{'request_id': requestId},{offers: offersToUpdate}]),
+        success: function(response) {
+            toastr.success('Data updated successfully!', 'Success');
+            sortTableRows($table);
+            mergeTableCells($table[0]);
+            $table.find('td').attr('contenteditable', 'false');
+            // Convert validity cells back to plain text
+            $table.find('td.validity-cell').each(function() {
+                var text = $(this).find('input').val().trim();
+                $(this).text(text === '' ? 'DD/MM/YYYY' : text);
+            });
 
-        if (!allValid) return;
+            // Restore links by adding href attribute back
+            $table.find('td a').each(function() {
+                $(this).attr('href', $(this).attr('data-href')).removeAttr('data-href');
+            });
 
-        // Send AJAX request to save all updated offers for this table
-        $.ajax({
-            url: '/update_offers/', // Update this URL to your actual endpoint
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify([{'request_id': requestId},{offers: offersToUpdate}]),
-            success: function(response) {
-                toastr.success('Data updated successfully!', 'Success');
-                sortTableRows($table);
-                mergeTableCells($table[0]);
-                $table.find('td').attr('contenteditable', 'false');
-                // Convert validity cells back to plain text
-                $table.find('td.validity-cell').each(function() {
-                    var text = $(this).find('input').val().trim();
-                    $(this).text(text === '' ? 'DD/MM/YYYY' : text);
-                });
-                $table.removeClass('edit-mode');  // Remove edit mode class from table
-                $card.find('.btn-edit-offers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
-                $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').hide(); // Hide the save button
-                $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').hide(); // Hide the add button
-                location.reload();
-            },
-            error: function(error) {
-                sortTableRows($table);
-                mergeTableCells($table[0]);
-                toastr.error('An error occurred. Changes not saved');
-                console.log(error);
-            }
-        });
+            $table.removeClass('edit-mode');  // Remove edit mode class from table
+            $card.find('.btn-edit-offers[data-target="' + targetTableId + '"]').show(); // Show the edit button again
+            $card.find('.btn-save-offers[data-target="' + targetTableId + '"]').hide(); // Hide the save button
+            $card.find('.btn-add-offer[data-target="' + targetTableId + '"]').hide(); // Hide the add button
+            location.reload();
+        },
+        error: function(error) {
+            sortTableRows($table);
+            mergeTableCells($table[0]);
+            toastr.error('An error occurred. Changes not saved');
+            console.log(error);
+        }
     });
+});
     let currentTd; 
     
 
