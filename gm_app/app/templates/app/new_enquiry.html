@@ -910,7 +910,7 @@ function createModalTemplate(modalId, productName) {
         // If the form is valid, proceed with form submission
         if (isValid) {
             
-   
+            $('#submit-button-id').addClass('btn-loading').prop('disabled', true);
     // Show the loader
     var loaderHtml = '<div class="dimmer active"><div class="spinner"></div></div>';
     $('body').append(loaderHtml); // Append the loader to the body or a specific div as per your layout

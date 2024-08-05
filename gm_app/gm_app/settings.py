@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-49pz7d6inn@x0raym0ylbj3t*uul1hug408qfbm79!x(#w2z33
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://gmapp-production.up.railway.app','gmapp-production.up.railway.app']
+ALLOWED_HOSTS = ['https://gmapp-production.up.railway.app',
+                 'gmapp-production.up.railway.app', 'http://127.0.0.1:8000', '5mvm3v-8000.csb.app', 'gm-webapp.azurewebsites.net']
 
 LOGIN_URL = 'login'
 
@@ -55,8 +56,13 @@ MIDDLEWARE = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-   'https://gmapp-production.up.railway.app',
-   'http://gmapp-production.up.railway.app'
+    'https://gmapp-production.up.railway.app',
+    'http://gmapp-production.up.railway.app',
+    'http://5mvm3v-8000.csb.app/',
+    'https://5mvm3v-8000.csb.app',
+    'https://gm-webapp.azurewebsites.net',
+    'http://gm-webapp.azurewebsites.net',
+
 ]
 ROOT_URLCONF = 'gm_app.urls'
 
@@ -89,11 +95,11 @@ DATABASES = {
         'NAME': 'postgres',           # The name of your PostgreSQL database
         'USER': 'varun129809',         # Your PostgreSQL username
         'PASSWORD': 'Postgres98!',     # Your PostgreSQL password
-        'HOST': 'gm-db-server.postgres.database.azure.com',  # The hostname of your PostgreSQL server
+        # The hostname of your PostgreSQL server
+        'HOST': 'gm-db-server.postgres.database.azure.com',
         'PORT': '5432',                # The port your PostgreSQL server is running on
     }
 }
-
 
 
 # Password validation
@@ -156,5 +162,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Microsoft authentication settings
 MICROSOFT_AUTH_CLIENT_ID = 'de8b9866-61f5-40da-aeee-ded54c0e39e3'
 MICROSOFT_AUTH_CLIENT_SECRET = 'nyn8Q~GnMeMuX.HD9L5DRNO4GMHmjsVnMv7q5ce8'
-MICROSOFT_AUTH_REDIRECT_URI = 'https://gmapp-production.up.railway.app/login/callback'
+MICROSOFT_AUTH_REDIRECT_URI = 'https://gm-webapp.azurewebsites.net/login/callback'
 MICROSOFT_AUTH_TENANT_ID = 'c55a4430-1530-4ee2-8fac-98101223700c'

@@ -466,33 +466,7 @@
                                               id="message-{{ email_with_attachments.email.id }}"
                                               class="form-control"
                                             >
-Dear {% if email_with_attachments.email.supplier.contacts.first %}{{ email_with_attachments.email.supplier.contacts.first.name }}{% else %}Valued Supplier{% endif %},
-
-I hope this message finds you well. We are reaching out to you regarding our recent enquiry with ID: {{ enquiry.id }}.
-
-Below are the details of the request associated with this enquiry:
-
-Product: {{ request_obj.product.name }}
-Sizes: {{ request_obj.size }}
-Incoterms: {{ request_obj.incoterms }}
-Packaging: {{ request_obj.packaging}}
-Payment Terms: 
-{% if request_obj.target_price and request_obj.target_price|stringformat:"s" %}
-Target Price: {{ request_obj.target_price }}
-{% endif %}
-Details: 
-{% if request_obj.specs|startswith:"//attach" %}See attached.{% else %}{{ request_obj.specs|escape }}{% endif %}
-Quantity: {{ request_obj.quantity }} {{ request_obj.quantity_unit }}
-Delivery Schedule:
-{% for schedule in request_obj.delivery_schedule %}
-  Month: {{ schedule.date|month_name }}, Quantity: {{ schedule.quantity }} {{ request_obj.quantity_unit }}, Sizes: {{ schedule.notes }}
-{% endfor %}
-
-Please review the information provided and get back to us with your offer at your earliest convenience.
-
-Thank you,
-                                                                                        </textarea
-                                            >
+                                                                                        </textarea>
                                           </div>
                                         </div>
                                       </div>
@@ -742,12 +716,70 @@ Thank you,
       });
     </script>
 -->
+
+{{ emails_with_attachments|json_script:"emails_with_attachments" }};
+{{ enquiry|json_script:"enquiry" }};
+{{ request_obj|json_script:"request_obj" }};
+
     <script>
       //handle attachment
       $(document).ready(function () {
     let globalEmailId;
     let attachToAll = false;
       
+    var emailsWithAttachments = JSON.parse(document.getElementById('emails_with_attachments').textContent);
+    var enquiry = JSON.parse(document.getElementById('enquiry').textContent);
+    var requestObj = JSON.parse(document.getElementById('request_obj').textContent);
+
+   
+        function generateEmailContent(emailWithAttachments, enquiry, requestObj) {
+            var contactName = emailWithAttachments.supplier_contacts.length > 0
+                ? emailWithAttachments.supplier_contacts[0].name
+                : 'Valued Supplier';
+
+            var targetPriceText = requestObj.target_price ? 'Target Price: ' + requestObj.target_price : '';
+            var specsText = requestObj.specs.startsWith('//attach') ? 'See attached.' : requestObj.specs;
+
+            var deliveryScheduleText = '';
+            $.each(requestObj.delivery_schedule, function (index, schedule) {
+                deliveryScheduleText += 'Month: ' + new Date(schedule.date).toLocaleString('default', { month: 'long' }) +
+                    ', Quantity: ' + schedule.quantity + ' ' + requestObj.quantity_unit +
+                    ', Sizes: ' + schedule.notes + '\n';
+            });
+
+            var emailBody = `
+Dear ${contactName},
+
+I hope this message finds you well. We are reaching out to you regarding our recent enquiry with ID: ${enquiry.id}.
+
+Below are the details of the request associated with this enquiry:
+
+Product: ${requestObj.product.name}
+Sizes: ${requestObj.size}
+Incoterms: ${requestObj.incoterms}
+Packaging: ${requestObj.packaging}
+Payment Terms: 
+${targetPriceText}
+Details: 
+${specsText}
+Quantity: ${requestObj.quantity} ${requestObj.quantity_unit}
+Delivery Schedule:
+${deliveryScheduleText}
+
+Please review the information provided and get back to us with your offer at your earliest convenience.
+
+Thank you,
+`;
+
+            return emailBody;
+        }
+
+        $.each(emailsWithAttachments, function (index, emailWithAttachments) {
+            var emailContent = generateEmailContent(emailWithAttachments, enquiry, requestObj);
+            $('#message-' + emailWithAttachments.email.id).val(emailContent);
+        });
+  
+  
 // Initialize Select2 with specified settings and pre-selected options
 function initializeSelect2WithTags($elements) {
         $elements.each(function() { // Iterate over each element individually
@@ -948,6 +980,7 @@ function initializeSelect2WithTags($elements) {
         return emailIds;
     }
 });
+
     </script>
 
     

@@ -954,7 +954,6 @@ def supplier_detail(request, id):
         Offer.objects.filter(supplier=supplier)
         .values('request__product__name')  # Group by product name
         .annotate(
-            average_price=Avg('supplier_price'),
             total_offers=Count('id')
         )
     )
@@ -1004,7 +1003,7 @@ def draft_email_display(request):
 
     # Join the group_mail addresses into a single string, separated by commas
     group_mail_addresses = ', '.join(filter(None, group_mail_list))
-
+    print(group_mail_addresses)
     emails = []
     # Retrieve or create Email objects for each supplier
     for supplier in suppliers:
@@ -1027,23 +1026,54 @@ def draft_email_display(request):
 
         emails.append(email)
 
-    # Prepare the context with the email objects and their attachments
+    # Serialize the data to a JSON-friendly format
     emails_with_attachments = []
     for email in emails:
-        attachments = Attachment.objects.filter(email=email)
-        supplier_contacts = email.supplier.contacts.all() if email.supplier else []
-        supplier_emails = [contact.email for contact in supplier_contacts]
+        attachments = list(email.attachments.values('id', 'file'))
+        supplier_contacts = list(email.supplier.contacts.values('name', 'email')) if email.supplier else []
         emails_with_attachments.append({
-            'email': email,
+            'email': {
+                'id': email.id,
+                'uuid': str(email.uuid),
+                'supplier': email.supplier.name if email.supplier else None,
+                'cc': email.cc,
+                'subject': email.subject,
+                'message': email.message,
+                'status': email.status,
+                'sent_at': email.sent_at.strftime('%Y-%m-%d %H:%M:%S') if email.sent_at else None,
+                'read_at': email.read_at.strftime('%Y-%m-%d %H:%M:%S') if email.read_at else None,
+                'response_received': email.response_received,
+                'response_details': email.response_details
+            },
             'attachments': attachments,
-            'supplier_emails': supplier_emails,
+            'supplier_emails': [contact['email'] for contact in supplier_contacts],
+            'supplier_contacts': supplier_contacts
         })
 
     # Prepare the context with the email objects
     context = {
         'emails_with_attachments': emails_with_attachments,
-        'enquiry': request_obj.enquiry,
-        'request_obj': request_obj,
+        'enquiry': {
+            'id': request_obj.enquiry.id,
+            'manager': request_obj.enquiry.manager.name if request_obj.enquiry.manager else None,
+            'client': request_obj.enquiry.client.name if request_obj.enquiry.client else None,
+            'received_date': request_obj.enquiry.received_date.strftime('%Y-%m-%d') if request_obj.enquiry.received_date else None,
+            'submission_deadline': request_obj.enquiry.submission_deadline.strftime('%Y-%m-%d') if request_obj.enquiry.submission_deadline else None,
+            'submission_date': request_obj.enquiry.submission_date.strftime('%Y-%m-%d') if request_obj.enquiry.submission_date else None,
+            'status': request_obj.enquiry.status,
+        },
+        'request_obj': {
+            'id': request_obj.id,
+            'product': {'name': request_obj.product.name},
+            'size': request_obj.size,
+            'incoterms': request_obj.incoterms,
+            'packaging': request_obj.packaging,
+            'target_price': request_obj.target_price,
+            'specs': request_obj.specs,
+            'quantity': request_obj.quantity,
+            'quantity_unit': request_obj.quantity_unit,
+            'delivery_schedule': request_obj.delivery_schedule  # Assuming this is a JSONField
+        }
     }
 
     return render(request, 'app/draft-email.html', context)
@@ -1134,8 +1164,10 @@ def send_email_ajax(request):
                 })
 
         # Construct the email message payload
-        to_recipients = [{"emailAddress": {"address": email}} for email in recipients]
-        cc_recipients_payload = [{"emailAddress": {"address": email}} for email in cc]
+        to_recipients = [{"emailAddress": {"address": email}}
+                         for email in recipients]
+        cc_recipients_payload = [
+            {"emailAddress": {"address": email}} for email in cc]
 
         email_payload = {
             "message": {
@@ -1157,7 +1189,8 @@ def send_email_ajax(request):
             'Authorization': f'Bearer {token}',
             'Content-Type': 'application/json'
         }
-        response = requests.post(email_url, headers=headers, json=email_payload)
+        response = requests.post(
+            email_url, headers=headers, json=email_payload)
 
         if response.status_code == 202:
             email.status = 'SENT'  # Assuming you want to update the status to SENT after sending
@@ -1168,6 +1201,7 @@ def send_email_ajax(request):
             email.save()
             return JsonResponse({'error': 'Failed to send email', 'details': response.json()}, status=response.status_code)
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
 
 @csrf_exempt
 def update_supplier(request, supplier_id):
